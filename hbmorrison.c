@@ -42,10 +42,10 @@ void td_z_finished(tap_dance_state_t *state, void *user_data);
 void td_z_reset(tap_dance_state_t *state, void *user_data);
 
 tap_dance_action_t tap_dance_actions[] = {
-    [TD_ENT_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_ent_finished, td_ent_reset),
-    [TD_SPC_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_spc_finished, td_spc_reset),
-    [TD_SLSH_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_slsh_finished, td_slsh_reset),
-    [TD_Z_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_z_finished, td_z_reset),
+  [TD_ENT_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_ent_finished, td_ent_reset),
+  [TD_SPC_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_spc_finished, td_spc_reset),
+  [TD_SLSH_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_slsh_finished, td_slsh_reset),
+  [TD_Z_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_z_finished, td_z_reset),
 };
 
 // Defines whether to issue Windows or ChromeOS keypresses from macros - Windows
