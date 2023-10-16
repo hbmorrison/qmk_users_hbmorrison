@@ -23,8 +23,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Tapping terms.
 
 #define TAPPING_TERM 190
-#define TAPPING_TERM_MODS 700
-#define TAPPING_TERM_TD 160
+#define TAPPING_TERM_MODS 800
+#define TAPPING_TERM_SIDEKEY_TD 150
+#define TAPPING_TERM_THUMBKEY_TD 50
 
 // Capsword.
 
