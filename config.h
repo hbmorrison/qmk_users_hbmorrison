@@ -25,7 +25,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TAPPING_TERM 190
 #define TAPPING_TERM_MODS 800
 #define TAPPING_TERM_SIDEKEY_TD 150
+#ifdef TAP_DANCE_ENABLE
 #define TAPPING_TERM_THUMBKEY_TD 50
+#else
+#define TAPPING_TERM_THUMBKEY_TD 150
+#endif // TAP_DANCE_ENABLE
 
 // Capsword.
 

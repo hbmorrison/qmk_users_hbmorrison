@@ -105,10 +105,17 @@ enum {
 
 // Tap dance layer keys.
 
+#ifdef TAP_DANCE_ENABLE
 #define KC_Z_LAYER TD(TD_Z_LAYER)
 #define KC_SLSH_LAYER TD(TD_SLSH_LAYER)
 #define KC_SPC_LAYER TD(TD_SPC_LAYER)
 #define KC_ENT_LAYER TD(TD_ENT_LAYER)
+#else
+#define KC_Z_LAYER OSL(LAYER_Z_TAP)
+#define KC_SLSH_LAYER OSL(LAYER_SLSH_TAP)
+#define KC_SPC_LAYER LT(LAYER_SPC_HOLD, KC_SPC)
+#define KC_ENT_LAYER LT(LAYER_ENT_HOLD, KC_ENT)
+#endif // TAP_DANCE_ENABLE
 
 // Layouts.
 

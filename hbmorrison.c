@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "hbmorrison.h"
 
+#ifdef TAP_DANCE_ENABLE
 typedef enum {
   TD_NONE,
   TD_UNKNOWN,
@@ -49,6 +50,7 @@ tap_dance_action_t tap_dance_actions[] = {
   [TD_SLSH_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_slsh_finished, td_slsh_reset),
   [TD_Z_LAYER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, td_z_finished, td_z_reset),
 };
+#endif // TAP_DANCE_ENABLE
 
 // Defines whether to issue Windows or ChromeOS keypresses from macros - Windows
 // by default.
@@ -284,6 +286,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
+#ifdef TAP_DANCE_ENABLE
 void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (!record->event.pressed) {
 
@@ -317,6 +320,7 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   }
 }
+#endif // TAP_DANCE_ENABLE
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
@@ -357,6 +361,7 @@ void hypr_or_alt(char *ss, bool pressed) {
   }
 }
 
+#ifdef TAP_DANCE_ENABLE
 td_state_t td_get_state(tap_dance_state_t *state) {
   if (state->count == 1) {
     // If the keypress has been interrupted by another keypress or is no longer
@@ -533,3 +538,4 @@ void td_z_reset(tap_dance_state_t *state, void *user_data) {
       break;
   }
 }
+#endif // TAP_DANCE_ENABLE
