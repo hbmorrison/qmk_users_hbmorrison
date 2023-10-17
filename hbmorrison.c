@@ -104,6 +104,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   switch (keycode) {
 
+    // Esc returns to the base layer.
+
+    case KC_ENT:
+      if (record->event.pressed) {
+        layer_move(LAYER_BASE);
+      }
+    break;
+
     // Shift-backspace issues delete.
 
     case KC_BSPC:
@@ -573,3 +581,13 @@ void td_z_reset(tap_dance_state_t *state, void *user_data) {
   }
 }
 #endif // TAP_DANCE_ENABLE
+
+// Reduce the size of the compiled firmware.
+
+uint16_t keycode_config(uint16_t keycode) {
+    return keycode;
+}
+
+uint8_t mod_config(uint8_t mod) {
+    return mod;
+}
