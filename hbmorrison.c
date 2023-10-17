@@ -81,15 +81,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   // Ensure that shift is not pressed when additional layers are active, except
-  // for tapdance layer keypresses.
+  // for sidekey keypresses.
 
   uint8_t current_layer = get_highest_layer(layer_state);
 
   if (current_layer > LAYER_BASE) {
     switch (keycode) {
+#ifdef HBM_SIDEKEY_ENABLE
       case KC_Z:
       case KC_SLSH:
         break;
+#endif // HBM_SIDEKEY_ENABLE
       default:
         del_mods(MOD_MASK_SHIFT);
         del_oneshot_mods(MOD_MASK_SHIFT);
@@ -268,6 +270,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
+    // Toggle CAPS WORD. This is done as a macro rather than using CW_TOGG so
+    // that the keypress falls through post_process_record_user() and switches
+    // the state of the hold layer tapdances from HOLD to HOLD_KEYPRESS.
+
+#ifdef TAP_DANCE_ENABLE
+    case M_CW_TOGG:
+      caps_word_toggle();
+      break;
+#endif // TAP_DANCE_ENABLE
+
     // Swap between Windows and ChromeOS macro keypresses.
 
     case M_ISCROS:
@@ -341,6 +353,28 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
       return TAPPING_TERM_SIDEKEY_TD;
     default:
       return TAPPING_TERM;
+  }
+}
+
+// Only capitalise alpha characters and remove the minus character so that
+// typing '-' stops the caps word.
+
+bool caps_word_press_user(uint16_t keycode) {
+  switch (keycode) {
+    // Keycodes that continue caps word with shift applied.
+    case KC_A ... KC_Z:
+      // Apply shift to next key only.
+      add_weak_mods(MOD_BIT(KC_LSFT));
+      return true;
+    // Keycodes that continue caps word without shifting.
+    case KC_1 ... KC_0:
+    case KC_BSPC:
+    case KC_DEL:
+    case KC_UNDS:
+      return true;
+    // Deactivate caps word by default.
+    default:
+      return false;
   }
 }
 

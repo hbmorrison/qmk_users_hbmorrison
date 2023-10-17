@@ -54,6 +54,9 @@ enum hbm_keycodes {
     M_PDESK,
     M_XTAB,
     M_EMOJI,
+#ifdef TAP_DANCE_ENABLE
+    M_CW_TOGG,
+#endif // TAP_DANCE_ENABLE
     M_ISCROS,
     M_ISWIN
 };
@@ -94,7 +97,7 @@ enum {
 #define KC_H_GUI LGUI_T(KC_H)
 #define KC_COMM_ALT LALT_T(KC_COMM)
 #define KC_DOT_CTL LCTL_T(KC_DOT)
-#else // HBM_HOMEROW_ENABLE
+#else // ! HBM_HOMEROW_ENABLE
 #define KC_X_CTL KC_X
 #define KC_C_ALT KC_C
 #define KC_D_GUI KC_D
@@ -126,14 +129,34 @@ enum {
 #ifdef TAP_DANCE_ENABLE
 #define KC_Z_LAYER TD(TD_Z_LAYER)
 #define KC_SLSH_LAYER TD(TD_SLSH_LAYER)
-#else // TAP_DANCE_ENABLE
+#else // ! TAP_DANCE_ENABLE
 #define KC_Z_LAYER OSL(LAYER_Z_TAP)
 #define KC_SLSH_LAYER OSL(LAYER_SLSH_TAP)
 #endif // TAP_DANCE_ENABLE
-#else // HBM_SIDEKEY_ENABLE
+#else // ! HBM_SIDEKEY_ENABLE
 #define KC_Z_LAYER KC_Z
 #define KC_SLSH_LAYER KC_SLSH
 #endif // HBM_SIDEKEY_ENABLE
+
+// Define CW_TOGG as a macro so that layer hold tap dances see the keypress and
+// fall into the HOLD_KEYPRESS state properly.
+
+#ifdef TAP_DANCE_ENABLE
+#define KC_CW_TOGG M_CW_TOGG
+#else // ! TAP_DANCE_ENABLE
+#define KC_CW_TOGG CW_TOGG
+#endif // TAP_DANCE_ENABLE
+
+// Replace mousewheel scroll keys with page up and down if mouse keys is not
+// enabled.
+
+#ifdef MOUSEKEY_ENABLE
+#define KC_SCROLL_UP KC_MS_WH_UP
+#define KC_SCROLL_DN KC_MS_WH_DOWN
+#else // ! MOUSEKEY_ENABLE
+#define KC_SCROLL_UP KC_PAGE_UP
+#define KC_SCROLL_DN KC_PAGE_DOWN
+#endif // MOUSEKEY_ENABLE
 
 // Layouts.
 
@@ -223,8 +246,8 @@ enum {
 #define KM_5_NAV_3L KC_NO, KC_CTL_X, KC_CTL_C, KC_SFT_CTL_C, KC_CTL_V
 
 #define KM_5_NAV_1R KC_NO, M_PDESK, KC_CTL_TAB, M_ALT_TAB, M_NDESK
-#define KM_5_NAV_2R KC_WH_U, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT
-#define KM_5_NAV_3R KC_WH_D, KC_HOME, KC_PGDN, KC_PGUP, KC_END
+#define KM_5_NAV_2R KC_SCROLL_UP, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT
+#define KM_5_NAV_3R KC_SCROLL_DN, KC_HOME, KC_PGDN, KC_PGUP, KC_END
 
 #define KM_5_NAV_1 KM_5_NAV_1L, KM_5_NAV_1R
 #define KM_5_NAV_2 KM_5_NAV_2L, KM_5_NAV_2R
@@ -271,7 +294,7 @@ enum {
 #define KM_6_NUM_2 KC_TRNS, KM_5_NUM_2L, KM_5_NUM_2R, KC_TRNS
 #define KM_6_NUM_3 KC_TRNS, KM_5_NUM_3L, KM_5_NUM_3R, KC_TRNS
 
-#define KM_2THUMB_NUM_L CW_TOGG, KC_TAB
+#define KM_2THUMB_NUM_L KC_CW_TOGG, KC_TAB
 #define KM_2THUMB_NUM_R KC_TRNS, KC_TRNS
 
 #define KM_2THUMB_NUM KM_2THUMB_NUM_L, KM_2THUMB_NUM_R

@@ -1,4 +1,6 @@
 SRC += hbmorrison.c
 
+MOUSEKEY_ENABLE = yes
+TAP_DANCE_ENABLE = yes
 HBM_SIDEKEY_ENABLE = yes
 HBM_HOMEROW_ENABLE = yes
