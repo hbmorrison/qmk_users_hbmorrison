@@ -403,6 +403,9 @@ bool caps_word_press_user(uint16_t keycode) {
     case KC_DEL:
     case KC_UNDS:
       return true;
+    // Do not deactivate if the one-shot sym layer key is held down.
+    case KC_OS_SYM:
+      return true;
     // Deactivate caps word by default.
     default:
       return false;
