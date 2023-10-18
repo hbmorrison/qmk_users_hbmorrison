@@ -54,6 +54,7 @@ enum hbm_keycodes {
     M_PDESK,
     M_XTAB,
     M_EMOJI,
+    M_4RAND,
 #ifdef TAP_DANCE_ENABLE
     M_CW_TOGG,
 #endif // TAP_DANCE_ENABLE
@@ -330,7 +331,7 @@ enum {
 
 // Shortcut layer.
 
-#define KM_5_SCUT_1L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
+#define KM_5_SCUT_1L KC_NO, M_4RAND, KC_NO, KC_NO, KC_NO
 #define KM_5_SCUT_2L M_APP1, M_APP2, M_APP3, M_APP4, M_APP5
 #define KM_5_SCUT_3L KC_CAPS, KC_NO, KC_NO, M_1PASS, KC_NO
 

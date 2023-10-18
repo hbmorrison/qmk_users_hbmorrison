@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "stdio.h"
 #include "hbmorrison.h"
 
 #ifdef TAP_DANCE_ENABLE
@@ -52,14 +53,14 @@ tap_dance_action_t tap_dance_actions[] = {
 };
 #endif // TAP_DANCE_ENABLE
 
+// Issues HYPR-keypress for Windows and ALT-keypress for ChromeOS.
+
+void hypr_or_alt(char *ss, bool pressed);
+
 // Defines whether to issue Windows or ChromeOS keypresses from macros - Windows
 // by default.
 
 static bool hbm_is_chromebook = false;
-
-// Issues HYPR-keypress for Windows and ALT-keypress for ChromeOS.
-
-void hypr_or_alt(char *ss, bool pressed);
 
 // State of the M_ALT_TAB macro - true if we are currently tabbing between
 // windows.
@@ -70,6 +71,10 @@ static bool hbm_alt_tab_pressed = false;
 
 static bool hbm_del_registered = false;
 static uint8_t hbm_mod_state = 0;
+
+// True if rand() has already been seeded using srand().
+
+static bool hbm_srand_seeded = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
@@ -275,6 +280,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         } else {
           SEND_STRING(SS_DOWN(X_LGUI)SS_TAP(X_SCLN)SS_UP(X_LGUI));
         }
+      }
+      break;
+
+    // Types out a four-digit pseudo-random number.
+
+    case M_4RAND:
+      if (record->event.pressed) {
+        if (hbm_srand_seeded == false) {
+#if defined(__AVR_ATmega32U4__)
+          srand(TCNT0 + TCNT1 + TCNT3 + TCNT4);
+#else
+          srand(timer_read32());
+#endif
+          hbm_srand_seeded = true;
+        }
+        char rand_string[5];
+        sprintf(rand_string, "%d", rand() % 10000 + 1000);
+        SEND_STRING(rand_string);
       }
       break;
 
