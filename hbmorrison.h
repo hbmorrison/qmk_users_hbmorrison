@@ -54,6 +54,7 @@ enum hbm_keycodes {
     M_PDESK,
     M_XTAB,
     M_EMOJI,
+    M_4RAND,
 #ifdef TAP_DANCE_ENABLE
     M_CW_TOGG,
 #endif // TAP_DANCE_ENABLE
@@ -195,7 +196,7 @@ enum {
 #define KM_6_BASE_1R KC_J, KC_L, KC_U, KC_Y, KC_DEL, KC_BSPC
 
 #define KM_6_BASE_1 KC_ESC, KM_5_BASE_1L, KM_6_BASE_1R
-#define KM_6_BASE_2 KC_TAB, KM_5_BASE_2L, KM_5_BASE_2R, KC_COLN
+#define KM_6_BASE_2 KC_TAB, KM_5_BASE_2L, KM_5_BASE_2R, KC_UK_BSLS
 #define KM_6_BASE_3 KC_OS_SYM, KM_5_BASE_3L, KM_5_BASE_3R, KC_OS_SCUT
 
 #define KM_2THUMB_BASE_L KC_OS_SFT, KC_SPC_LAYER
@@ -330,7 +331,7 @@ enum {
 
 // Shortcut layer.
 
-#define KM_5_SCUT_1L M_ISWIN, M_ISCROS, KC_NO, KC_NO, KC_NO
+#define KM_5_SCUT_1L M_ISWIN, M_ISCROS, KC_NO, M_4RAND, KC_NO
 #define KM_5_SCUT_2L M_APP1, M_APP2, M_APP3, M_APP4, KC_NO
 #define KM_5_SCUT_3L KC_CAPS, KC_NO, KC_NO, M_1PASS, KC_NO
 
