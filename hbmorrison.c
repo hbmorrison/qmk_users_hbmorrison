@@ -80,18 +80,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     hbm_alt_tab_pressed = false;
   }
 
-  // Ensure that shift is not pressed when additional layers are active, except
-  // for sidekey keypresses.
+  // Ensure that shift is not pressed when additional layers are active.
 
   uint8_t current_layer = get_highest_layer(layer_state);
 
   if (current_layer > LAYER_BASE) {
     switch (keycode) {
-#ifdef HBM_SIDEKEY_ENABLE
+#if defined HBM_THUMBKEY_ENABLE || defined HBM_SIDEKEY_ENABLE
       case KC_Z:
       case KC_SLSH:
         break;
-#endif // HBM_SIDEKEY_ENABLE
+#endif // defined HBM_THUMBKEY_ENABLE || defined HBM_SIDEKEY_ENABLE
       default:
         del_mods(MOD_MASK_SHIFT);
         del_oneshot_mods(MOD_MASK_SHIFT);
@@ -160,6 +159,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
     case M_APP5:
       hypr_or_alt(SS_TAP(X_5), record->event.pressed);
+      break;
+    case M_APP6:
+      hypr_or_alt(SS_TAP(X_6), record->event.pressed);
+      break;
+    case M_APP7:
+      hypr_or_alt(SS_TAP(X_7), record->event.pressed);
+      break;
+    case M_APP8:
+      hypr_or_alt(SS_TAP(X_8), record->event.pressed);
       break;
 
     // Launch 1Password - in ChromeOS, switch to the browser before issuing
@@ -310,8 +318,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (!record->event.pressed) {
 
-    // Turn off tap layers after another keypress is registered, to emulate one
-    // tap layers.
+    // Turn off tap layers after another keypress is registered. This emulates
+    // the behaviour of oneshot layers.
 
     if (td_slsh_state == TD_POST_TAP && IS_LAYER_ON(LAYER_SLSH_TAP)) {
       layer_off(LAYER_SLSH_TAP);
@@ -322,9 +330,15 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
       td_z_state = TD_NONE;
     }
 
-    // Change state of held tap dances when another keypress is registered, to
-    // stop a single tap keypress being issued when the tap dance ends.
+    // If HOLD_KEYPRESS_ENABLE is enabled, holding and releasing a layer key
+    // without pressing another key will send the original layer key keypress,
+    // as if the hold tap dance behaviour was not in place. The following checks
+    // are reached when another keypress has been detected, and switches the
+    // appropriate tap dance state away from TD_HOLD, so that the tap dance code
+    // knows what has happened and does not issue the original keypress when the
+    // hold is released.
 
+#ifdef HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
     if (td_ent_state == TD_HOLD && IS_LAYER_ON(LAYER_ENT_HOLD)) {
       td_ent_state = TD_HOLD_KEYPRESS;
     }
@@ -337,6 +351,7 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (td_z_state == TD_HOLD && IS_LAYER_ON(LAYER_Z_HOLD)) {
       td_z_state = TD_HOLD_KEYPRESS;
     }
+#endif // HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
 
   }
 }
@@ -386,7 +401,8 @@ bool caps_word_press_user(uint16_t keycode) {
   }
 }
 
-// Issues HYPR-keycode for Windows and ALT-keycode for ChromeOS.
+// Issues HYPR-keycode for Windows for AutoHotkey to interpret, and ALT-keycode
+// for ChromeOS, which launches the n'th app on the task bar.
 
 void hypr_or_alt(char *ss, bool pressed) {
   if (pressed) {
@@ -402,6 +418,10 @@ void hypr_or_alt(char *ss, bool pressed) {
     }
   }
 }
+
+// Interpret the current state of a tap dance. This is called at the end of the
+// tap dance's tap time so we can make a judgement about whether the tap dance
+// key is e.g. still held down and interpret that as a hold, and so on.
 
 #ifdef TAP_DANCE_ENABLE
 td_state_t td_get_state(tap_dance_state_t *state) {
@@ -425,6 +445,8 @@ td_state_t td_get_state(tap_dance_state_t *state) {
     // will be the most common scenario.
     if (state->interrupted || !state->pressed)
       return TD_DOUBLE_TAP;
+    //  Potentially we could add code here to catch triple taps etc to interpret
+    //  *really* fast typing, but we have to stop somewhere.
   }
   return TD_UNKNOWN;
 }
@@ -456,7 +478,12 @@ void td_ent_reset(tap_dance_state_t *state, void *user_data) {
       td_ent_state = TD_NONE;
       break;
     case TD_HOLD:
+      // If the tap dance state is still TD_HOLD here then we know that another
+      // key has not been pressed since the hold started, and we can issue the
+      // original keypress.
+#ifdef HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
       tap_code(KC_ENT);
+#endif // HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
     case TD_HOLD_KEYPRESS:
       layer_off(LAYER_ENT_HOLD);
       td_ent_state = TD_NONE;
@@ -494,7 +521,12 @@ void td_spc_reset(tap_dance_state_t *state, void *user_data) {
       td_spc_state = TD_NONE;
       break;
     case TD_HOLD:
+      // If the tap dance state is still TD_HOLD here then we know that another
+      // key has not been pressed since the hold started, and we can issue the
+      // original keypress.
+#ifdef HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
       tap_code(KC_SPC);
+#endif // HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
     case TD_HOLD_KEYPRESS:
       layer_off(LAYER_SPC_HOLD);
       td_spc_state = TD_NONE;
@@ -532,7 +564,12 @@ void td_slsh_reset(tap_dance_state_t *state, void *user_data) {
       td_slsh_state = TD_NONE;
       break;
     case TD_HOLD:
+      // If the tap dance state is still TD_HOLD here then we know that another
+      // key has not been pressed since the hold started, and we can issue the
+      // original keypress.
+#ifdef HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
       tap_code(KC_SLSH);
+#endif // HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
     case TD_HOLD_KEYPRESS:
       layer_off(LAYER_SLSH_HOLD);
       td_slsh_state = TD_NONE;
@@ -570,7 +607,12 @@ void td_z_reset(tap_dance_state_t *state, void *user_data) {
       td_z_state = TD_NONE;
       break;
     case TD_HOLD:
+      // If the tap dance state is still TD_HOLD here then we know that another
+      // key has not been pressed since the hold started, and we can issue the
+      // original keypress.
+#ifdef HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
       tap_code(KC_Z);
+#endif // HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
     case TD_HOLD_KEYPRESS:
       layer_off(LAYER_Z_HOLD);
       td_z_state = TD_NONE;

@@ -17,6 +17,10 @@ ifeq ($(strip $(HBM_HOMEROW_ENABLE)), yes)
   OPT_DEFS += -DHBM_HOMEROW_ENABLE
 endif
 
+ifeq ($(strip $(HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE)), yes)
+  OPT_DEFS += -DHBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
+endif
+
 # Reduce the size of the compiled firmware.
 
 LTO_ENABLE = yes
