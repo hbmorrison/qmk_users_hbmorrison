@@ -206,7 +206,7 @@ enum {
 #define KM_5_BASE_3 KM_5_BASE_3L, KM_5_BASE_3R
 #define KM_2THUMB_BASE KM_2THUMB_BASE_L, KM_2THUMB_BASE_R
 
-#define HBM_LAYOUT_3x5_2_BASE KM_5_BASE_1, KM_5_BASE_2, KM_5_BASE_3, KM_2THUMB_BASE
+  #define HBM_LAYOUT_3x5_2_BASE KM_5_BASE_1, KM_5_BASE_2, KM_5_BASE_3, KM_2THUMB_BASE
 
 // Symbol layer for five column split keyboards.
 

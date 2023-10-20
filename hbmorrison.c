@@ -85,17 +85,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     hbm_alt_tab_pressed = false;
   }
 
-  // Ensure that shift is not pressed when additional layers are active.
+  // Ensure that shift is not pressed when additional layers are active, aside
+  // from a few exceptions. This ensures that symbol keypresses will always
+  // produce the unshifted symbol, unless explicitly shifted with LSFT() in
+  // code.
 
   uint8_t current_layer = get_highest_layer(layer_state);
 
   if (current_layer > LAYER_BASE) {
     switch (keycode) {
-#if defined HBM_THUMBKEY_ENABLE || defined HBM_SIDEKEY_ENABLE
+      // Allow tabs to be shifted.
+      case KC_TAB:
+        break;
+      // Allow Z and / to be shifted if sidekeys are on.
+#ifdef HBM_SIDEKEY_ENABLE
       case KC_Z:
       case KC_SLSH:
         break;
-#endif // defined HBM_THUMBKEY_ENABLE || defined HBM_SIDEKEY_ENABLE
+#endif // HBM_SIDEKEY_ENABLE
       default:
         del_mods(MOD_MASK_SHIFT);
         del_oneshot_mods(MOD_MASK_SHIFT);
@@ -107,14 +114,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   hbm_mod_state = get_mods();
 
   switch (keycode) {
-
-    // Esc returns to the base layer.
-
-    case KC_ESC:
-      if (record->event.pressed) {
-        layer_move(LAYER_BASE);
-      }
-    break;
 
     // Shift-backspace issues delete.
 
