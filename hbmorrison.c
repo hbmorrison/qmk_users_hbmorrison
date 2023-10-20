@@ -92,7 +92,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   uint8_t current_layer = get_highest_layer(layer_state);
 
-  if (current_layer > LAYER_BASE) {
+  if (record->event.pressed && current_layer > LAYER_BASE) {
     switch (keycode) {
       // Allow tabs to be shifted.
       case KC_TAB:

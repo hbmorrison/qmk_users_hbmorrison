@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TAPPING_TERM_SIDEKEY_TD 160
 #if defined TAP_DANCE_ENABLE && defined HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
 #define TAPPING_TERM_THUMBKEY_TD 50
-#else // ! TAP_DANCE_ENABLE && HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
+#else // if ! TAP_DANCE_ENABLE && HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
 #define TAPPING_TERM_THUMBKEY_TD 160
 #endif // TAP_DANCE_ENABLE && HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
 
@@ -43,8 +43,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MOUSEKEY_DELAY 100
 #define MOUSEKEY_WHEEL_DELAY 100
 
-#define MOUSEKEY_WHEEL_INTERVAL 50 // The default is 100
-#define MOUSEKEY_WHEEL_TIME_TO_MAX 100 // The default is 40
+#define MOUSEKEY_WHEEL_INTERVAL 70 // The default is 100
+#define MOUSEKEY_WHEEL_TIME_TO_MAX 80 // The default is 40
 
 #define MOUSEKEY_WHEEL_INITIAL_MOVEMENTS 12
 #define MOUSEKEY_WHEEL_BASE_MOVEMENTS 32
