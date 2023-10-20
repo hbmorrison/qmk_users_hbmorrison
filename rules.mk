@@ -19,6 +19,7 @@ endif
 
 ifeq ($(strip $(HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE)), yes)
   OPT_DEFS += -DHBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
+  TAP_DANCE_ENABLE = yes
 endif
 
 # Reduce the size of the compiled firmware.
