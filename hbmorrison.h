@@ -55,8 +55,8 @@ enum hbm_keycodes {
     M_CLOSE,
     M_NDESK,
     M_PDESK,
-    M_XTAB,
     M_EMOJI,
+    M_ESC_COLN,
     M_4RAND,
 #ifdef TAP_DANCE_ENABLE
     M_CW_TOGG,
@@ -67,12 +67,14 @@ enum hbm_keycodes {
 
 // Tap dance keys.
 
+#ifdef TAP_DANCE_ENABLE
 enum {
   TD_ENT_LAYER,
   TD_SPC_LAYER,
   TD_SLSH_LAYER,
   TD_Z_LAYER
 };
+#endif // TAP_DANCE_ENABLE
 
 // Alternative keys for UK ISO keyboard layouts.
 
@@ -86,10 +88,6 @@ enum {
 
 // Modified keys.
 
-#define KC_CTL_X LCTL(KC_X)
-#define KC_CTL_C LCTL(KC_C)
-#define KC_SFT_CTL_C LSFT(LCTL(KC_C))
-#define KC_CTL_V LCTL(KC_V)
 #define KC_CTL_TAB LCTL(KC_TAB)
 
 // Homerow modifier keys.
@@ -154,11 +152,11 @@ enum {
 #endif // HBM_SIDEKEY_ENABLE
 
 #if defined HBM_THUMBKEY_ENABLE || defined HBM_SIDEKEY_ENABLE
-#define KC_SYM_Z_LAYER KC_Z
-#define KC_SYM_SLSH_LAYER KC_SLSH
+#define KC_NAV_LAYER KC_Z
+#define KC_NUM_LAYER KC_SLSH
 #else // ! defined HBM_THUMBKEY_ENABLE || defined HBM_SIDEKEY_ENABLE
-#define KC_SYM_Z_LAYER MO(LAYER_Z_HOLD)
-#define KC_SYM_SLSH_LAYER MO(LAYER_SLSH_HOLD)
+#define KC_NAV_LAYER MO(LAYER_NAV)
+#define KC_NUM_LAYER MO(LAYER_NUM)
 #endif // defined HBM_THUMBKEY_ENABLE || defined HBM_SIDEKEY_ENABLE
 
 // Define CW_TOGG as a macro so that layer hold tap dances see the keypress and
@@ -214,11 +212,11 @@ enum {
 
 #define KM_5_SYM_1L KC_EXLM, KC_UK_DQUO, KC_UK_PND, KC_DLR, KC_PERC
 #define KM_5_SYM_2L KC_GRV, KC_UK_PIPE, KC_LBRC, KC_LCBR, KC_LPRN
-#define KM_5_SYM_3L KC_SYM_Z_LAYER, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
+#define KM_5_SYM_3L KC_NAV_LAYER, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
 
 #define KM_5_SYM_1R KC_CIRC, KC_AMPR, KC_ASTR, KC_UNDS, KC_PLUS
 #define KM_5_SYM_2R KC_COLN, KC_UK_AT, KC_UK_TILDE, KC_MINS, KC_EQL
-#define KM_5_SYM_3R KC_SCLN, KC_QUOT, KC_UK_HASH, KC_GT, KC_SYM_SLSH_LAYER
+#define KM_5_SYM_3R KC_SCLN, KC_QUOT, KC_UK_HASH, KC_GT, KC_NUM_LAYER
 
 #define KM_2THUMB_SYM_L KC_ESC, KC_TAB
 #define KM_2THUMB_SYM_R KC_NO, KC_OS_SCUT
@@ -234,14 +232,14 @@ enum {
 
 #define KM_5_NAV_1L KC_PSCR, KC_MNXT, KC_MPLY, KC_VOLU, KC_BRIU
 #define KM_5_NAV_2L KC_NO, KC_MPRV, KC_MUTE, KC_VOLD, KC_BRID
-#define KM_5_NAV_3L KC_NO, KC_CTL_X, KC_CTL_C, KC_SFT_CTL_C, KC_CTL_V
+#define KM_5_NAV_3L KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO
 
 #define KM_5_NAV_1R KC_NO, M_PDESK, KC_CTL_TAB, M_ALT_TAB, M_NDESK
 #define KM_5_NAV_2R KC_SCROLL_UP, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT
 #define KM_5_NAV_3R KC_SCROLL_DN, KC_HOME, KC_PGDN, KC_PGUP, KC_END
 
-#define KM_2THUMB_NAV_L KC_TRNS, KC_TRNS
-#define KM_2THUMB_NAV_R KC_ESC, KC_OS_SCUT
+#define KM_2THUMB_NAV_L KC_NO, KC_TRNS
+#define KM_2THUMB_NAV_R KC_NO, KC_NO
 
 #define KM_5_NAV_1 KM_5_NAV_1L, KM_5_NAV_1R
 #define KM_5_NAV_2 KM_5_NAV_2L, KM_5_NAV_2R
@@ -258,10 +256,10 @@ enum {
 
 #define KM_5_NUM_1R KC_NO, KC_F1, KC_F2, KC_F3, KC_BSPC
 #define KM_5_NUM_2R KC_NO, KC_F4, KC_F5, KC_F6, KC_NO
-#define KM_5_NUM_3R KC_F10, KC_F7, KC_F8, KC_F9, KC_NO
+#define KM_5_NUM_3R KC_F10, KC_F7, KC_F8, KC_F9, KC_TRNS
 
-#define KM_2THUMB_NUM_L KC_CW_TOGG, KC_TAB
-#define KM_2THUMB_NUM_R KC_TRNS, KC_TRNS
+#define KM_2THUMB_NUM_L KC_CW_TOGG, KC_NO
+#define KM_2THUMB_NUM_R KC_TRNS, KC_NO
 
 #define KM_5_NUM_1 KM_5_NUM_1L, KM_5_NUM_1R
 #define KM_5_NUM_2 KM_5_NUM_2L, KM_5_NUM_2R
@@ -274,14 +272,14 @@ enum {
 
 #define KM_5_SCUT_1L M_ISWIN, M_ISCROS, KC_NO, M_4RAND, KC_NO
 #define KM_5_SCUT_2L M_APP1, M_APP2, M_APP3, M_APP4, KC_NO
-#define KM_5_SCUT_3L KC_CAPS, KC_NO, KC_NO, M_1PASS, KC_NO
+#define KM_5_SCUT_3L KC_NO, KC_NO, KC_NO, M_1PASS, KC_NO
 
 #define KM_5_SCUT_1R M_EMOJI, M_HIDE, M_MAX, M_CLOSE, KC_NO
-#define KM_5_SCUT_2R KC_NO, M_APP5, M_APP6, M_APP7, M_APP8
+#define KM_5_SCUT_2R M_ESC_COLN, M_APP5, M_APP6, M_APP7, M_APP8
 #define KM_5_SCUT_3R KC_NO, KC_NO, KC_NO, KC_NO, KC_SLSH
 
-#define KM_2THUMB_SCUT_L KC_ESC, KC_TAB
-#define KM_2THUMB_SCUT_R KC_TRNS, KC_NO
+#define KM_2THUMB_SCUT_L KC_CAPS, KC_NO
+#define KM_2THUMB_SCUT_R KC_NO, KC_NO
 
 #define KM_5_SCUT_1 KM_5_SCUT_1L, KM_5_SCUT_1R
 #define KM_5_SCUT_2 KM_5_SCUT_2L, KM_5_SCUT_2R

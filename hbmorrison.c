@@ -110,7 +110,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     // Esc returns to the base layer.
 
-    case KC_ENT:
+    case KC_ESC:
       if (record->event.pressed) {
         layer_move(LAYER_BASE);
       }
@@ -265,18 +265,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
-    // Close the current tab.
-
-    case M_XTAB:
-      if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LCTL)SS_TAP(X_W)SS_UP(X_LCTL));
-        } else {
-          SEND_STRING(SS_DOWN(X_LCTL)SS_TAP(X_F4)SS_UP(X_LCTL));
-        }
-      }
-      break;
-
     // Open the emoji window.
 
     case M_EMOJI:
@@ -288,6 +276,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         } else {
           SEND_STRING(SS_DOWN(X_LGUI)SS_TAP(X_SCLN)SS_UP(X_LGUI));
         }
+      }
+      break;
+
+    // Sends Esc : for Vim.
+
+    case M_ESC_COLN:
+      if (record->event.pressed) {
+        SEND_STRING(SS_TAP(X_ESC));
+        SEND_STRING(SS_DOWN(X_LSFT)SS_TAP(X_SCLN)SS_UP(X_LSFT));
       }
       break;
 
