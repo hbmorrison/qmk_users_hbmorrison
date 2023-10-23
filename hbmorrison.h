@@ -56,6 +56,7 @@ enum hbm_keycodes {
     M_NDESK,
     M_PDESK,
     M_EMOJI,
+    M_DDS,
     M_ESC_COLN,
     M_4RAND,
 #ifdef TAP_DANCE_ENABLE
@@ -88,6 +89,10 @@ enum {
 
 // Modified keys.
 
+#define KC_CTL_X LCTL(KC_X)
+#define KC_CTL_C LCTL(KC_C)
+#define KC_SFT_CTL_C LSFT(LCTL(KC_C))
+#define KC_CTL_V LCTL(KC_V)
 #define KC_CTL_TAB LCTL(KC_TAB)
 
 // Homerow modifier keys.
@@ -96,8 +101,6 @@ enum {
 #define KC_X_CTL LCTL_T(KC_X)
 #define KC_C_ALT LALT_T(KC_C)
 #define KC_D_GUI LGUI_T(KC_D)
-#define KC_V_CS C_S_T(KC_V)
-#define KC_K_CS C_S_T(KC_K)
 #define KC_H_GUI LGUI_T(KC_H)
 #define KC_COMM_ALT LALT_T(KC_COMM)
 #define KC_DOT_CTL LCTL_T(KC_DOT)
@@ -105,8 +108,6 @@ enum {
 #define KC_X_CTL KC_X
 #define KC_C_ALT KC_C
 #define KC_D_GUI KC_D
-#define KC_V_CS KC_V
-#define KC_K_CS KC_K
 #define KC_H_GUI KC_H
 #define KC_COMM_ALT KC_COMM
 #define KC_DOT_CTL KC_DOT
@@ -192,11 +193,11 @@ enum {
 
 #define KM_5_BASE_1L KC_Q, KC_W, KC_F, KC_P, KC_B
 #define KM_5_BASE_2L KC_A, KC_R, KC_S, KC_T, KC_G
-#define KM_5_BASE_3L KC_Z_LAYER, KC_X_CTL, KC_C_ALT, KC_D_GUI, KC_V_CS
+#define KM_5_BASE_3L KC_Z_LAYER, KC_X_CTL, KC_C_ALT, KC_D_GUI, KC_V
 
 #define KM_5_BASE_1R KC_J, KC_L, KC_U, KC_Y, KC_BSPC
 #define KM_5_BASE_2R KC_M, KC_N, KC_E, KC_I, KC_O
-#define KM_5_BASE_3R KC_K_CS, KC_H_GUI, KC_COMM_ALT, KC_DOT_CTL, KC_SLSH_LAYER
+#define KM_5_BASE_3R KC_K, KC_H_GUI, KC_COMM_ALT, KC_DOT_CTL, KC_SLSH_LAYER
 
 #define KM_2THUMB_BASE_L KC_OS_SFT, KC_SPC_LAYER
 #define KM_2THUMB_BASE_R KC_ENT_LAYER, KC_OS_SYM
@@ -206,7 +207,7 @@ enum {
 #define KM_5_BASE_3 KM_5_BASE_3L, KM_5_BASE_3R
 #define KM_2THUMB_BASE KM_2THUMB_BASE_L, KM_2THUMB_BASE_R
 
-  #define HBM_LAYOUT_3x5_2_BASE KM_5_BASE_1, KM_5_BASE_2, KM_5_BASE_3, KM_2THUMB_BASE
+#define HBM_LAYOUT_3x5_2_BASE KM_5_BASE_1, KM_5_BASE_2, KM_5_BASE_3, KM_2THUMB_BASE
 
 // Symbol layer for five column split keyboards.
 
@@ -218,7 +219,11 @@ enum {
 #define KM_5_SYM_2R KC_COLN, KC_UK_AT, KC_UK_TILDE, KC_MINS, KC_EQL
 #define KM_5_SYM_3R KC_SCLN, KC_QUOT, KC_UK_HASH, KC_GT, KC_NUM_LAYER
 
+#ifdef HBM_THUMBKEY_ENABLE
+#define KM_2THUMB_SYM_L KC_TRNS, KC_TRNS
+#else // if ! HBM_THUMBKEY_ENABLE
 #define KM_2THUMB_SYM_L KC_ESC, KC_TAB
+#endif // HBM_THUMBKEY_ENABLE
 #define KM_2THUMB_SYM_R KC_NO, KC_OS_SCUT
 
 #define KM_5_SYM_1 KM_5_SYM_1L, KM_5_SYM_1R
@@ -232,7 +237,7 @@ enum {
 
 #define KM_5_NAV_1L KC_PSCR, KC_MNXT, KC_MPLY, KC_VOLU, KC_BRIU
 #define KM_5_NAV_2L KC_NO, KC_MPRV, KC_MUTE, KC_VOLD, KC_BRID
-#define KM_5_NAV_3L KC_Z, KC_NO, KC_NO, KC_NO, KC_NO
+#define KM_5_NAV_3L KC_Z, KC_CTL_X, KC_CTL_C, KC_SFT_CTL_C, KC_CTL_V
 
 #define KM_5_NAV_1R KC_NO, M_PDESK, KC_CTL_TAB, M_ALT_TAB, M_NDESK
 #define KM_5_NAV_2R KC_SCROLL_UP, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT
@@ -276,7 +281,7 @@ enum {
 
 #define KM_5_SCUT_1R M_EMOJI, M_HIDE, M_MAX, M_CLOSE, KC_NO
 #define KM_5_SCUT_2R M_ESC_COLN, M_APP5, M_APP6, M_APP7, M_APP8
-#define KM_5_SCUT_3R KC_NO, KC_NO, KC_NO, KC_NO, KC_SLSH
+#define KM_5_SCUT_3R KC_NO, KC_NO, KC_NO, M_DDS, KC_SLSH
 
 #define KM_2THUMB_SCUT_L KC_CAPS, KC_NO
 #define KM_2THUMB_SCUT_R KC_NO, KC_NO
@@ -296,7 +301,7 @@ enum {
 #define KM_3THUMB_BASE_R KC_ESC, KC_ENT_LAYER, KC_OS_SYM
 
 #define KM_6_BASE_1 KC_ESC, KM_5_BASE_1L, KM_6_BASE_1R
-#define KM_6_BASE_2 KC_TAB, KM_5_BASE_2L, KM_5_BASE_2R, KC_UK_BSLS
+#define KM_6_BASE_2 KC_TAB, KM_5_BASE_2L, KM_5_BASE_2R, M_ESC_COLN
 #define KM_6_BASE_3 KC_OS_SYM, KM_5_BASE_3L, KM_5_BASE_3R, KC_OS_SCUT
 #define KM_3THUMB_BASE KM_3THUMB_BASE_L, KM_3THUMB_BASE_R
 
@@ -356,8 +361,8 @@ enum {
 
 // Base layer for twelve column ortholinear layouts.
 
-#define KM_12_BASE_4L KC_OS_SFT, KC_OS_CTL, KC_OS_ALT, KC_OS_GUI, KM_2THUMB_BASE_L
-#define KM_12_BASE_4R KM_2THUMB_BASE_R, KC_OS_GUI, KC_OS_ALT, KC_OS_CTL, KC_OS_SFT
+#define KM_12_BASE_4L KC_DOWN, KC_OS_CTL, KC_OS_ALT, KC_OS_GUI, KM_2THUMB_BASE_L
+#define KM_12_BASE_4R KM_2THUMB_BASE_R, KC_OS_GUI, KC_OS_ALT, KC_OS_CTL, KC_UP
 
 #define KM_12_BASE_4 KM_12_BASE_4L, KM_12_BASE_4R
 

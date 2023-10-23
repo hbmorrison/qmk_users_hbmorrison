@@ -278,6 +278,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
+    // Send dot dot slash.
+
+    case M_DDS:
+      if (record->event.pressed) {
+        SEND_STRING("../");
+      }
+      break;
+
     // Sends Esc : for Vim.
 
     case M_ESC_COLN:
