@@ -235,6 +235,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
+    // Open a new terminal window.
+
+    case M_NTRM:
+      if (record->event.pressed) {
+        if (hbm_is_chromebook) {
+          SEND_STRING(SS_DOWN(X_LCTL)SS_TAP(X_T)SS_UP(X_LCTL));
+        } else {
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL));
+          SEND_STRING(SS_TAP(X_1));
+          SEND_STRING(SS_UP(X_LCTL)SS_UP(X_LSFT));
+        }
+      }
+      break;
+
     // Switch between virtual desktops.
 
     case M_NDESK:
