@@ -60,11 +60,12 @@ enum hbm_keycodes {
     M_DDS,
     M_ESC_COLN,
     M_4RAND,
-#ifdef TAP_DANCE_ENABLE
-    M_CW_TOGG,
-#endif // TAP_DANCE_ENABLE
     M_ISCROS,
-    M_ISWIN
+    M_ISWIN,
+    // Dummy keycodes for MOD_T() overrides.
+    DUMMY_CTL_X,
+    DUMMY_CTL_C,
+    DUMMY_SFT_CTL_C
 };
 
 // Tap dance keys.
@@ -74,7 +75,8 @@ enum {
   TD_ENT_LAYER,
   TD_SPC_LAYER,
   TD_SLSH_LAYER,
-  TD_Z_LAYER
+  TD_Z_LAYER,
+  TD_NAVX_LAYER
 };
 #endif // TAP_DANCE_ENABLE
 
@@ -97,7 +99,7 @@ enum {
 #define KC_CTL_TAB LCTL(KC_TAB)
 #define KC_SFT_CTL_C LSFT(LCTL(KC_C))
 
-// Homerow modifier keys.
+// Modifier keys in the style of homerow mods.
 
 #ifdef HBM_HOMEROW_ENABLE
 #define KC_X_CTL LCTL_T(KC_X)
@@ -113,6 +115,24 @@ enum {
 #define KC_H_GUI KC_H
 #define KC_COMM_ALT KC_COMM
 #define KC_DOT_CTL KC_DOT
+#endif // HBM_HOMEROW_ENABLE
+
+// Modifier keys for the navigation layer. These issue Ctrl-X, Ctrl-C and
+// Shift-Ctrl-C respectively when tapped and hold down Ctrl, Alt and GUI
+// modifiers when held. Dummy keypress values are used because the MOD_T()
+// macros only work with 8-bit values so, for example, overriding LALT
+// LALT_T(LCTL(KC_C)) in process_record_user() would also unintentionally
+// override the LALT_T(KC_C) that appears in the base layer, meaning that the
+// intended KC_C tap would not be issued there.
+
+#ifdef HBM_HOMEROW_ENABLE
+#define KC_CTL_X_CTL LCTL_T(DUMMY_CTL_X)
+#define KC_CTL_C_ALT LALT_T(DUMMY_CTL_C)
+#define KC_SFT_CTL_C_GUI LGUI_T(DUMMY_SFT_CTL_C)
+#else // if ! HBM_HOMEROW_ENABLE
+#define KC_CTL_X_CTL LCTL(KC_X)
+#define KC_CTL_C_ALT LCTL(KC_C)
+#define KC_SFT_CTL_C_GUI LSFT(LCTL(KC_C))
 #endif // HBM_HOMEROW_ENABLE
 
 // Oneshot keys.
@@ -161,15 +181,6 @@ enum {
 #define KC_NAV_LAYER MO(LAYER_NAV)
 #define KC_NUM_LAYER MO(LAYER_NUM)
 #endif // defined HBM_THUMBKEY_ENABLE || defined HBM_SIDEKEY_ENABLE
-
-// Define CW_TOGG as a macro so that layer hold tap dances see the keypress and
-// fall into the HOLD_KEYPRESS state properly.
-
-#ifdef TAP_DANCE_ENABLE
-#define KC_CW_TOGG M_CW_TOGG
-#else // if ! TAP_DANCE_ENABLE
-#define KC_CW_TOGG CW_TOGG
-#endif // TAP_DANCE_ENABLE
 
 // Replace mousewheel scroll keys with page up and down if mouse keys are not
 // enabled.
@@ -239,7 +250,7 @@ enum {
 
 #define KM_5_NAV_1L KC_PSCR, KC_MNXT, KC_MPLY, KC_VOLU, KC_BRIU
 #define KM_5_NAV_2L KC_NO, KC_MPRV, KC_MUTE, KC_VOLD, KC_BRID
-#define KM_5_NAV_3L KC_Z, KC_CTL_X, KC_CTL_C, KC_SFT_CTL_C, KC_CTL_V
+#define KM_5_NAV_3L KC_Z, KC_CTL_X_CTL, KC_CTL_C_ALT, KC_SFT_CTL_C_GUI, KC_CTL_V
 
 #define KM_5_NAV_1R KC_NO, M_PDESK, KC_CTL_TAB, M_ALT_TAB, M_NDESK
 #define KM_5_NAV_2R KC_SCROLL_UP, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT
@@ -293,7 +304,7 @@ enum {
 #define KM_5_SCUT_2R M_ESC_COLN, M_APP5, M_APP6, M_APP7, M_APP8
 #define KM_5_SCUT_3R KC_NO, KC_NO, KC_NO, M_DDS, KC_SLSH
 
-#define KM_2THUMB_SCUT_L KC_CAPS, KC_SFT_TAB
+#define KM_2THUMB_SCUT_L KC_CAPS, CW_TOGG
 #define KM_2THUMB_SCUT_R KC_NO, KC_TRNS
 
 #define KM_5_SCUT_1 KM_5_SCUT_1L, KM_5_SCUT_1R

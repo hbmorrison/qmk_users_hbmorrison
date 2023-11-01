@@ -147,6 +147,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
+    // Override the mod-tap functionality for the mod-keypress shortcuts in the
+    // navigation layer so that the modified keypresses can be sent correctly as
+    // 16-bit taps. By default the MOD_T() macros can only send 8-bit keypresses
+    // on tap, so macros like LALT_T(LCTL(KC_C)) will not work. Each one has to
+    // be overriden as below to issue the correct 16-bit tap.
+
+    case KC_CTL_X_CTL:
+      if (record->tap.count && record->event.pressed) {
+          tap_code16(LCTL(KC_X)); // Send Ctrl-X on tap
+          return false;
+      }
+      break;
+    case KC_CTL_C_ALT:
+      if (record->tap.count && record->event.pressed) {
+          tap_code16(LCTL(KC_C)); // Send Ctrl-C on tap
+          return false;
+      }
+      break;
+    case KC_SFT_CTL_C_GUI:
+      if (record->tap.count && record->event.pressed) {
+          tap_code16(LSFT(LCTL(KC_C))); // Send Shift-Ctrl-C on tap
+          return false;
+      }
+      break;
+
     // Application switching macros.
 
     case M_APP1:
@@ -327,16 +352,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
-    // Toggle CAPS WORD. This is done as a macro rather than using CW_TOGG so
-    // that the keypress falls through post_process_record_user() and switches
-    // the state of the hold layer tapdances from HOLD to HOLD_KEYPRESS.
-
-#ifdef TAP_DANCE_ENABLE
-    case M_CW_TOGG:
-      caps_word_toggle();
-      break;
-#endif // TAP_DANCE_ENABLE
-
     // Swap between Windows and ChromeOS macro keypresses.
 
     case M_ISCROS:
@@ -407,6 +422,9 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case KC_H_GUI:
     case KC_COMM_ALT:
     case KC_DOT_CTL:
+    case KC_CTL_X_CTL:
+    case KC_CTL_C_ALT:
+    case KC_SFT_CTL_C_GUI:
       return TAPPING_TERM_MODS;
     // Set the tapping term for tapdance keys.
     case KC_ENT_LAYER:
