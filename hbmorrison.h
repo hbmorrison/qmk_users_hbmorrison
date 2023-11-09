@@ -128,13 +128,16 @@ enum {
 #define KC_DOT_SFTALT KC_DOT
 #endif // HBM_HOMEROW_ENABLE
 
-// Modifier keys for the navigation layer. These issue Ctrl-X, Ctrl-C and
-// Shift-Ctrl-C respectively when tapped and hold down Ctrl, Alt and GUI
-// modifiers when held. Dummy keypress values are used because the MOD_T()
-// macros only work with 8-bit values so, for example, overriding LALT
-// LALT_T(LCTL(KC_C)) in process_record_user() would also unintentionally
-// override the LALT_T(KC_C) that appears in the base layer, meaning that the
-// intended KC_C tap would not be issued there.
+// Modifier keys for the navigation layer. These issue Ctrl-X, Ctrl-C,
+// Shift-Ctrl-C and Ctrl-V respectively when tapped and hold down Shift-Alt,
+// Alt, Ctrl and Shift-Ctrl modifiers respectively when held, matching the base
+// layer homerow mods. <MOD>_T() macros only work with 8-bit values so, for
+// example, to issue LCTL(KC_C) the LALT_T(LCTL(KC_C)) should be overriden on
+// process_record_user() to issue the correct 16-bit keycode for Ctrl-C.
+// However, this would also unintentionally override the LALT_T(KC_C) that
+// appears in the base layer, again because the macro only supports 8-bit
+// values, so a dummy keycode is used here and in process_record_user() to
+// uniquely identify these specific keypresses.
 
 #ifdef HBM_HOMEROW_ENABLE
 #define KC_CTL_X_SFTALT LSA_T(DUMMY_CTL_X)
