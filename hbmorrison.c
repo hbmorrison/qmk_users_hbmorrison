@@ -153,7 +153,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // on tap, so macros like LALT_T(LCTL(KC_C)) will not work. Each one has to
     // be overriden as below to issue the correct 16-bit tap.
 
-    case KC_CTL_X_CTL:
+    case KC_CTL_X_SFTALT:
       if (record->tap.count && record->event.pressed) {
           tap_code16(LCTL(KC_X)); // Send Ctrl-X on tap
           return false;
@@ -165,7 +165,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           return false;
       }
       break;
-    case KC_SFT_CTL_C_SFTALT:
+    case KC_SFT_CTL_C_CTL:
       if (record->tap.count && record->event.pressed) {
           tap_code16(LSFT(LCTL(KC_C))); // Send Shift-Ctrl-C on tap
           return false;
@@ -422,17 +422,17 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     // Set the tapping term for the homerow mods.
-    case KC_X_CTL:
+    case KC_X_GUI:
     case KC_C_ALT:
-    case KC_D_GUI:
+    case KC_D_CTL:
     case KC_V_SFTCTL:
     case KC_K_SFTCTL:
-    case KC_H_GUI:
+    case KC_H_CTL:
     case KC_COMM_ALT:
-    case KC_DOT_CTL:
-    case KC_CTL_X_CTL:
+    case KC_DOT_GUI:
+    case KC_CTL_X_SFTALT:
     case KC_CTL_C_ALT:
-    case KC_SFT_CTL_C_SFTALT:
+    case KC_SFT_CTL_C_CTL:
     case KC_CTL_V_SFTCTL:
       return TAPPING_TERM_MODS;
     // Set the tapping term for tapdance keys.
