@@ -65,7 +65,8 @@ enum hbm_keycodes {
     // Dummy keycodes for MOD_T() overrides.
     DUMMY_CTL_X,
     DUMMY_CTL_C,
-    DUMMY_SFT_CTL_C
+    DUMMY_SFT_CTL_C,
+    DUMMY_CTL_V
 };
 
 // Tap dance keys.
@@ -105,6 +106,8 @@ enum {
 #define KC_X_CTL LCTL_T(KC_X)
 #define KC_C_ALT LALT_T(KC_C)
 #define KC_D_GUI LGUI_T(KC_D)
+#define KC_V_SFTCTL C_S_T(KC_V)
+#define KC_K_SFTCTL C_S_T(KC_K)
 #define KC_H_GUI LGUI_T(KC_H)
 #define KC_COMM_ALT LALT_T(KC_COMM)
 #define KC_DOT_CTL LCTL_T(KC_DOT)
@@ -112,6 +115,8 @@ enum {
 #define KC_X_CTL KC_X
 #define KC_C_ALT KC_C
 #define KC_D_GUI KC_D
+#define KC_V_SFTCTL KC_V
+#define KC_K_SFTCTL KC_K
 #define KC_H_GUI KC_H
 #define KC_COMM_ALT KC_COMM
 #define KC_DOT_CTL KC_DOT
@@ -128,11 +133,13 @@ enum {
 #ifdef HBM_HOMEROW_ENABLE
 #define KC_CTL_X_CTL LCTL_T(DUMMY_CTL_X)
 #define KC_CTL_C_ALT LALT_T(DUMMY_CTL_C)
-#define KC_SFT_CTL_C_GUI LGUI_T(DUMMY_SFT_CTL_C)
+#define KC_SFT_CTL_C_SFTALT LSA_T(DUMMY_SFT_CTL_C)
+#define KC_CTL_V_SFTCTL C_S_T(DUMMY_CTL_V)
 #else // if ! HBM_HOMEROW_ENABLE
 #define KC_CTL_X_CTL LCTL(KC_X)
 #define KC_CTL_C_ALT LCTL(KC_C)
-#define KC_SFT_CTL_C_GUI LSFT(LCTL(KC_C))
+#define KC_SFT_CTL_C_SFTALT LSFT(LCTL(KC_C))
+#define KC_CTL_V_SFTCTL LCTL(KC_V)
 #endif // HBM_HOMEROW_ENABLE
 
 // Oneshot keys.
@@ -250,7 +257,7 @@ enum {
 
 #define KM_5_NAV_1L KC_PSCR, KC_MNXT, KC_MPLY, KC_VOLU, KC_BRIU
 #define KM_5_NAV_2L KC_NO, KC_MPRV, KC_MUTE, KC_VOLD, KC_BRID
-#define KM_5_NAV_3L KC_Z, KC_CTL_X_CTL, KC_CTL_C_ALT, KC_SFT_CTL_C_GUI, KC_CTL_V
+#define KM_5_NAV_3L KC_Z, KC_CTL_X_CTL, KC_CTL_C_ALT, KC_SFT_CTL_C_SFTALT, KC_CTL_V_SFTCTL
 
 #define KM_5_NAV_1R KC_NO, M_PDESK, KC_CTL_TAB, M_ALT_TAB, M_NDESK
 #define KM_5_NAV_2R KC_SCROLL_UP, KC_LEFT, KC_DOWN, KC_UP, KC_RGHT

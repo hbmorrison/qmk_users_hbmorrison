@@ -165,9 +165,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           return false;
       }
       break;
-    case KC_SFT_CTL_C_GUI:
+    case KC_SFT_CTL_C_SFTALT:
       if (record->tap.count && record->event.pressed) {
           tap_code16(LSFT(LCTL(KC_C))); // Send Shift-Ctrl-C on tap
+          return false;
+      }
+      break;
+    case KC_CTL_V_SFTCTL:
+      if (record->tap.count && record->event.pressed) {
+          tap_code16(LCTL(KC_V)); // Send Ctrl-V on tap
           return false;
       }
       break;
@@ -419,12 +425,15 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case KC_X_CTL:
     case KC_C_ALT:
     case KC_D_GUI:
+    case KC_V_SFTCTL:
+    case KC_K_SFTCTL:
     case KC_H_GUI:
     case KC_COMM_ALT:
     case KC_DOT_CTL:
     case KC_CTL_X_CTL:
     case KC_CTL_C_ALT:
-    case KC_SFT_CTL_C_GUI:
+    case KC_SFT_CTL_C_SFTALT:
+    case KC_CTL_V_SFTCTL:
       return TAPPING_TERM_MODS;
     // Set the tapping term for tapdance keys.
     case KC_ENT_LAYER:
