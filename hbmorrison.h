@@ -62,11 +62,13 @@ enum hbm_keycodes {
     M_4RAND,
     M_ISCROS,
     M_ISWIN,
-    // Dummy keycodes for MOD_T() overrides.
+#ifdef HBM_HOMEROW_ENABLE
+    // Dummy keycodes for MOD_T() overrides in the nav layer.
     DUMMY_CTL_X,
     DUMMY_CTL_C,
     DUMMY_SFT_CTL_C,
     DUMMY_CTL_V
+#endif // HBM_HOMEROW_ENABLE
 };
 
 // Tap dance keys.
@@ -103,23 +105,27 @@ enum {
 // Modifier keys in the style of homerow mods.
 
 #ifdef HBM_HOMEROW_ENABLE
-#define KC_X_GUI LGUI_T(KC_X)
+#define KC_X_SFTALT LSA_T(KC_X)
 #define KC_C_ALT LALT_T(KC_C)
 #define KC_D_CTL LCTL_T(KC_D)
 #define KC_V_SFTCTL C_S_T(KC_V)
+#define KC_G_GUI LGUI_T(KC_G)
+#define KC_M_GUI LGUI_T(KC_M)
 #define KC_K_SFTCTL C_S_T(KC_K)
 #define KC_H_CTL LCTL_T(KC_H)
 #define KC_COMM_ALT LALT_T(KC_COMM)
-#define KC_DOT_GUI LGUI_T(KC_DOT)
+#define KC_DOT_SFTALT LSA_T(KC_DOT)
 #else // if ! HBM_HOMEROW_ENABLE
-#define KC_X_GUI KC_X
+#define KC_X_SFTALT KC_X
 #define KC_C_ALT KC_C
 #define KC_D_CTL KC_D
 #define KC_V_SFTCTL KC_V
+#define KC_G_GUI KC_G
+#define KC_M_GUI KC_M
 #define KC_K_SFTCTL KC_K
 #define KC_H_CTL KC_H
 #define KC_COMM_ALT KC_COMM
-#define KC_DOT_GUI KC_DOT
+#define KC_DOT_SFTALT KC_DOT
 #endif // HBM_HOMEROW_ENABLE
 
 // Modifier keys for the navigation layer. These issue Ctrl-X, Ctrl-C and
@@ -212,12 +218,12 @@ enum {
 // Base layer for five column split keyboards.
 
 #define KM_5_BASE_1L KC_Q, KC_W, KC_F, KC_P, KC_B
-#define KM_5_BASE_2L KC_A, KC_R, KC_S, KC_T, KC_G
-#define KM_5_BASE_3L KC_Z_LAYER, KC_X_GUI, KC_C_ALT, KC_D_CTL, KC_V_SFTCTL
+#define KM_5_BASE_2L KC_A, KC_R, KC_S, KC_T, KC_G_GUI
+#define KM_5_BASE_3L KC_Z_LAYER, KC_X_SFTALT, KC_C_ALT, KC_D_CTL, KC_V_SFTCTL
 
 #define KM_5_BASE_1R KC_J, KC_L, KC_U, KC_Y, KC_BSPC
-#define KM_5_BASE_2R KC_M, KC_N, KC_E, KC_I, KC_O
-#define KM_5_BASE_3R KC_K_SFTCTL, KC_H_CTL, KC_COMM_ALT, KC_DOT_GUI, KC_SLSH_LAYER
+#define KM_5_BASE_2R KC_M_GUI, KC_N, KC_E, KC_I, KC_O
+#define KM_5_BASE_3R KC_K_SFTCTL, KC_H_CTL, KC_COMM_ALT, KC_DOT_SFTALT, KC_SLSH_LAYER
 
 #define KM_2THUMB_BASE_L KC_OS_SFT, KC_SPC_LAYER
 #define KM_2THUMB_BASE_R KC_ENT_LAYER, KC_OS_SYM

@@ -422,19 +422,23 @@ void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     // Set the tapping term for the homerow mods.
-    case KC_X_GUI:
+#ifdef HBM_HOMEROW_ENABLE
+    case KC_X_SFTALT:
     case KC_C_ALT:
     case KC_D_CTL:
     case KC_V_SFTCTL:
+    case KC_G_GUI:
+    case KC_M_GUI:
     case KC_K_SFTCTL:
     case KC_H_CTL:
     case KC_COMM_ALT:
-    case KC_DOT_GUI:
+    case KC_DOT_SFTALT:
     case KC_CTL_X_SFTALT:
     case KC_CTL_C_ALT:
     case KC_SFT_CTL_C_CTL:
     case KC_CTL_V_SFTCTL:
       return TAPPING_TERM_MODS;
+#endif // HBM_HOMEROW_ENABLE
     // Set the tapping term for tapdance keys.
     case KC_ENT_LAYER:
     case KC_SPC_LAYER:
