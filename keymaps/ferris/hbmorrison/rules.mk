@@ -1,4 +1,4 @@
-SRC += hbmorrison.c
+USER_NAME := hbmorrison
 
 MOUSEKEY_ENABLE = yes
 TAP_DANCE_ENABLE = yes
