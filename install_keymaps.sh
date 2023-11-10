@@ -4,8 +4,6 @@
 
 THIS_SCRIPT=$(readlink -f $0)
 BASE_DIR=$(dirname $THIS_SCRIPT)
-
-REPO_NAME=$(basename $BASE_DIR)
 KEYMAP_DIR="${BASE_DIR}/keymaps"
 
 # Locate the QMK firmware directory.
@@ -18,7 +16,7 @@ fi
 
 # If the qmk_home property is set, assume this repo is in the users/ directory.
 
-if [ "${QMK_DIR}" == "" ]
+if [ "${QMK_DIR}" == "" -o "${QMK_DIR}" == "None" ]
 then
   USERS_DIR=$(dirname $BASE_DIR)
   QMK_DIR=$(dirname $USERS_DIR)
@@ -32,16 +30,19 @@ then
   exit 1
 fi
 
-for KEYMAP in $(/bin/ls -1 $KEYMAP_DIR)
+for KEYBOARD in $(/bin/ls -1 $KEYMAP_DIR)
 do
-  KEYMAP_SUBDIR=$(echo $KEYMAP | sed 's/_/\//g' )
-  TARGET_DIR="${KEYBOARDS_DIR}/${KEYMAP_SUBDIR}/keymaps/${REPO_NAME}"
-  if [ ! -d "${TARGET_DIR}" ]
-  then
-    echo "Creating ${TARGET_DIR}"
-    mkdir -p $TARGET_DIR
-  fi
-  echo "Copying $KEYMAP keymap into $TARGET_DIR"
-  cp -f "${KEYMAP_DIR}/${KEYMAP}/rules.mk" $TARGET_DIR
-  cp -f "${KEYMAP_DIR}/${KEYMAP}/keymap.c" $TARGET_DIR
+  KEYBOARD_SUBDIR=$(echo $KEYBOARD | sed 's/_/\//g')
+  for KEYMAP in $(/bin/ls -1 "${KEYMAP_DIR}/${KEYBOARD}")
+  do
+    TARGET_DIR="${KEYBOARDS_DIR}/${KEYBOARD_SUBDIR}/keymaps/${KEYMAP}"
+    if [ ! -d "${TARGET_DIR}" ]
+    then
+      echo "Creating ${TARGET_DIR}"
+      mkdir -p $TARGET_DIR
+    fi
+    echo "Copying $KEYMAP keymap into $TARGET_DIR"
+    cp -f "${KEYMAP_DIR}/${KEYBOARD}/${KEYMAP}/rules.mk" $TARGET_DIR
+    cp -f "${KEYMAP_DIR}/${KEYBOARD}/${KEYMAP}/keymap.c" $TARGET_DIR
+  done
 done
