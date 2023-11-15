@@ -1,4 +1,4 @@
-SRC += hbmorrison.c
+# SRC += hbmorrison.c
 
 SEND_STRING_ENABLE = yes
 CAPS_WORD_ENABLE = yes

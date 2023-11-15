@@ -19,9 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "hbmorrison.h"
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-  [LAYER_BASE] = HBM_LAYOUT_planck_grid( HBM_LAYOUT_ALT12_BASE ),
-  [LAYER_SYM] = HBM_LAYOUT_planck_grid( HBM_LAYOUT_ALT12_SYM ),
-  [LAYER_NAV] = HBM_LAYOUT_planck_grid( HBM_LAYOUT_ALT12_NAV ),
-  [LAYER_NUM] = HBM_LAYOUT_planck_grid( HBM_LAYOUT_ALT12_NUM ),
-  [LAYER_SCUT] = HBM_LAYOUT_planck_grid( HBM_LAYOUT_ALT12_SCUT )
+  [LAYER_BASE] = HBM_LAYOUT_planck_grid( HBM_LAYOUT_4x12_BASE ),
+  [LAYER_SYM] = HBM_LAYOUT_planck_grid( HBM_LAYOUT_4x12_SYM ),
+  [LAYER_NAV] = HBM_LAYOUT_planck_grid( HBM_LAYOUT_4x12_NAV ),
+  [LAYER_NUM] = HBM_LAYOUT_planck_grid( HBM_LAYOUT_4x12_NUM ),
+  [LAYER_SCUT] = HBM_LAYOUT_planck_grid( HBM_LAYOUT_4x12_SCUT )
 };

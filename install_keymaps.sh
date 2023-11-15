@@ -30,19 +30,19 @@ then
   exit 1
 fi
 
-for KEYBOARD in $(/bin/ls -1 $KEYMAP_DIR)
+for KEYMAP in $(/bin/ls -1 $KEYMAP_DIR)
 do
-  KEYBOARD_SUBDIR=$(echo $KEYBOARD | sed 's/_/\//g')
-  for KEYMAP in $(/bin/ls -1 "${KEYMAP_DIR}/${KEYBOARD}")
+  for KEYBOARD in $(/bin/ls -1 "${KEYMAP_DIR}/${KEYMAP}")
   do
-    TARGET_DIR="${KEYBOARDS_DIR}/${KEYBOARD_SUBDIR}/keymaps/${KEYMAP}"
-    if [ ! -d "${TARGET_DIR}" ]
-    then
-      echo "Creating ${TARGET_DIR}"
-      mkdir -p $TARGET_DIR
-    fi
-    echo "Copying $KEYMAP keymap into $TARGET_DIR"
-    cp -f "${KEYMAP_DIR}/${KEYBOARD}/${KEYMAP}/rules.mk" $TARGET_DIR
-    cp -f "${KEYMAP_DIR}/${KEYBOARD}/${KEYMAP}/keymap.c" $TARGET_DIR
+    KEYBOARD_SUBDIR=$(echo $KEYBOARD | sed 's/_/\//g')
+      TARGET_DIR="${KEYBOARDS_DIR}/${KEYBOARD_SUBDIR}/keymaps/${KEYMAP}"
+      if [ ! -d "${TARGET_DIR}" ]
+      then
+        echo "Creating ${TARGET_DIR}"
+         mkdir -p $TARGET_DIR
+      fi
+      echo "Copying $KEYMAP keymap into $TARGET_DIR"
+      cp -f "${KEYMAP_DIR}/${KEYMAP}/${KEYBOARD}/rules.mk" $TARGET_DIR
+      cp -f "${KEYMAP_DIR}/${KEYMAP}/${KEYBOARD}/keymap.c" $TARGET_DIR
   done
 done
