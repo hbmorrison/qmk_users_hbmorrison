@@ -1,3 +1,4 @@
+USER_NAME := hbmorrison
 SRC += hbmorrison.c
 
 MOUSEKEY_ENABLE = yes
