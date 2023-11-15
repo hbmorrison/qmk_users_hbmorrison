@@ -1,4 +1,4 @@
-# SRC += hbmorrison.c
+# Enabled features.
 
 SEND_STRING_ENABLE = yes
 CAPS_WORD_ENABLE = yes
@@ -22,6 +22,24 @@ ifeq ($(strip $(HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE)), yes)
   TAP_DANCE_ENABLE = yes
 endif
 
+# Add defines for tenkey optional features.
+
+ifeq ($(strip $(TENKEY_FILL_LAYER_ENABLE)), yes)
+  OPT_DEFS += -DTENKEY_FILL_LAYER_ENABLE
+endif
+
+ifeq ($(strip $(TENKEY_PINKY_ENABLE)), yes)
+  OPT_DEFS += -DTENKEY_PINKY_ENABLE
+endif
+
+ifeq ($(strip $(TENKEY_TWO_THUMBKEYS_ENABLE)), yes)
+  OPT_DEFS += -DTENKEY_TWO_THUMBKEYS_ENABLE
+endif
+
+ifeq ($(strip $(TENKEY_FOUR_THUMBKEYS_ENABLE)), yes)
+  OPT_DEFS += -DTENKEY_FOUR_THUMBKEYS_ENABLE
+endif
+
 # Reduce the size of the compiled firmware.
 
 LTO_ENABLE = yes
@@ -31,4 +49,3 @@ EXTRAKEY_ENABLE = no
 SPACE_CADET_ENABLE = no
 GRAVE_ESC_ENABLE = no
 MAGIC_ENABLE = no
-

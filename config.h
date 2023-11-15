@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define TAPPING_TERM 190
 #define TAPPING_TERM_MODS 900
+#define TAPPING_TERM_LAYER 150
 #define TAPPING_TERM_SIDEKEY_TD 150
 #if defined TAP_DANCE_ENABLE && defined HBM_TD_HOLD_ORIGINAL_KEYPRESS_ENABLE
 #define TAPPING_TERM_THUMBKEY_TD 30
