@@ -82,10 +82,12 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case KC_Y_ALT:
       return TAPPING_TERM_MODS;
     // Set the tapping term for layer keys.
-    case KC_ENTER_NUM_LAYER:
-    case KC_SPACE_NAV_LAYER:
+    case KC_ENT_NUM_LAYER:
+    case KC_SPC_NAV_LAYER:
+#ifdef TENKEY_FILL_LAYER_ENABLE
     case KC_S_FILL_LEFT:
     case KC_E_FILL_RIGHT:
+#endif
       return TAPPING_TERM_LAYER;
     default:
       return TAPPING_TERM;
@@ -109,13 +111,17 @@ bool caps_word_press_user(uint16_t keycode) {
     case KC_UNDS:
       return true;
     // Do not deactivate if the layer keys are held down.
+#ifdef TENKEY_FILL_LAYER_ENABLE
     case KC_S_FILL_LEFT:
     case KC_E_FILL_RIGHT:
+#endif
+#ifdef TENKEY_PINKY_ENABLE
     case KC_A_SYM_LEFT:
     case KC_O_SYM_RIGHT:
-    // Commented out because these have the same values as the above two.
-    // case KC_X_SYM_LEFT:
-    // case KC_DOT_SYM_RIGHT:
+#else
+    case KC_X_SYM_LEFT:
+    case KC_DOT_SYM_RIGHT:
+#endif
       return true;
     // Deactivate caps word by default.
     default:
