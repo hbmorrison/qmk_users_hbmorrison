@@ -16,14 +16,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include QMK_KEYBOARD_H
-#include "tenkey.h"
+#include "flexkey.h"
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = FK_LAYOUT_ferris_sweep( FK_TEST_LAYOUT_BASE ),
-#ifdef FK_FILL_LAYER_ENABLE
   [LAYER_FILL_LEFT] = FK_LAYOUT_ferris_sweep( FK_TEST_LAYOUT_FILL_LEFT ),
   [LAYER_FILL_RIGHT] = FK_LAYOUT_ferris_sweep( FK_TEST_LAYOUT_FILL_RIGHT ),
-#endif
   [LAYER_SYM_LEFT] = FK_LAYOUT_ferris_sweep( FK_TEST_LAYOUT_SYM_LEFT ),
   [LAYER_SYM_RIGHT] = FK_LAYOUT_ferris_sweep( FK_TEST_LAYOUT_SYM_RIGHT ),
   [LAYER_NAV] = FK_LAYOUT_ferris_sweep( FK_TEST_LAYOUT_NAV ),

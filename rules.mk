@@ -44,7 +44,11 @@ ifeq ($(strip $(FK_THUMB_KEYS)), 2)
   OPT_DEFS += -DFK_THUMB_INNER -DFK_THUMB_OUTER
 endif
 
-ifeq ($(strip $(FK_INNER_KEYS)), yes)
+ifeq ($(strip $(FK_INNER_KEYS)), top)
+  OPT_DEFS += -DFK_TOP_INNER -DFK_MDL_INNER
+endif
+
+ifeq ($(strip $(FK_INNER_KEYS)), bottom)
   OPT_DEFS += -DFK_MDL_INNER -DFK_BTM_INNER
 endif
 

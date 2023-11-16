@@ -52,6 +52,77 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MOUSEKEY_WHEEL_ACCELERATED_MOVEMENTS 32
 #define MOUSEKEY_WHEEL_DECELERATED_MOVEMENTS 12
 
+// Filler for non-base layers so they match the base layer format, and test
+// platform to fill in the blanks.
+
+#ifdef FK_TOP_OUTER
+#define SPACER_TL KC_NO,
+#define SPACER_TR ,KC_NO
+#define TEST_TL
+#define TEST_TR
+#else
+#define SPACER_TL
+#define SPACER_TR
+#define TEST_TL KC_NO,
+#define TEST_TR ,KC_NO
+#endif
+
+#ifdef FK_MDL_OUTER
+#define SPACER_ML KC_NO,
+#define SPACER_MR ,KC_NO
+#define TEST_ML
+#define TEST_MR
+#else
+#define SPACER_ML
+#define SPACER_MR
+#define TEST_ML KC_NO,
+#define TEST_MR ,KC_NO
+#endif
+
+#ifdef FK_BTM_OUTER
+#define SPACER_BL KC_NO,
+#define SPACER_BR ,KC_NO
+#define TEST_BL
+#define TEST_BR
+#else
+#define SPACER_BL
+#define SPACER_BR
+#define TEST_BL KC_NO,
+#define TEST_BR ,KC_NO
+#endif
+
+#ifdef FK_TOP_INNER
+#define SPACER_TI KC_NO, KC_NO,
+#define TEST_TI
+#else
+#define SPACER_TI
+#define TEST_TI KC_NO, KC_NO,
+#endif
+
+#ifdef FK_MDL_INNER
+#define SPACER_MI KC_NO, KC_NO,
+#define TEST_MI
+#else
+#define SPACER_MI
+#define TEST_MI KC_NO, KC_NO,
+#endif
+
+#ifdef FK_BTM_INNER
+#define SPACER_BI KC_NO, KC_NO,
+#define TEST_BI
+#else
+#define SPACER_BI
+#define TEST_BI KC_NO, KC_NO,
+#endif
+
+#ifdef FK_THUMB_OUTER
+#define TEST_THL
+#define TEST_THR
+#else
+#define TEST_THL KC_NO,
+#define TEST_THR ,KC_NO
+#endif
+
 // Reduce the size of the compiled firmware.
 
 #undef LOCKING_SUPPORT_ENABLE
