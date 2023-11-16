@@ -15,21 +15,20 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "stdio.h"
-#include "tenkey.h"
+#include "flexkey.h"
 
 // State of the M_ALT_TAB macro - true if we are currently tabbing between
 // windows.
 
-static bool tenkey_alt_tab_pressed = false;
+static bool fk_alt_tab_pressed = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   // Stop pressing the KC_LALT key once M_ALT_TAB is no longer being pressed.
 
-  if (keycode != M_ALT_TAB && tenkey_alt_tab_pressed) {
+  if (keycode != M_ALT_TAB && fk_alt_tab_pressed) {
     unregister_code(KC_LALT);
-    tenkey_alt_tab_pressed = false;
+    fk_alt_tab_pressed = false;
   }
 
   // Ensure that shift is not pressed when additional layers are active, aside
@@ -56,9 +55,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case M_ALT_TAB:
       if (record->event.pressed) {
-        if (!tenkey_alt_tab_pressed) {
+        if (!fk_alt_tab_pressed) {
           register_code(KC_LALT);
-          tenkey_alt_tab_pressed = true;
+          fk_alt_tab_pressed = true;
         }
         tap_code(KC_TAB);
       }
@@ -84,10 +83,8 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     // Set the tapping term for layer keys.
     case KC_ENT_NUM_LAYER:
     case KC_SPC_NAV_LAYER:
-#ifdef TENKEY_FILL_LAYER_ENABLE
     case KC_S_FILL_LEFT:
     case KC_E_FILL_RIGHT:
-#endif
       return TAPPING_TERM_LAYER;
     default:
       return TAPPING_TERM;
@@ -111,17 +108,10 @@ bool caps_word_press_user(uint16_t keycode) {
     case KC_UNDS:
       return true;
     // Do not deactivate if the layer keys are held down.
-#ifdef TENKEY_FILL_LAYER_ENABLE
     case KC_S_FILL_LEFT:
     case KC_E_FILL_RIGHT:
-#endif
-#ifdef TENKEY_PINKY_ENABLE
-    case KC_A_SYM_LEFT:
-    case KC_O_SYM_RIGHT:
-#else
-    case KC_X_SYM_LEFT:
-    case KC_DOT_SYM_RIGHT:
-#endif
+    case KC_SYM_LEFT:
+    case KC_SYM_RIGHT:
       return true;
     // Deactivate caps word by default.
     default:

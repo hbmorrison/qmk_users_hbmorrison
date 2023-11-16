@@ -24,20 +24,28 @@ endif
 
 # Add defines for tenkey optional features.
 
-ifeq ($(strip $(TENKEY_FILL_LAYER_ENABLE)), yes)
-  OPT_DEFS += -DTENKEY_FILL_LAYER_ENABLE
+ifeq ($(strip $(FK_TOP_OUTER_KEY)), yes)
+  OPT_DEFS += -DFK_TOP_OUTER
 endif
 
-ifeq ($(strip $(TENKEY_PINKY_ENABLE)), yes)
-  OPT_DEFS += -DTENKEY_PINKY_ENABLE
+ifeq ($(strip $(FK_OUTER_KEYS)), 1)
+  OPT_DEFS += -DFK_MDL_OUTER
 endif
 
-ifeq ($(strip $(TENKEY_TWO_THUMBKEYS_ENABLE)), yes)
-  OPT_DEFS += -DTENKEY_TWO_THUMBKEYS_ENABLE
+ifeq ($(strip $(FK_OUTER_KEYS)), 2)
+  OPT_DEFS += -DFK_MDL_OUTER -DFK_BTM_OUTER
 endif
 
-ifeq ($(strip $(TENKEY_FOUR_THUMBKEYS_ENABLE)), yes)
-  OPT_DEFS += -DTENKEY_FOUR_THUMBKEYS_ENABLE
+ifeq ($(strip $(FK_THUMB_KEYS)), 1)
+  OPT_DEFS += -DFK_THUMB_INNER
+endif
+
+ifeq ($(strip $(FK_THUMB_KEYS)), 2)
+  OPT_DEFS += -DFK_THUMB_INNER -DFK_THUMB_OUTER
+endif
+
+ifeq ($(strip $(FK_INNER_KEYS)), yes)
+  OPT_DEFS += -DFK_MDL_INNER -DFK_BTM_INNER
 endif
 
 # Reduce the size of the compiled firmware.

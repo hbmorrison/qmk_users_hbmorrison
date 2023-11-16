@@ -1,5 +1,0 @@
-USER_NAME := hbmorrison
-SRC += tenkey.c
-
-TENKEY_FILL_LAYER_ENABLE = yes
-TENKEY_TWO_THUMBKEYS_ENABLE = yes
