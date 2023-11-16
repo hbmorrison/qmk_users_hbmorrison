@@ -20,8 +20,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = TENKEY_LAYOUT_ferris_sweep( TENKEY_TEST_LAYOUT_BASE ),
+#ifdef TENKEY_FILL_LAYER_ENABLE
   [LAYER_FILL_LEFT] = TENKEY_LAYOUT_ferris_sweep( TENKEY_TEST_LAYOUT_FILL_LEFT ),
   [LAYER_FILL_RIGHT] = TENKEY_LAYOUT_ferris_sweep( TENKEY_TEST_LAYOUT_FILL_RIGHT ),
+#endif
   [LAYER_SYM_LEFT] = TENKEY_LAYOUT_ferris_sweep( TENKEY_TEST_LAYOUT_SYM_LEFT ),
   [LAYER_SYM_RIGHT] = TENKEY_LAYOUT_ferris_sweep( TENKEY_TEST_LAYOUT_SYM_RIGHT ),
   [LAYER_NAV] = TENKEY_LAYOUT_ferris_sweep( TENKEY_TEST_LAYOUT_NAV ),
