@@ -189,7 +189,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
-    // Switch between virtual desktops.
+    // Open 1Password.
+
+    case M_1PASS:
+      if (record->event.pressed) {
+        if (hbm_is_chromebook) {
+          SEND_STRING(SS_DOWN(X_LALT)SS_TAP(X_1)SS_UP(X_LALT));
+          SEND_STRING(SS_DELAY(100));
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL));
+          SEND_STRING(SS_TAP(X_X));
+          SEND_STRING(SS_UP(X_LCTL)SS_UP(X_LSFT));
+        } else {
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL));
+          SEND_STRING(SS_TAP(X_SPC));
+          SEND_STRING(SS_UP(X_LCTL)SS_UP(X_LSFT));
+        }
+      }
+      break;
+
+    //Switch between virtual desktops.
 
     case M_NDESK:
       if (record->event.pressed) {
@@ -289,23 +307,12 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case KC_N_SFT:
     case KC_I_CTL:
     case KC_Y_ALT:
-    case KC_LEFT_SFT:
-    case KC_RIGHT_CTL:
       return TAPPING_TERM_MODS;
     // Set the tapping term for layer keys.
-    case KC_X_SYM_LEFT:
-    case KC_S_EXT_LEFT:
-    case KC_F_CTRLS:
-    case KC_U_FUNC:
-    case KC_E_EXT_RIGHT:
-    case KC_DOT_SYM_RIGHT:
+    case KC_SYM:
+    case KC_SCUT:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
-    case KC_COMM_SCUT:
-    case KC_Z_SYM_LEFT:
-    case KC_SLSH_SYM_RIGHT:
-    case KC_A_SYM_LEFT:
-    case KC_O_SYM_RIGHT:
       return TAPPING_TERM_LAYER;
     default:
       return TAPPING_TERM;
@@ -328,32 +335,14 @@ bool caps_word_press_user(uint16_t keycode) {
     case KC_DEL:
     case KC_UNDS:
       return true;
-    // Do not deactivate if symbol, ext, num or nav layer keys are held down.
-    case KC_X_SYM_LEFT:
-    case KC_S_EXT_LEFT:
-    case KC_E_EXT_RIGHT:
-    case KC_DOT_SYM_RIGHT:
+    // Do not deactivate if symbol, num or nav layer keys are held down.
+    case KC_SYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
-    case KC_Z_SYM_LEFT:
-    case KC_SLSH_SYM_RIGHT:
-    case KC_A_SYM_LEFT:
-    case KC_O_SYM_RIGHT:
       return true;
     // Deactivate caps word by default.
     default:
       return false;
-  }
-}
-
-// Give cross split combos a greater amount of time to trigger.
-
-uint16_t get_combo_term(uint16_t index, combo_t *combo) {
-  switch (combo->keycode) {
-    case CW_TOGG:
-      return COMBO_TERM_CROSS_SPLIT;
-    default:
-      return COMBO_TERM;
   }
 }
 
@@ -370,8 +359,6 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
     case KC_N_SFT:
     case KC_I_CTL:
     case KC_Y_ALT:
-    case KC_LEFT_SFT:
-    case KC_RIGHT_CTL:
       return false;
     default:
       return true;
