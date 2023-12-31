@@ -238,7 +238,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     // Close current tab.
 
-    case M_XTAB:
+    case M_TCLOSE:
       if (record->event.pressed) {
         if (hbm_is_chromebook) {
           SEND_STRING(SS_DOWN(X_LCTL)SS_TAP(X_W)SS_UP(X_LCTL));
