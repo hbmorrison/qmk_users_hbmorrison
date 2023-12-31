@@ -248,6 +248,46 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
+    case M_WHIDE:
+      if (record->event.pressed) {
+        if (hbm_is_chromebook) {
+          SEND_STRING(SS_DOWN(X_LALT));
+          SEND_STRING(SS_TAP(X_MINS));
+          SEND_STRING(SS_UP(X_LALT));
+        } else {
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_DOWN(X_LGUI));
+          SEND_STRING(SS_TAP(X_M));
+          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
+        }
+      }
+      break;
+    case M_WMAX:
+      if (record->event.pressed) {
+        if (hbm_is_chromebook) {
+          SEND_STRING(SS_DOWN(X_LALT));
+          SEND_STRING(SS_TAP(X_EQL));
+          SEND_STRING(SS_UP(X_LALT));
+        } else {
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_DOWN(X_LGUI));
+          SEND_STRING(SS_TAP(X_A));
+          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
+        }
+      }
+      break;
+    case M_WCLOSE:
+      if (record->event.pressed) {
+        if (hbm_is_chromebook) {
+          SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LSFT));
+          SEND_STRING(SS_TAP(X_W));
+          SEND_STRING(SS_UP(X_LSFT)SS_UP(X_LCTL));
+        } else {
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_DOWN(X_LGUI));
+          SEND_STRING(SS_TAP(X_K));
+          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
+        }
+      }
+      break;
+
     // New terminal window.
 
     case M_NTERM:
