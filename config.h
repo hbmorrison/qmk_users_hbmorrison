@@ -27,13 +27,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Tapping timings.
 
 #define TAPPING_TERM 190
-#define TAPPING_TERM_MODS 700
+#define TAPPING_TERM_MODS 1200
 #define TAPPING_TERM_LAYER 150
-
-// Combo timings.
-
-#define COMBO_TERM 25
-#define COMBO_TERM_CROSS_SPLIT 50
 
 // Capsword.
 

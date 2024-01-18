@@ -188,6 +188,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
       break;
+    case M_APP6:
+      if (record->event.pressed) {
+        if (hbm_is_chromebook) {
+          SEND_STRING(SS_DOWN(X_LALT));
+          SEND_STRING(SS_TAP(X_6));
+          SEND_STRING(SS_UP(X_LALT));
+        } else {
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_DOWN(X_LGUI));
+          SEND_STRING(SS_TAP(X_6));
+          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
+        }
+      }
+      break;
 
     // Open 1Password.
 
@@ -248,7 +261,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
-    case M_WHIDE:
+    // Minimise and restore window.
+
+    case M_WMIN:
       if (record->event.pressed) {
         if (hbm_is_chromebook) {
           SEND_STRING(SS_DOWN(X_LALT));
@@ -261,20 +276,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
       }
       break;
-    case M_WMAX:
-      if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_EQL));
-          SEND_STRING(SS_UP(X_LALT));
-        } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_DOWN(X_LGUI));
-          SEND_STRING(SS_TAP(X_A));
-          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
-        }
-      }
-      break;
-    case M_WCLOSE:
+
+    // Close window.
+
+    case M_WKILL:
       if (record->event.pressed) {
         if (hbm_is_chromebook) {
           SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LSFT));
@@ -386,21 +391,15 @@ bool caps_word_press_user(uint16_t keycode) {
   }
 }
 
-// Make sure that modifier keys do not emit their keypress when held down with
-// no additional keys. This allows the modifiers to be used with mouse clicks.
+// Issue Space and Enter if the keys are held down and released without another
+// key being pressed.
 
 bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case KC_W_ALT:
-    case KC_R_CTL:
-    case KC_T_SFT:
-    case KC_P_GUI:
-    case KC_L_GUI:
-    case KC_N_SFT:
-    case KC_I_CTL:
-    case KC_Y_ALT:
-      return false;
-    default:
+    case KC_SPC_NAV:
+    case KC_ENT_NUM:
       return true;
+    default:
+      return false;
   }
 }
