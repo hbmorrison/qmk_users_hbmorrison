@@ -20,17 +20,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Tapping config.
 
 #define PERMISSIVE_HOLD
+#define HOLD_ON_OTHER_KEY_PRESS
 #define TAPPING_TERM_PER_KEY
-#define RETRO_TAPPING
-#define RETRO_TAPPING_PER_KEY
-
-// Tapping timings.
-
 #define TAPPING_TERM 190
 #define TAPPING_TERM_MODS 1200
 #define TAPPING_TERM_LAYER 150
 
-// Capsword.
+// Enable retro tapping for certain keys.
+
+#define RETRO_TAPPING
+#define RETRO_TAPPING_PER_KEY Capsword.
+
+// Double tap shift for caps word.
 
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
 #define CAPS_WORD_IDLE_TIMEOUT 10000
