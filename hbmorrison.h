@@ -70,14 +70,16 @@ enum hbm_keycodes {
 
 // Modifier keys in the style of homerow mods.
 
-#define KC_W_ALT LALT_T(KC_W)
-#define KC_R_CTL LCTL_T(KC_R)
 #define KC_T_SFT LSFT_T(KC_T)
-#define KC_P_GUI LGUI_T(KC_P)
-#define KC_L_GUI LGUI_T(KC_L)
 #define KC_N_SFT RSFT_T(KC_N)
 #define KC_I_CTL LCTL_T(KC_I)
-#define KC_Y_ALT LALT_T(KC_Y)
+#define KC_R_CTL LCTL_T(KC_R)
+#define KC_X_ALT LALT_T(KC_X)
+#define KC_DOT_ALT LALT_T(KC_DOT)
+#define KC_D_GUI LGUI_T(KC_D)
+#define KC_H_GUI LGUI_T(KC_H)
+#define KC_S_CS C_S_T(KC_S)
+#define KC_E_CS C_S_T(KC_E)
 
 // Layer keys.
 
@@ -88,13 +90,13 @@ enum hbm_keycodes {
 
 // Base layer.
 
-#define KM_BASE_1L KC_Q, KC_W_ALT, KC_F, KC_P_GUI, KC_B
-#define KM_BASE_2L KC_A, KC_R_CTL, KC_S, KC_T_SFT, KC_G
-#define KM_BASE_3L KC_Z, KC_X, KC_C, KC_D, KC_V
+#define KM_BASE_1L KC_Q, KC_W, KC_F, KC_P, KC_B
+#define KM_BASE_2L KC_A, KC_R_CTL, KC_S_CS, KC_T_SFT, KC_G
+#define KM_BASE_3L KC_Z, KC_X_ALT, KC_C, KC_D_GUI, KC_V
 
-#define KM_BASE_1R KC_J, KC_L_GUI, KC_U, KC_Y_ALT, KC_BSPC
-#define KM_BASE_2R KC_M, KC_N_SFT, KC_E, KC_I_CTL, KC_O
-#define KM_BASE_3R KC_K, KC_H, KC_COMM, KC_DOT, KC_SLSH
+#define KM_BASE_1R KC_J, KC_L, KC_U, KC_Y, KC_BSPC
+#define KM_BASE_2R KC_M, KC_N_SFT, KC_E_CS, KC_I_CTL, KC_O
+#define KM_BASE_3R KC_K, KC_H_GUI, KC_COMM, KC_DOT_ALT, KC_SLSH
 
 #define KM_BASE_1 KM_BASE_1L, KM_BASE_1R
 #define KM_BASE_2 KM_BASE_2L, KM_BASE_2R

@@ -19,11 +19,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Tapping config.
 
-#define PERMISSIVE_HOLD
-#define HOLD_ON_OTHER_KEY_PRESS
 #define TAPPING_TERM_PER_KEY
+#define PERMISSIVE_HOLD
+#define PERMISSIVE_HOLD_PER_KEY
 #define TAPPING_TERM 190
-#define TAPPING_TERM_MODS 1200
+#define TAPPING_TERM_MODS 1000
 #define TAPPING_TERM_LAYER 150
 
 // Enable retro tapping for certain keys.

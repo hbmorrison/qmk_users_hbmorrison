@@ -339,31 +339,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
-// Set the tapping terms for modifiers and layer keys.
-
-uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    // Set the tapping term for the modifiers.
-    case KC_W_ALT:
-    case KC_R_CTL:
-    case KC_T_SFT:
-    case KC_P_GUI:
-    case KC_L_GUI:
-    case KC_N_SFT:
-    case KC_I_CTL:
-    case KC_Y_ALT:
-      return TAPPING_TERM_MODS;
-    // Set the tapping term for layer keys.
-    case KC_SYM:
-    case KC_SCUT:
-    case KC_ENT_NUM:
-    case KC_SPC_NAV:
-      return TAPPING_TERM_LAYER;
-    default:
-      return TAPPING_TERM;
-  }
-}
-
 // Only capitalise alpha characters and remove the minus character so that
 // typing '-' stops the caps word.
 
@@ -388,6 +363,45 @@ bool caps_word_press_user(uint16_t keycode) {
     // Deactivate caps word by default.
     default:
       return false;
+  }
+}
+
+// Set the tapping terms for modifiers and layer keys.
+
+uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    // Set the tapping term for the modifiers.
+    case KC_T_SFT:
+    case KC_N_SFT:
+    case KC_R_CTL:
+    case KC_I_CTL:
+    case KC_X_ALT:
+    case KC_DOT_ALT:
+    case KC_D_GUI:
+    case KC_H_GUI:
+    case KC_S_CS:
+    case KC_E_CS:
+      return TAPPING_TERM_MODS;
+    // Set the tapping term for layer keys.
+    case KC_SYM:
+    case KC_SCUT:
+    case KC_ENT_NUM:
+    case KC_SPC_NAV:
+      return TAPPING_TERM_LAYER;
+    default:
+      return TAPPING_TERM;
+  }
+}
+
+// Disable permissive hold on the Windows mod tap keys.
+
+bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case KC_D_GUI:
+    case KC_H_GUI:
+      return false;
+    default:
+      return true;
   }
 }
 
