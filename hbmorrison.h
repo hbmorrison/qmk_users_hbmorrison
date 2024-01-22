@@ -46,6 +46,7 @@ enum hbm_keycodes {
   M_TCLOSE,
   M_WMIN,
   M_WKILL,
+  M_WFOCUS,
   M_NTERM,
   M_EMOJI,
   M_ISCROS,
@@ -162,7 +163,7 @@ enum hbm_keycodes {
 
 // Shortcut layer.
 
-#define KM_SCUT_1L M_ISWIN, M_ISCROS, KC_NO, M_1PASS, KC_NO
+#define KM_SCUT_1L M_ISWIN, M_ISCROS, M_WFOCUS, M_1PASS, KC_NO
 #define KM_SCUT_2L KC_NO, M_APP1, M_APP2, M_APP3, KC_NO
 #define KM_SCUT_3L KC_NO, M_APP4, M_APP5, M_APP6, KC_NO
 
