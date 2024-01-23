@@ -65,7 +65,7 @@ enum hbm_keycodes {
 
 // Modified keys.
 
-#define KC_SHIFT OSM(MOD_LSFT)
+#define KC_OSM_SHIFT OSM(MOD_LSFT)
 #define KC_SFT_TAB LSFT(KC_TAB)
 #define KC_CTL_TAB LCTL(KC_TAB)
 
@@ -81,6 +81,8 @@ enum hbm_keycodes {
 #define KC_H_GUI LGUI_T(KC_H)
 #define KC_S_CS C_S_T(KC_S)
 #define KC_E_CS C_S_T(KC_E)
+#define KC_A_MEH MEH_T(KC_A)
+#define KC_O_MEH MEH_T(KC_O)
 
 // Layer keys.
 
@@ -92,18 +94,18 @@ enum hbm_keycodes {
 // Base layer.
 
 #define KM_BASE_1L KC_Q, KC_W, KC_F, KC_P, KC_B
-#define KM_BASE_2L KC_A, KC_R_CTL, KC_S_CS, KC_T_SFT, KC_G
+#define KM_BASE_2L KC_A_MEH, KC_R_CTL, KC_S_CS, KC_T_SFT, KC_G
 #define KM_BASE_3L KC_Z, KC_X_ALT, KC_C, KC_D_GUI, KC_V
 
 #define KM_BASE_1R KC_J, KC_L, KC_U, KC_Y, KC_BSPC
-#define KM_BASE_2R KC_M, KC_N_SFT, KC_E_CS, KC_I_CTL, KC_O
+#define KM_BASE_2R KC_M, KC_N_SFT, KC_E_CS, KC_I_CTL, KC_O_MEH
 #define KM_BASE_3R KC_K, KC_H_GUI, KC_COMM, KC_DOT_ALT, KC_SLSH
 
 #define KM_BASE_1 KM_BASE_1L, KM_BASE_1R
 #define KM_BASE_2 KM_BASE_2L, KM_BASE_2R
 #define KM_BASE_3 KM_BASE_3L, KM_BASE_3R
 
-#define KM_BASE_THUMB KC_SHIFT, KC_SPC_NAV, KC_ENT_NUM, KC_SYM
+#define KM_BASE_THUMB KC_OSM_SHIFT, KC_SPC_NAV, KC_ENT_NUM, KC_SYM
 
 #define LAYOUT_BASE KM_BASE_1, KM_BASE_2, KM_BASE_3, KM_BASE_THUMB
 

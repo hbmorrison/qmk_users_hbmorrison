@@ -130,9 +130,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING(SS_TAP(X_1));
           SEND_STRING(SS_UP(X_LALT));
         } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_DOWN(X_LGUI));
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
           SEND_STRING(SS_TAP(X_1));
-          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
+          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
         }
       }
       break;
@@ -143,9 +143,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING(SS_TAP(X_2));
           SEND_STRING(SS_UP(X_LALT));
         } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_DOWN(X_LGUI));
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
           SEND_STRING(SS_TAP(X_2));
-          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
+          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
         }
       }
       break;
@@ -156,9 +156,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING(SS_TAP(X_3));
           SEND_STRING(SS_UP(X_LALT));
         } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_DOWN(X_LGUI));
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
           SEND_STRING(SS_TAP(X_3));
-          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
+          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
         }
       }
       break;
@@ -169,9 +169,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING(SS_TAP(X_4));
           SEND_STRING(SS_UP(X_LALT));
         } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_DOWN(X_LGUI));
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
           SEND_STRING(SS_TAP(X_4));
-          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
+          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
         }
       }
       break;
@@ -182,9 +182,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING(SS_TAP(X_5));
           SEND_STRING(SS_UP(X_LALT));
         } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_DOWN(X_LGUI));
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
           SEND_STRING(SS_TAP(X_5));
-          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
+          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
         }
       }
       break;
@@ -195,9 +195,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING(SS_TAP(X_6));
           SEND_STRING(SS_UP(X_LALT));
         } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_DOWN(X_LGUI));
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
           SEND_STRING(SS_TAP(X_6));
-          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
+          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
         }
       }
       break;
@@ -270,9 +270,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING(SS_TAP(X_MINS));
           SEND_STRING(SS_UP(X_LALT));
         } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_DOWN(X_LGUI));
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
           SEND_STRING(SS_TAP(X_M));
-          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
+          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
         }
       }
       break;
@@ -286,9 +286,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           SEND_STRING(SS_TAP(X_W));
           SEND_STRING(SS_UP(X_LSFT)SS_UP(X_LCTL));
         } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_DOWN(X_LGUI));
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
           SEND_STRING(SS_TAP(X_K));
-          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
+          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
         }
       }
       break;
@@ -299,9 +299,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
         if (hbm_is_chromebook) {
         } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT)SS_DOWN(X_LGUI));
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
           SEND_STRING(SS_TAP(X_F));
-          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
+          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
         }
       }
       break;
@@ -394,6 +394,8 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case KC_H_GUI:
     case KC_S_CS:
     case KC_E_CS:
+    case KC_A_MEH:
+    case KC_O_MEH:
       return TAPPING_TERM_MODS;
     // Set the tapping term for layer keys.
     case KC_SYM:
