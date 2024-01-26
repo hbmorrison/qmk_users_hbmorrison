@@ -399,7 +399,6 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
       return TAPPING_TERM_MODS;
     // Set the tapping term for layer keys.
     case KC_SYM:
-    case KC_SCUT:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
       return TAPPING_TERM_LAYER;
