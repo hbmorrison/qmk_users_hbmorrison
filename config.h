@@ -23,13 +23,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PERMISSIVE_HOLD
 #define PERMISSIVE_HOLD_PER_KEY
 #define TAPPING_TERM 190
+#define TAPPING_TERM_LAYER 190
 #define TAPPING_TERM_MODS 1000
-#define TAPPING_TERM_LAYER 150
 
 // Enable retro tapping for certain keys.
 
 #define RETRO_TAPPING
-#define RETRO_TAPPING_PER_KEY Capsword.
+#define RETRO_TAPPING_PER_KEY
 
 // Double tap shift for caps word.
 

@@ -17,11 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "hbmorrison.h"
 
-// Defines whether to issue Windows or ChromeOS keypresses from macros - Windows
-// by default.
-
-static bool hbm_is_chromebook = false;
-
 // State of the M_ALT_TAB macro - true if we are currently tabbing between
 // windows.
 
@@ -121,144 +116,20 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
-    // Application switching macros.
-
-    case M_APP1:
-      if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_1));
-          SEND_STRING(SS_UP(X_LALT));
-        } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_1));
-          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
-        }
-      }
-      break;
-    case M_APP2:
-      if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_2));
-          SEND_STRING(SS_UP(X_LALT));
-        } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_2));
-          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
-        }
-      }
-      break;
-    case M_APP3:
-      if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_3));
-          SEND_STRING(SS_UP(X_LALT));
-        } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_3));
-          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
-        }
-      }
-      break;
-    case M_APP4:
-      if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_4));
-          SEND_STRING(SS_UP(X_LALT));
-        } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_4));
-          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
-        }
-      }
-      break;
-    case M_APP5:
-      if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_5));
-          SEND_STRING(SS_UP(X_LALT));
-        } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_5));
-          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
-        }
-      }
-      break;
-    case M_APP6:
-      if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_6));
-          SEND_STRING(SS_UP(X_LALT));
-        } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_6));
-          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
-        }
-      }
-      break;
-    case M_APP7:
-      if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_7));
-          SEND_STRING(SS_UP(X_LALT));
-        } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_7));
-          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
-        }
-      }
-      break;
-
-    // Open 1Password.
-
-    case M_1PASS:
-      if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LALT)SS_TAP(X_1)SS_UP(X_LALT));
-          SEND_STRING(SS_DELAY(100));
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL));
-          SEND_STRING(SS_TAP(X_X));
-          SEND_STRING(SS_UP(X_LCTL)SS_UP(X_LSFT));
-        } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL));
-          SEND_STRING(SS_TAP(X_SPC));
-          SEND_STRING(SS_UP(X_LCTL)SS_UP(X_LSFT));
-        }
-      }
-      break;
-
     //Switch between virtual desktops.
 
     case M_NDESK:
       if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LGUI));
-          SEND_STRING(SS_TAP(X_RBRC));
-          SEND_STRING(SS_UP(X_LGUI));
-        } else {
-          SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LGUI));
-          SEND_STRING(SS_TAP(X_RGHT));
-          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LCTL));
-        }
+        SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LGUI));
+        SEND_STRING(SS_TAP(X_RGHT));
+        SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LCTL));
       }
       break;
     case M_PDESK:
       if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LGUI));
-          SEND_STRING(SS_TAP(X_LBRC));
-          SEND_STRING(SS_UP(X_LGUI));
-        } else {
-          SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LGUI));
-          SEND_STRING(SS_TAP(X_LEFT));
-          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LCTL));
-        }
+        SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LGUI));
+        SEND_STRING(SS_TAP(X_LEFT));
+        SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LCTL));
       }
       break;
 
@@ -266,11 +137,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case M_TCLOSE:
       if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LCTL)SS_TAP(X_W)SS_UP(X_LCTL));
-        } else {
-          SEND_STRING(SS_DOWN(X_LCTL)SS_TAP(X_F4)SS_UP(X_LCTL));
-        }
+        SEND_STRING(SS_DOWN(X_LCTL)SS_TAP(X_F4)SS_UP(X_LCTL));
       }
       break;
 
@@ -278,15 +145,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case M_WMIN:
       if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_MINS));
-          SEND_STRING(SS_UP(X_LALT));
-        } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_M));
-          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
-        }
+        SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
+        SEND_STRING(SS_TAP(X_M));
+        SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
       }
       break;
 
@@ -294,15 +155,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case M_WKILL:
       if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LSFT));
-          SEND_STRING(SS_TAP(X_W));
-          SEND_STRING(SS_UP(X_LSFT)SS_UP(X_LCTL));
-        } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_K));
-          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
-        }
+        SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
+        SEND_STRING(SS_TAP(X_K));
+        SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
       }
       break;
 
@@ -310,53 +165,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case M_WFOCUS:
       if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-        } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
-          SEND_STRING(SS_TAP(X_F));
-          SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
-        }
-      }
-      break;
-
-    // New terminal window.
-
-    case M_NTERM:
-      if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LCTL)SS_TAP(X_T)SS_UP(X_LCTL));
-        } else {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL));
-          SEND_STRING(SS_TAP(X_1));
-          SEND_STRING(SS_UP(X_LCTL)SS_UP(X_LSFT));
-        }
-      }
-      break;
-
-    // Open the emoji window.
-
-    case M_EMOJI:
-      if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LGUI));
-          SEND_STRING(SS_TAP(X_SPC));
-          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LSFT));
-        } else {
-          SEND_STRING(SS_DOWN(X_LGUI)SS_TAP(X_SCLN)SS_UP(X_LGUI));
-        }
-      }
-      break;
-
-    // Swap between Windows and ChromeOS macro keypresses.
-
-    case M_ISCROS:
-      if (record->event.pressed) {
-        hbm_is_chromebook = true;
-      }
-      break;
-    case M_ISWIN:
-      if (record->event.pressed) {
-        hbm_is_chromebook = false;
+        SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
+        SEND_STRING(SS_TAP(X_F));
+        SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
       }
       break;
 
@@ -412,7 +223,6 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
       return TAPPING_TERM_MODS;
     // Set the tapping term for layer keys.
     case KC_SYM:
-    case KC_SCUT:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
       return TAPPING_TERM_LAYER;
