@@ -26,11 +26,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TAPPING_TERM_LAYER 190
 #define TAPPING_TERM_MODS 1000
 
-// Enable retro tapping for certain keys.
-
-#define RETRO_TAPPING
-#define RETRO_TAPPING_PER_KEY
-
 // Double tap shift for caps word.
 
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD

@@ -242,16 +242,3 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
       return true;
   }
 }
-
-// Issue Space and Enter if the keys are held down and released without another
-// key being pressed.
-
-bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
-    case KC_SPC_NAV:
-    case KC_ENT_NUM:
-      return true;
-    default:
-      return false;
-  }
-}
