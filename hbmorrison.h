@@ -40,6 +40,7 @@ enum hbm_keycodes {
   M_APP4,
   M_APP5,
   M_APP6,
+  M_APP7,
   M_1PASS,
   M_NDESK,
   M_PDESK,
@@ -167,7 +168,7 @@ enum hbm_keycodes {
 
 #define KM_SCUT_1L M_ISWIN, M_ISCROS, M_WFOCUS, M_1PASS, KC_NO
 #define KM_SCUT_2L KC_NO, M_APP1, M_APP2, M_APP3, KC_NO
-#define KM_SCUT_3L KC_NO, M_APP4, M_APP5, M_APP6, KC_NO
+#define KM_SCUT_3L KC_NO, M_APP4, M_APP5, M_APP6, M_APP7
 
 #define KM_SCUT_1R M_TCLOSE, KC_NO, KC_NO, KC_NO, KC_NO
 #define KM_SCUT_2R M_WMIN, M_NTERM, M_EMOJI, KC_NO, KC_NO
