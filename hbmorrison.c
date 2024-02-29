@@ -27,12 +27,6 @@ static bool hbm_alt_tab_pressed = false;
 static bool hbm_shift_pressed = false;
 static bool hbm_os_shift_pressed = false;
 
-// Temporarily store the state of the mod keys.
-static uint8_t hbm_mod_state = 0;
-
-// State for managing shift backspace behaviour.
-static bool hbm_del_registered = false;
-
 // Process key presses.
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -79,30 +73,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
   }
 
-  // Store current modifiers for shift-backspace action.
-  hbm_mod_state = get_mods();
-
   switch (keycode) {
-
-    // Shift-Backspace sends Delete.
-
-    case KC_BSPC:
-      if (record->event.pressed) {
-        if (hbm_mod_state & MOD_MASK_SHIFT) {
-          del_mods(MOD_MASK_SHIFT);
-          register_code(KC_DEL);
-          hbm_del_registered = true;
-          set_mods(hbm_mod_state);
-          return false;
-        }
-      } else {
-        if (hbm_del_registered) {
-          unregister_code(KC_DEL);
-          hbm_del_registered = false;
-          return false;
-        }
-      }
-      break;
 
     // Hold down KC_LALT persistantly to allow tabbing through windows.
 
@@ -224,8 +195,8 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case KC_H_GUI:
     case KC_T_CS:
     case KC_N_CS:
-    case KC_SLSH_MEH:
-    case KC_Z_MEH:
+    case KC_A_MEH:
+    case KC_O_MEH:
       return TAPPING_TERM_MODS;
     // Set the tapping term for layer keys.
     case KC_SYM:
