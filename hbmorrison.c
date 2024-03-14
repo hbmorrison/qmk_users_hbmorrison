@@ -52,7 +52,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_A ... KC_Z:
         case KC_DOT:
         case KC_BSPC:
-        // Allow tabs to be shifted.
         case KC_TAB:
           break;
         default:
@@ -187,14 +186,16 @@ bool caps_word_press_user(uint16_t keycode) {
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     // Set the tapping term for the modifiers.
+    case KC_T_SFT:
+    case KC_N_SFT:
     case KC_R_CTL:
     case KC_I_CTL:
     case KC_X_ALT:
     case KC_DOT_ALT:
     case KC_D_GUI:
     case KC_H_GUI:
-    case KC_T_CS:
-    case KC_N_CS:
+    case KC_S_CS:
+    case KC_E_CS:
     case KC_A_MEH:
     case KC_O_MEH:
       return TAPPING_TERM_MODS;

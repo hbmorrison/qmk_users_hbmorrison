@@ -61,14 +61,16 @@ enum hbm_keycodes {
 
 // Modifier keys in the style of homerow mods.
 
+#define KC_T_SFT LSFT_T(KC_T)
+#define KC_N_SFT LSFT_T(KC_N)
 #define KC_I_CTL LCTL_T(KC_I)
 #define KC_R_CTL LCTL_T(KC_R)
 #define KC_X_ALT LALT_T(KC_X)
 #define KC_DOT_ALT LALT_T(KC_DOT)
 #define KC_D_GUI LGUI_T(KC_D)
 #define KC_H_GUI LGUI_T(KC_H)
-#define KC_T_CS C_S_T(KC_T)
-#define KC_N_CS C_S_T(KC_N)
+#define KC_S_CS C_S_T(KC_S)
+#define KC_E_CS C_S_T(KC_E)
 #define KC_A_MEH MEH_T(KC_A)
 #define KC_O_MEH MEH_T(KC_O)
 #define KC_F6_CTL LCTL_T(KC_F6)
@@ -83,11 +85,11 @@ enum hbm_keycodes {
 // Base layer.
 
 #define KM_BASE_1L KC_Q, KC_W, KC_F, KC_P, KC_B
-#define KM_BASE_2L KC_A_MEH, KC_R_CTL, KC_S, KC_T_CS, KC_G
+#define KM_BASE_2L KC_A_MEH, KC_R_CTL, KC_S_CS, KC_T_SFT, KC_G
 #define KM_BASE_3L KC_Z, KC_X_ALT, KC_C, KC_D_GUI, KC_V
 
 #define KM_BASE_1R KC_J, KC_L, KC_U, KC_Y
-#define KM_BASE_2R KC_M, KC_N_CS, KC_E, KC_I_CTL, KC_O_MEH
+#define KM_BASE_2R KC_M, KC_N_SFT, KC_E_CS, KC_I_CTL, KC_O_MEH
 #define KM_BASE_3R KC_K, KC_H_GUI, KC_COMM, KC_DOT_ALT, KC_SLSH
 
 #define KM_BASE_1 KM_BASE_1L, KM_BASE_1R, KC_BSPC
@@ -102,7 +104,7 @@ enum hbm_keycodes {
 
 #define KM_SYM_1L KC_EXLM, KC_UK_DQUO, KC_UK_PND, KC_DLR, KC_PERC
 #define KM_SYM_2L KC_GRV, KC_UK_PIPE, KC_LBRC, KC_LCBR, KC_LPRN
-#define KM_SYM_3L KC_CAPS, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
+#define KM_SYM_3L KC_NO, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
 
 #define KM_SYM_1R KC_CIRC, KC_AMPR, KC_ASTR, KC_UNDS, KC_PLUS
 #define KM_SYM_2R KC_COLN, KC_UK_AT, KC_UK_TILDE, KC_MINS, KC_EQL
@@ -136,9 +138,9 @@ enum hbm_keycodes {
 
 // Number layer.
 
-#define KM_NUM_1L KC_PAST, KC_1, KC_2, KC_3, KC_PPLS
-#define KM_NUM_2L KC_PSLS, KC_4, KC_5, KC_6, KC_PMNS
-#define KM_NUM_3L KC_DOT, KC_7, KC_8, KC_9, KC_0
+#define KM_NUM_1L KC_ESC, KC_1, KC_2, KC_3, KC_SLSH
+#define KM_NUM_2L KC_TAB, KC_4, KC_5, KC_6, KC_DOT
+#define KM_NUM_3L KC_CAPS, KC_7, KC_8, KC_9, KC_0
 
 #define KM_NUM_1R KC_NO, KC_F1, KC_F2, KC_F3, KC_BSPC
 #define KM_NUM_2R KC_BTN1, KC_F4, KC_F5, KC_F6_CTL, KC_DEL
