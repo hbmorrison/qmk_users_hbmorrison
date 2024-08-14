@@ -48,12 +48,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
     if (current_layer > LAYER_BASE) {
       switch (keycode) {
-        // Allow keys in the extended layers to be shifted.
-        case KC_A ... KC_Z:
-        case KC_DOT:
-        case KC_BSPC:
+        // Allow these keys in the extended layers to be shifted.
         case KC_TAB:
           break;
+        // Remove the shift modifier for everything else.
         default:
           hbm_shift_pressed = get_mods() & MOD_BIT(KC_LSFT);
           hbm_os_shift_pressed = get_oneshot_mods() & MOD_BIT(KC_LSFT);
@@ -86,14 +84,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
-    // Send greater-than-equal.
-
-    case M_EQGT:
-      if (record->event.pressed) {
-        SEND_STRING("=> ");
-      }
-      break;
-
     // Switch between virtual desktops.
 
     case M_NDESK:
@@ -108,44 +98,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LGUI));
         SEND_STRING(SS_TAP(X_LEFT));
         SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LCTL));
-      }
-      break;
-
-    // Close current tab.
-
-    case M_TCLOSE:
-      if (record->event.pressed) {
-        SEND_STRING(SS_DOWN(X_LCTL)SS_TAP(X_F4)SS_UP(X_LCTL));
-      }
-      break;
-
-    // Minimise and restore window.
-
-    case M_WMIN:
-      if (record->event.pressed) {
-        SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
-        SEND_STRING(SS_TAP(X_M));
-        SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
-      }
-      break;
-
-    // Close window.
-
-    case M_WKILL:
-      if (record->event.pressed) {
-        SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
-        SEND_STRING(SS_TAP(X_K));
-        SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
-      }
-      break;
-
-    // Centre window and minimise all others.
-
-    case M_WFOCUS:
-      if (record->event.pressed) {
-        SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
-        SEND_STRING(SS_TAP(X_F));
-        SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL)SS_UP(X_LSFT));
       }
       break;
 
@@ -171,7 +123,8 @@ bool caps_word_press_user(uint16_t keycode) {
     case KC_UNDS:
       return true;
     // Do not deactivate if symbol, num or nav layer keys are held down.
-    case KC_SYM:
+    case KC_Z_RSYM:
+    case KC_SLSH_LSYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
       return true;
@@ -186,21 +139,19 @@ bool caps_word_press_user(uint16_t keycode) {
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     // Set the tapping term for the modifiers.
-    case KC_T_SFT:
-    case KC_N_SFT:
-    case KC_R_CTL:
-    case KC_I_CTL:
+    case KC_D_CTL:
+    case KC_H_CTL:
     case KC_X_ALT:
     case KC_DOT_ALT:
-    case KC_D_GUI:
-    case KC_H_GUI:
-    case KC_S_CS:
-    case KC_E_CS:
-    case KC_A_MEH:
-    case KC_O_MEH:
+    case KC_V_GUI:
+    case KC_K_GUI:
+    case KC_C_CS:
+    case KC_COMMA_CS:
+    case KC_ESC_MEH:
       return TAPPING_TERM_MODS;
     // Set the tapping term for layer keys.
-    case KC_SYM:
+    case KC_Z_RSYM:
+    case KC_SLSH_LSYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
       return TAPPING_TERM_LAYER;
@@ -213,8 +164,8 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 
 bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case KC_D_GUI:
-    case KC_H_GUI:
+    case KC_V_GUI:
+    case KC_K_GUI:
       return false;
     default:
       return true;
