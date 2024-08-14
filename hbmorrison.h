@@ -158,7 +158,7 @@ enum hbm_keycodes {
 #define KM_NUM_2L KC_PAST, KC_4, KC_5, KC_6, KC_PPLS
 #define KM_NUM_3L KC_CAPS, KC_7, KC_8, KC_9, KC_NO
 
-#define KM_NUM_1R KC_NO, KC_F1, KC_F2, KC_F3, KC_BSPC
+#define KM_NUM_1R KC_NO, KC_F1, KC_F2, KC_F3, KC_DEL
 #define KM_NUM_2R KC_BTN1, KC_F4, KC_F5, KC_F6, KC_F11
 #define KM_NUM_3R KC_BTN2, KC_F7_CTL, KC_F8_CS, KC_F9_ALT, KC_F10
 
