@@ -88,9 +88,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_G:
         case KC_Z_RSYM:
         case KC_X_GUI:
-        case KC_C_ALT:
+        // No C so left-handed ctrl-c still works.
         case KC_D_CTL:
-        case KC_V:
+        // No V so left-handed ctrl-v still works.
           clear_mods();
       }
     }
