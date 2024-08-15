@@ -70,6 +70,52 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
   }
 
+  // Only allow left-hand crtl mod to work with the right side of the keyboard
+  // and vice versa.
+
+  if (record->event.pressed && current_layer == LAYER_BASE) {
+    if (get_mods() & MOD_BIT(KC_LCTL)) {
+      switch (keycode) {
+        case KC_Q:
+        case KC_W:
+        case KC_F:
+        case KC_P:
+        case KC_B:
+        case KC_A:
+        case KC_R:
+        case KC_S:
+        case KC_T:
+        case KC_G:
+        case KC_Z_MEH:
+        case KC_X_GUI:
+        case KC_C_ALT:
+        case KC_D_CTL:
+        case KC_V_RSYM:
+          clear_mods();
+      }
+    }
+    if (get_mods() & MOD_BIT(KC_RCTL)) {
+      switch (keycode) {
+        case KC_J:
+        case KC_L:
+        case KC_U:
+        case KC_Y:
+        case KC_BSPC:
+        case KC_M:
+        case KC_N:
+        case KC_E:
+        case KC_I:
+        case KC_O:
+        case KC_K_LSYM:
+        case KC_H_CTL:
+        case KC_COMMA_ALT:
+        case KC_DOT_GUI:
+        case KC_SLSH_MEH:
+          clear_mods();
+      }
+    }
+  }
+
   switch (keycode) {
 
     // Hold down KC_LALT persistantly to allow tabbing through windows.
@@ -123,8 +169,8 @@ bool caps_word_press_user(uint16_t keycode) {
     case KC_UNDS:
       return true;
     // Do not deactivate if symbol, num or nav layer keys are held down.
-    case KC_Z_RSYM:
-    case KC_SLSH_LSYM:
+    case KC_V_RSYM:
+    case KC_K_LSYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
       return true;
@@ -140,18 +186,21 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     // Set the tapping term for the modifiers.
     case KC_D_CTL:
+    case KC_C_ALT:
+    case KC_X_GUI:
+    case KC_Z_MEH:
     case KC_H_CTL:
-    case KC_X_ALT:
-    case KC_DOT_ALT:
-    case KC_V_GUI:
-    case KC_K_GUI:
-    case KC_C_CS:
-    case KC_COMMA_CS:
-    case KC_ESC_MEH:
+    case KC_COMMA_ALT:
+    case KC_DOT_GUI:
+    case KC_SLSH_MEH:
+    case KC_ESC_CS:
+    case KC_F7_CTL:
+    case KC_F8_ALT:
+    case KC_F9_GUI:
       return TAPPING_TERM_MODS;
     // Set the tapping term for layer keys.
-    case KC_Z_RSYM:
-    case KC_SLSH_LSYM:
+    case KC_V_RSYM:
+    case KC_K_LSYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
       return TAPPING_TERM_LAYER;
@@ -164,8 +213,8 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 
 bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case KC_V_GUI:
-    case KC_K_GUI:
+    case KC_X_GUI:
+    case KC_DOT_GUI:
       return false;
     default:
       return true;
