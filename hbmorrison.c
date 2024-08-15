@@ -86,11 +86,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_S:
         case KC_T:
         case KC_G:
-        case KC_Z_MEH:
+        case KC_Z_RSYM:
         case KC_X_GUI:
         case KC_C_ALT:
         case KC_D_CTL:
-        case KC_V_RSYM:
+        case KC_V:
           clear_mods();
       }
     }
@@ -106,11 +106,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_E:
         case KC_I:
         case KC_O:
-        case KC_K_LSYM:
+        case KC_K:
         case KC_H_CTL:
         case KC_COMMA_ALT:
         case KC_DOT_GUI:
-        case KC_SLSH_MEH:
+        case KC_SLSH_LSYM:
           clear_mods();
       }
     }
@@ -169,8 +169,8 @@ bool caps_word_press_user(uint16_t keycode) {
     case KC_UNDS:
       return true;
     // Do not deactivate if symbol, num or nav layer keys are held down.
-    case KC_V_RSYM:
-    case KC_K_LSYM:
+    case KC_Z_RSYM:
+    case KC_SLSH_LSYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
       return true;
@@ -188,19 +188,17 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case KC_D_CTL:
     case KC_C_ALT:
     case KC_X_GUI:
-    case KC_Z_MEH:
     case KC_H_CTL:
     case KC_COMMA_ALT:
     case KC_DOT_GUI:
-    case KC_SLSH_MEH:
-    case KC_ESC_CS:
+    case KC_ESC_MEH:
     case KC_F7_CTL:
     case KC_F8_ALT:
     case KC_F9_GUI:
       return TAPPING_TERM_MODS;
     // Set the tapping term for layer keys.
-    case KC_V_RSYM:
-    case KC_K_LSYM:
+    case KC_Z_RSYM:
+    case KC_SLSH_LSYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
       return TAPPING_TERM_LAYER;
