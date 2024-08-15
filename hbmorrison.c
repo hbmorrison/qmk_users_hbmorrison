@@ -74,7 +74,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // and vice versa.
 
   if (record->event.pressed && current_layer == LAYER_BASE) {
-    if (get_mods() & MOD_BIT(KC_LCTL)) {
+    if (get_mods() == MOD_BIT(KC_LCTL)) {
       switch (keycode) {
         case KC_Q:
         case KC_W:
@@ -94,7 +94,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           clear_mods();
       }
     }
-    if (get_mods() & MOD_BIT(KC_RCTL)) {
+    if (get_mods() == MOD_BIT(KC_RCTL)) {
       switch (keycode) {
         case KC_J:
         case KC_L:
