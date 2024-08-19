@@ -22,10 +22,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 static bool hbm_alt_tab_pressed = false;
 
-// State of the shift modifiers - used to turn shift off for symbol layers.
+// State for managing shift backspace behaviour.
 
-static bool hbm_shift_pressed = false;
-static bool hbm_os_shift_pressed = false;
+static bool hbm_del_registered = false;
+
+// Used to temporarily store the state of the mod keys during shift backspace.
+
+static uint8_t hbm_mod_state = 0;
 
 // Tapdance for right shift key to add capsword.
 
@@ -82,28 +85,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           break;
         // Remove the shift modifier for everything else.
         default:
-          hbm_shift_pressed = get_mods() & MOD_BIT(KC_LSFT);
-          hbm_os_shift_pressed = get_oneshot_mods() & MOD_BIT(KC_LSFT);
           del_mods(MOD_MASK_SHIFT);
           del_oneshot_mods(MOD_MASK_SHIFT);
       }
     }
-  } else {
-    if (hbm_shift_pressed) {
-      add_mods(MOD_BIT(KC_LSFT));
-      hbm_shift_pressed = false;
-    }
-    if (hbm_os_shift_pressed) {
-      add_oneshot_mods(MOD_BIT(KC_LSFT));
-      hbm_os_shift_pressed = false;
-    }
   }
 
-  // Only allow left-hand shift and crtl mods to work with the right side of the
-  // keyboard and vice versa.
+  // Only allow left-hand modifiers to work with the right side of the keyboard
+  // and vice versa.
 
   if (record->event.pressed && current_layer == LAYER_BASE) {
-    if (get_mods() & MOD_BITS_LEFT) {
+    if (get_mods() & MOD_BITS_LEFT || get_oneshot_mods() & MOD_BITS_LEFT) {
       switch (keycode) {
         case KC_Q:
         case KC_W:
@@ -120,10 +112,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_C_ALT:
         case KC_D_CTL:
         case KC_V:
-          clear_mods();
+          del_mods(MOD_BITS_LEFT);
+          del_oneshot_mods(MOD_BITS_LEFT);
       }
     }
-    if (get_mods() & MOD_BITS_RIGHT) {
+    if (get_mods() & MOD_BITS_RIGHT || get_oneshot_mods() & MOD_BITS_RIGHT) {
       switch (keycode) {
         case KC_J:
         case KC_L:
@@ -140,12 +133,37 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_COMMA_ALT:
         case KC_DOT_GUI:
         case KC_SLSH_LSYM:
-          clear_mods();
+          del_mods(MOD_BITS_RIGHT);
+          del_oneshot_mods(MOD_BITS_RIGHT);
       }
     }
   }
 
+  // Store current modifiers for shift-backspace action.
+
+  hbm_mod_state = get_mods();
+
   switch (keycode) {
+
+    // Shift-backspace produces delete.
+
+    case KC_BSPC:
+      if (record->event.pressed) {
+        if (hbm_mod_state & MOD_MASK_SHIFT) {
+          del_mods(MOD_MASK_SHIFT);
+          register_code(KC_DEL);
+          hbm_del_registered = true;
+          set_mods(hbm_mod_state);
+          return false;
+        }
+      } else {
+        if (hbm_del_registered) {
+          unregister_code(KC_DEL);
+          hbm_del_registered = false;
+          return false;
+        }
+      }
+      break;
 
     // Hold down KC_LALT persistantly to allow tabbing through windows.
 
