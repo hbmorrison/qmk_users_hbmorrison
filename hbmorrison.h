@@ -38,6 +38,12 @@ enum hbm_keycodes {
   M_PDESK
 };
 
+// Tapdance keycodes.
+
+enum {
+  TD_RSFT
+};
+
 // Alternative keys for UK ISO keyboard layouts.
 
 #define KC_UK_DQUO LSFT(KC_2)
@@ -50,7 +56,8 @@ enum hbm_keycodes {
 
 // Modified keys.
 
-#define KC_OSM_SHIFT OSM(MOD_LSFT)
+#define KC_OSM_LSFT OSM(MOD_LSFT)
+#define KC_OSM_RSFT TD(TD_RSFT)
 #define KC_SFT_TAB LSFT(KC_TAB)
 #define KC_CTL_TAB LCTL(KC_TAB)
 #define KC_GUI_TAB LGUI(KC_TAB)
@@ -63,10 +70,14 @@ enum hbm_keycodes {
 #define KC_H_CTL RCTL_T(KC_H)
 #define KC_COMMA_ALT LALT_T(KC_COMMA)
 #define KC_DOT_GUI LGUI_T(KC_DOT)
-#define KC_ESC_MEH MEH_T(KC_ESC)
 #define KC_F7_CTL RCTL_T(KC_F7)
 #define KC_F8_ALT LALT_T(KC_F8)
 #define KC_F9_GUI LGUI_T(KC_F9)
+
+// Left- and right-hand modifier bits.
+
+#define MOD_BITS_LEFT (MOD_BIT(KC_LSFT) | MOD_BIT(KC_LCTL))
+#define MOD_BITS_RIGHT (MOD_BIT(KC_RSFT) | MOD_BIT(KC_RCTL))
 
 // Layer keys.
 
@@ -92,7 +103,7 @@ enum hbm_keycodes {
 #define KM_BASE_2 KM_BASE_2L, KM_BASE_2R
 #define KM_BASE_3 KM_BASE_3L, KM_BASE_3R
 
-#define KM_BASE_THUMB KC_OSM_SHIFT, KC_SPC_NAV, KC_ENT_NUM, KC_ESC_MEH
+#define KM_BASE_THUMB KC_OSM_LSFT, KC_SPC_NAV, KC_ENT_NUM, KC_OSM_RSFT
 
 #define LAYOUT_BASE KM_BASE_1, KM_BASE_2, KM_BASE_3, KM_BASE_THUMB
 
@@ -100,7 +111,7 @@ enum hbm_keycodes {
 
 #define KM_LSYM_1L KC_EXLM, KC_UK_DQUO, KC_UK_PND, KC_DLR, KC_PERC
 #define KM_LSYM_2L KC_GRV, KC_UK_PIPE, KC_LBRC, KC_LCBR, KC_LPRN
-#define KM_LSYM_3L KC_NO, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
+#define KM_LSYM_3L KC_CAPS, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
 
 #define KM_LSYM_1R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
 #define KM_LSYM_2R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
@@ -152,9 +163,9 @@ enum hbm_keycodes {
 
 // Number layer.
 
-#define KM_NUM_1L KC_ESC, KC_1, KC_2, KC_3, KC_NO
-#define KM_NUM_2L KC_TAB, KC_4, KC_5, KC_6, KC_PSLS
-#define KM_NUM_3L KC_CAPS, KC_7, KC_8, KC_9, KC_DOT
+#define KM_NUM_1L KC_NO, KC_1, KC_2, KC_3, KC_NO
+#define KM_NUM_2L KC_NO, KC_4, KC_5, KC_6, KC_PSLS
+#define KM_NUM_3L KC_NO, KC_7, KC_8, KC_9, KC_DOT
 
 #define KM_NUM_1R KC_NO, KC_F1, KC_F2, KC_F3, KC_DEL
 #define KM_NUM_2R KC_BTN1, KC_F4, KC_F5, KC_F6, KC_F11
