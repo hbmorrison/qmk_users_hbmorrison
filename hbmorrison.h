@@ -70,8 +70,8 @@ enum hbm_keycodes {
 
 // Layer keys.
 
-#define KC_Z_RSYM LT(LAYER_RSYM, KC_Z)
-#define KC_SLSH_LSYM LT(LAYER_LSYM, KC_SLSH)
+#define KC_Z_RSYM OSL(LAYER_RSYM)
+#define KC_SLSH_LSYM OSL(LAYER_LSYM)
 #define KC_SPC_NAV LT(LAYER_NAV, KC_SPC)
 #define KC_ENT_NUM LT(LAYER_NUM, KC_ENT)
 
@@ -104,7 +104,7 @@ enum hbm_keycodes {
 
 #define KM_LSYM_1R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
 #define KM_LSYM_2R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_LSYM_3R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
+#define KM_LSYM_3R KC_NO, KC_NO, KC_NO, KC_NO, KC_SLSH
 
 #define KM_LSYM_1 KM_LSYM_1L, KM_LSYM_1R
 #define KM_LSYM_2 KM_LSYM_2L, KM_LSYM_2R
@@ -118,7 +118,7 @@ enum hbm_keycodes {
 
 #define KM_RSYM_1L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
 #define KM_RSYM_2L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_RSYM_3L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
+#define KM_RSYM_3L KC_Z, KC_NO, KC_NO, KC_NO, KC_NO
 
 #define KM_RSYM_1R KC_CIRC, KC_AMPR, KC_ASTR, KC_UNDS, KC_PLUS
 #define KM_RSYM_2R KC_COLN, KC_UK_AT, KC_UK_TILDE, KC_MINS, KC_EQL

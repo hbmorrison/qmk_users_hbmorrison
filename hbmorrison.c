@@ -50,6 +50,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       switch (keycode) {
         // Allow these keys in the extended layers to be shifted.
         case KC_TAB:
+        case KC_Z:
+        case KC_SLSH:
           break;
         // Remove the shift modifier for everything else.
         default:
