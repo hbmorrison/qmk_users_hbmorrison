@@ -59,8 +59,8 @@ enum hbm_keycodes {
 
 // Left- and right-hand modifier bits.
 
-#define MOD_BITS_LEFT (MOD_BIT(KC_LSFT) | MOD_BIT(KC_LCTL) | MOD_BIT(KC_LALT) | MOD_BIT(KC_LGUI))
-#define MOD_BITS_RIGHT (MOD_BIT(KC_RSFT) | MOD_BIT(KC_RCTL) | MOD_BIT(KC_LALT) | MOD_BIT(KC_RGUI))
+#define MOD_BITS_LEFT (MOD_BIT(KC_LSFT) | MOD_BIT(KC_LCTL))
+#define MOD_BITS_RIGHT (MOD_BIT(KC_RSFT) | MOD_BIT(KC_RCTL))
 
 // Layer keys.
 
