@@ -33,7 +33,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Combo timings.
 
 #define COMBO_TERM 25
-#define COMBO_TERM_CROSS_SPLIT 50
 
 // Enable better behaved scroll wheel emulation.
 

@@ -17,10 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "hbmorrison.h"
 
-// Capsword combo spans both shift keys.
-
-const uint16_t PROGMEM capsword_combo[] = {KC_LCAPS, KC_RCAPS, COMBO_END};
-
 // Modifier combos.
 
 const uint16_t PROGMEM lctlsft_combo[] = {KC_V, KC_D, COMBO_END};
@@ -38,7 +34,6 @@ const uint16_t PROGMEM rmeh_combo[] = {KC_H, KC_COMMA, KC_DOT, COMBO_END};
 // Combo definitions.
 
 combo_t key_combos[] = {
-  COMBO(capsword_combo, CW_TOGG),
   COMBO(lctl_combo, KC_LCTL),
   COMBO(lalt_combo, KC_LALT),
   COMBO(lgui_combo, KC_LGUI),

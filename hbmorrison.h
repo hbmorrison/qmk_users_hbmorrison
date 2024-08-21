@@ -52,7 +52,7 @@ enum hbm_keycodes {
 #define KC_UK_TILDE LSFT(KC_BSLS)
 #define KC_UK_HASH KC_BSLS
 
-// Modified keys.
+// Modified tab keys.
 
 #define KC_SFT_TAB LSFT(KC_TAB)
 #define KC_CTL_TAB LCTL(KC_TAB)
@@ -101,7 +101,7 @@ enum hbm_keycodes {
 #define KM_LCAPS_2 KM_LCAPS_2L, KM_LCAPS_2R
 #define KM_LCAPS_3 KM_LCAPS_3L, KM_LCAPS_3R
 
-#define KM_LCAPS_THUMB CW_TOGG, KC_TAB, KC_NO, KC_TRNS
+#define KM_LCAPS_THUMB KC_SFT_TAB, KC_TAB, KC_NO, KC_TRNS
 
 #define LAYOUT_LCAPS KM_LCAPS_1, KM_LCAPS_2, KM_LCAPS_3, KM_LCAPS_THUMB
 
