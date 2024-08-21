@@ -23,31 +23,27 @@ const uint16_t PROGMEM capsword_combo[] = {KC_LCAPS, KC_RCAPS, COMBO_END};
 
 // Modifier combos.
 
-const uint16_t PROGMEM lsft_combo[] = {KC_V, KC_D, COMBO_END};
+const uint16_t PROGMEM lctlsft_combo[] = {KC_V, KC_D, COMBO_END};
 const uint16_t PROGMEM lctl_combo[] = {KC_D, KC_C, COMBO_END};
 const uint16_t PROGMEM lalt_combo[] = {KC_C, KC_X, COMBO_END};
 const uint16_t PROGMEM lgui_combo[] = {KC_X, KC_RSYM, COMBO_END};
-const uint16_t PROGMEM lctlsft_combo[] = {KC_V, KC_D, KC_C, COMBO_END};
 const uint16_t PROGMEM lmeh_combo[] = {KC_D, KC_C, KC_X, COMBO_END};
 
-const uint16_t PROGMEM rsft_combo[] = {KC_K, KC_H, COMBO_END};
+const uint16_t PROGMEM rctlsft_combo[] = {KC_K, KC_H, COMBO_END};
 const uint16_t PROGMEM rctl_combo[] = {KC_H, KC_COMMA, COMBO_END};
 const uint16_t PROGMEM ralt_combo[] = {KC_COMMA, KC_DOT, COMBO_END};
 const uint16_t PROGMEM rgui_combo[] = {KC_DOT, KC_LSYM, COMBO_END};
-const uint16_t PROGMEM rctlsft_combo[] = {KC_K, KC_H, KC_COMMA, COMBO_END};
 const uint16_t PROGMEM rmeh_combo[] = {KC_H, KC_COMMA, KC_DOT, COMBO_END};
 
 // Combo definitions.
 
 combo_t key_combos[] = {
   COMBO(capsword_combo, CW_TOGG),
-  COMBO(lsft_combo, KC_LSFT),
   COMBO(lctl_combo, KC_LCTL),
   COMBO(lalt_combo, KC_LALT),
   COMBO(lgui_combo, KC_LGUI),
   COMBO(lctlsft_combo, LCTL(KC_LSFT)),
   COMBO(lmeh_combo, LALT(LCTL(KC_LSFT))),
-  COMBO(rsft_combo, KC_RSFT),
   COMBO(rctl_combo, KC_RCTL),
   COMBO(ralt_combo, KC_LALT),
   COMBO(rgui_combo, KC_LGUI),

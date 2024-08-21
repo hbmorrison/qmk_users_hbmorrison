@@ -58,11 +58,6 @@ enum hbm_keycodes {
 #define KC_CTL_TAB LCTL(KC_TAB)
 #define KC_GUI_TAB LGUI(KC_TAB)
 
-// Left- and right-hand modifier bits.
-
-#define MOD_BITS_LEFT (MOD_BIT(KC_LSFT) | MOD_BIT(KC_LCTL))
-#define MOD_BITS_RIGHT (MOD_BIT(KC_RSFT) | MOD_BIT(KC_RCTL))
-
 // Layer keys.
 
 #define KC_LCAPS OSL(LAYER_LCAPS)

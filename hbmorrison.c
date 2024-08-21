@@ -46,52 +46,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
   }
 
-  // Only allow left-hand modifiers to work with the right side of the keyboard
-  // and vice versa.
-
-  if (record->event.pressed && current_layer == LAYER_BASE) {
-    if (get_mods() & MOD_BITS_LEFT || get_oneshot_mods() & MOD_BITS_LEFT) {
-      switch (keycode) {
-        case KC_Q:
-        case KC_W:
-        case KC_F:
-        case KC_P:
-        case KC_B:
-        case KC_A:
-        case KC_R:
-        case KC_S:
-        case KC_T:
-        case KC_G:
-        case KC_X:
-        case KC_C:
-        case KC_D:
-        case KC_V:
-          del_mods(MOD_BITS_LEFT);
-          del_oneshot_mods(MOD_BITS_LEFT);
-      }
-    }
-    if (get_mods() & MOD_BITS_RIGHT || get_oneshot_mods() & MOD_BITS_RIGHT) {
-      switch (keycode) {
-        case KC_J:
-        case KC_L:
-        case KC_U:
-        case KC_Y:
-        case KC_BSPC:
-        case KC_M:
-        case KC_N:
-        case KC_E:
-        case KC_I:
-        case KC_O:
-        case KC_K:
-        case KC_H:
-        case KC_COMMA:
-        case KC_DOT:
-          del_mods(MOD_BITS_RIGHT);
-          del_oneshot_mods(MOD_BITS_RIGHT);
-      }
-    }
-  }
-
   switch (keycode) {
 
     // Hold down KC_LALT persistantly to allow tabbing through windows.
