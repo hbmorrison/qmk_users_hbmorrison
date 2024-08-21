@@ -41,16 +41,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   if (record->event.pressed) {
     if (current_layer == LAYER_LSYM || current_layer == LAYER_RSYM) {
-      switch (keycode) {
-        // Allow these keys in the symbol layers to be shifted.
-        case KC_Z:
-        case KC_SLSH:
-          break;
-        // Remove the shift modifier for everything else.
-        default:
-          del_mods(MOD_MASK_SHIFT);
-          del_oneshot_mods(MOD_MASK_SHIFT);
-      }
+      del_mods(MOD_MASK_SHIFT);
+      del_oneshot_mods(MOD_MASK_SHIFT);
     }
   }
 
@@ -123,6 +115,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LCTL));
       }
       break;
+
     case M_PDESK:
       if (record->event.pressed) {
         SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LGUI));
@@ -141,24 +134,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 bool caps_word_press_user(uint16_t keycode) {
   switch (keycode) {
+
     // Keycodes that continue caps word with shift applied.
+
     case KC_A ... KC_Z:
-      // Apply shift to next key only.
       add_weak_mods(MOD_BIT(KC_LSFT));
       return true;
+
     // Keycodes that continue caps word without shifting.
+
     case KC_1 ... KC_0:
     case KC_BSPC:
     case KC_DEL:
     case KC_UNDS:
       return true;
+
     // Do not deactivate if symbol, num or nav layer keys are held down.
+
     case KC_RSYM:
     case KC_LSYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
       return true;
+
     // Deactivate caps word by default.
+
     default:
       return false;
   }
@@ -175,6 +175,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case KC_ENT_NUM:
     case KC_SPC_NAV:
     case KC_F_FUNC:
+    case KC_U_CTRL:
       return TAPPING_TERM_LAYER;
     default:
       return TAPPING_TERM;
