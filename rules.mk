@@ -4,7 +4,7 @@ SRC += hbmorrison.c
 
 # This is a bit of a hack to allow combos to be defined in userspace.
 
-INTROSPECTION_KEYMAP_C = hbm_combos.c
+INTROSPECTION_KEYMAP_C = combos.c
 
 # Enabled features.
 
