@@ -48,7 +48,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   uint8_t current_layer = get_highest_layer(layer_state);
 
   if (record->event.pressed) {
-    if (current_layer == LAYER_LSYM || current_layer == LAYER_RSYM) {
+    if (current_layer == LAYER_SYM) {
       del_mods(MOD_MASK_SHIFT);
       del_oneshot_mods(MOD_MASK_SHIFT);
     }
@@ -136,8 +136,7 @@ bool caps_word_press_user(uint16_t keycode) {
 
     // Do not deactivate if symbol, num or nav layer keys are held down.
 
-    case KC_RSYM:
-    case KC_LSYM:
+    case KC_OSL_SYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
       return true;
@@ -153,8 +152,7 @@ bool caps_word_press_user(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case KC_LSYM:
-    case KC_RSYM:
+    case KC_OSL_SYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
     case KC_F_FUNC:
