@@ -20,8 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_BASE] = HBM_LAYOUT_ferris_sweep( LAYOUT_BASE ),
-  [LAYER_LCAPS] = HBM_LAYOUT_ferris_sweep( LAYOUT_LCAPS ),
-  [LAYER_RCAPS] = HBM_LAYOUT_ferris_sweep( LAYOUT_RCAPS ),
   [LAYER_LSYM] = HBM_LAYOUT_ferris_sweep( LAYOUT_LSYM ),
   [LAYER_RSYM] = HBM_LAYOUT_ferris_sweep( LAYOUT_RSYM ),
   [LAYER_NAV] = HBM_LAYOUT_ferris_sweep( LAYOUT_NAV ),

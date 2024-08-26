@@ -22,6 +22,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 static bool hbm_alt_tab_pressed = false;
 
+// State for managing shift backspace behaviour.
+
+static bool hbm_del_registered = false;
+
+// Used to temporarily store the state of the mod keys during shift backspace.
+
+static uint8_t hbm_mod_state = 0;
+
 // Process key presses.
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -46,7 +54,30 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     }
   }
 
+
+  // Store current modifiers for shift-backspace action.
+
+  hbm_mod_state = get_mods();
+
   switch (keycode) {
+
+    case KC_BSPC:
+      if (record->event.pressed) {
+        if (hbm_mod_state & MOD_MASK_SHIFT) {
+          del_mods(MOD_MASK_SHIFT);
+          register_code(KC_DEL);
+          hbm_del_registered = true;
+          set_mods(hbm_mod_state);
+          return false;
+        }
+      } else {
+        if (hbm_del_registered) {
+          unregister_code(KC_DEL);
+          hbm_del_registered = false;
+          return false;
+        }
+      }
+      break;
 
     // Hold down KC_LALT persistantly to allow tabbing through windows.
 
@@ -122,8 +153,6 @@ bool caps_word_press_user(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case KC_LCAPS:
-    case KC_RCAPS:
     case KC_LSYM:
     case KC_RSYM:
     case KC_ENT_NUM:

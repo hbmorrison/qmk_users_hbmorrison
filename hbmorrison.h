@@ -24,8 +24,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 enum hbm_layers {
   LAYER_BASE,
-  LAYER_LCAPS,
-  LAYER_RCAPS,
   LAYER_LSYM,
   LAYER_RSYM,
   LAYER_NAV,
@@ -54,14 +52,12 @@ enum hbm_keycodes {
 
 // Modified tab keys.
 
-#define KC_SFT_TAB LSFT(KC_TAB)
 #define KC_CTL_TAB LCTL(KC_TAB)
 #define KC_GUI_TAB LGUI(KC_TAB)
 
 // Layer keys.
 
-#define KC_LCAPS OSL(LAYER_LCAPS)
-#define KC_RCAPS OSL(LAYER_RCAPS)
+#define KC_OSM_SFT OSM(MOD_LSFT)
 #define KC_RSYM OSL(LAYER_RSYM)
 #define KC_LSYM OSL(LAYER_LSYM)
 #define KC_SPC_NAV LT(LAYER_NAV, KC_SPC)
@@ -83,45 +79,9 @@ enum hbm_keycodes {
 #define KM_BASE_2 KM_BASE_2L, KM_BASE_2R
 #define KM_BASE_3 KM_BASE_3L, KM_BASE_3R
 
-#define KM_BASE_THUMB KC_RCAPS, KC_SPC_NAV, KC_ENT_NUM, KC_LCAPS
+#define KM_BASE_THUMB KC_OSM_SFT, KC_SPC_NAV, KC_ENT_NUM, KC_TAB
 
 #define LAYOUT_BASE KM_BASE_1, KM_BASE_2, KM_BASE_3, KM_BASE_THUMB
-
-// Left caps layer.
-
-#define KM_LCAPS_1L RSFT(KC_Q), RSFT(KC_W), RSFT(KC_F), RSFT(KC_P), RSFT(KC_B)
-#define KM_LCAPS_2L RSFT(KC_A), RSFT(KC_R), RSFT(KC_S), RSFT(KC_T), RSFT(KC_G)
-#define KM_LCAPS_3L RSFT(KC_Z), RSFT(KC_X), RSFT(KC_C), RSFT(KC_D), RSFT(KC_V)
-
-#define KM_LCAPS_1R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_LCAPS_2R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_LCAPS_3R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-
-#define KM_LCAPS_1 KM_LCAPS_1L, KM_LCAPS_1R
-#define KM_LCAPS_2 KM_LCAPS_2L, KM_LCAPS_2R
-#define KM_LCAPS_3 KM_LCAPS_3L, KM_LCAPS_3R
-
-#define KM_LCAPS_THUMB KC_SFT_TAB, KC_TAB, KC_NO, KC_TRNS
-
-#define LAYOUT_LCAPS KM_LCAPS_1, KM_LCAPS_2, KM_LCAPS_3, KM_LCAPS_THUMB
-
-// Right caps layer.
-
-#define KM_RCAPS_1L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_RCAPS_2L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_RCAPS_3L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-
-#define KM_RCAPS_1R LSFT(KC_J), LSFT(KC_L), LSFT(KC_U), LSFT(KC_Y), KC_DEL
-#define KM_RCAPS_2R LSFT(KC_M), LSFT(KC_N), LSFT(KC_E), LSFT(KC_I), LSFT(KC_O)
-#define KM_RCAPS_3R LSFT(KC_K), LSFT(KC_H), KC_LT, KC_GT, KC_QUES
-
-#define KM_RCAPS_1 KM_RCAPS_1L, KM_RCAPS_1R
-#define KM_RCAPS_2 KM_RCAPS_2L, KM_RCAPS_2R
-#define KM_RCAPS_3 KM_RCAPS_3L, KM_RCAPS_3R
-
-#define KM_RCAPS_THUMB KC_TRNS, KC_NO, KC_ESC, CW_TOGG
-
-#define LAYOUT_RCAPS KM_RCAPS_1, KM_RCAPS_2, KM_RCAPS_3, KM_RCAPS_THUMB
 
 // Left symbol layer.
 
@@ -163,7 +123,7 @@ enum hbm_keycodes {
 
 #define KM_NUM_1L KC_NO, KC_1, KC_2, KC_3, KC_NO
 #define KM_NUM_2L KC_NO, KC_4, KC_5, KC_6, KC_PSLS
-#define KM_NUM_3L KC_NO, KC_7, KC_8, KC_9, KC_NO
+#define KM_NUM_3L KC_NO, KC_7, KC_8, KC_9, KC_DOT
 
 #define KM_NUM_1R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
 #define KM_NUM_2R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
@@ -173,7 +133,7 @@ enum hbm_keycodes {
 #define KM_NUM_2 KM_NUM_2L, KM_NUM_2R
 #define KM_NUM_3 KM_NUM_3L, KM_NUM_3R
 
-#define KM_NUM_THUMB KC_DOT, KC_0, KC_TRNS, KC_NO
+#define KM_NUM_THUMB KC_0, KC_TAB, KC_TRNS, KC_NO
 
 #define LAYOUT_NUM KM_NUM_1, KM_NUM_2, KM_NUM_3, KM_NUM_THUMB
 
@@ -191,7 +151,7 @@ enum hbm_keycodes {
 #define KM_NAV_2 KM_NAV_2L, KM_NAV_2R
 #define KM_NAV_3 KM_NAV_3L, KM_NAV_3R
 
-#define KM_NAV_THUMB KC_NO, KC_TRNS, KC_NO, KC_NO
+#define KM_NAV_THUMB KC_NO, KC_TRNS, KC_ESC, KC_NO
 
 #define LAYOUT_NAV KM_NAV_1, KM_NAV_2, KM_NAV_3, KM_NAV_THUMB
 
