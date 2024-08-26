@@ -24,12 +24,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PERMISSIVE_HOLD_PER_KEY
 #define TAPPING_TERM 190
 #define TAPPING_TERM_LAYER 190
-#define TAPPING_TERM_MODS 1000
 
 // Double tap shift for caps word.
 
 #define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
 #define CAPS_WORD_IDLE_TIMEOUT 10000
+
+// Combo timings.
+
+#define COMBO_TERM 25
 
 // Enable better behaved scroll wheel emulation.
 
