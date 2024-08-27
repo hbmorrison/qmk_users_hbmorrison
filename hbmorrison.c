@@ -91,6 +91,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
+    // ESC + colon.
+
+    case M_ESC_COLN:
+      if (record->event.pressed) {
+        tap_code(KC_ESC);
+        SEND_STRING(SS_DELAY(50));
+        tap_code16(KC_COLN);
+      }
+      break;
+
     // Switch between virtual desktops.
 
     case M_NDESK:

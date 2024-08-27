@@ -35,6 +35,7 @@ enum hbm_layers {
 
 enum hbm_keycodes {
   M_ALT_TAB = SAFE_RANGE,
+  M_ESC_COLN,
   M_NDESK,
   M_PDESK
 };
@@ -51,6 +52,7 @@ enum hbm_keycodes {
 
 // Modified tab keys.
 
+#define KC_SFT_TAB LSFT(KC_TAB)
 #define KC_CTL_TAB LCTL(KC_TAB)
 #define KC_GUI_TAB LGUI(KC_TAB)
 
@@ -95,7 +97,7 @@ enum hbm_keycodes {
 #define KM_SYM_2 KM_SYM_2L, KM_SYM_2R
 #define KM_SYM_3 KM_SYM_3L, KM_SYM_3R
 
-#define KM_SYM_THUMB KC_NO, KC_NO, KC_NO, KC_NO
+#define KM_SYM_THUMB KC_SFT_TAB, KC_NO, KC_NO, KC_NO
 
 #define LAYOUT_SYM KM_SYM_1, KM_SYM_2, KM_SYM_3, KM_SYM_THUMB
 
@@ -131,7 +133,7 @@ enum hbm_keycodes {
 #define KM_NAV_2 KM_NAV_2L, KM_NAV_2R
 #define KM_NAV_3 KM_NAV_3L, KM_NAV_3R
 
-#define KM_NAV_THUMB KC_NO, KC_TRNS, KC_ESC, KC_NO
+#define KM_NAV_THUMB KC_NO, KC_TRNS, KC_ESC, M_ESC_COLN
 
 #define LAYOUT_NAV KM_NAV_1, KM_NAV_2, KM_NAV_3, KM_NAV_THUMB
 
