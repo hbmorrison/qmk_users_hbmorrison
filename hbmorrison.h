@@ -108,8 +108,8 @@ enum hbm_keycodes {
 #define KM_NUM_3L KC_NO, KC_7, KC_8, KC_9, KC_DOT
 
 #define KM_NUM_1R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_NUM_2R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_NUM_3R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
+#define KM_NUM_2R KC_MS_BTN1, KC_NO, KC_NO, KC_NO, KC_NO
+#define KM_NUM_3R KC_MS_BTN2, KC_NO, KC_NO, KC_NO, KC_NO
 
 #define KM_NUM_1 KM_NUM_1L, KM_NUM_1R
 #define KM_NUM_2 KM_NUM_2L, KM_NUM_2R
