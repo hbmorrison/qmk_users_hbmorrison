@@ -162,7 +162,7 @@ enum hbm_keycodes {
 // Controls layer.
 
 #define KM_CTRL_1L KC_NO, KC_MPLY, KC_MUTE, KC_PSCR, M_ISWIN
-#define KM_CTRL_2L KC_NO, KC_MNXT, KC_VOLU, KC_BRIU, M_ISWIN
+#define KM_CTRL_2L KC_NO, KC_MNXT, KC_VOLU, KC_BRIU, M_ISCROS
 #define KM_CTRL_3L KC_NO, KC_MPRV, KC_VOLD, KC_BRID, KC_NO
 
 #define KM_CTRL_1R KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO
