@@ -17,6 +17,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "hbmorrison.h"
 
+// Defines whether to issue Windows or ChromeOS keypresses from macros - Windows
+// by default.
+
+static bool hbm_is_chromebook = false;
+
 // State of the M_ALT_TAB macro - true if we are currently tabbing between
 // windows.
 
@@ -53,7 +58,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       del_oneshot_mods(MOD_MASK_SHIFT);
     }
   }
-
 
   // Store current modifiers for shift-backspace action.
 
@@ -105,17 +109,69 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case M_NDESK:
       if (record->event.pressed) {
-        SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LGUI));
-        SEND_STRING(SS_TAP(X_RGHT));
-        SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LCTL));
+        if (hbm_is_chromebook) {
+          SEND_STRING(SS_DOWN(X_LGUI));
+          SEND_STRING(SS_TAP(X_RBRC));
+          SEND_STRING(SS_UP(X_LGUI));
+        } else {
+          SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LGUI));
+          SEND_STRING(SS_TAP(X_RGHT));
+          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LCTL));
+        }
       }
       break;
 
     case M_PDESK:
       if (record->event.pressed) {
-        SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LGUI));
-        SEND_STRING(SS_TAP(X_LEFT));
-        SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LCTL));
+        if (hbm_is_chromebook) {
+          SEND_STRING(SS_DOWN(X_LGUI));
+          SEND_STRING(SS_TAP(X_LBRC));
+          SEND_STRING(SS_UP(X_LGUI));
+        } else {
+          SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LGUI));
+          SEND_STRING(SS_TAP(X_LEFT));
+          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LCTL));
+        }
+      }
+      break;
+
+    case M_OVERVIEW:
+      if (record->event.pressed) {
+        if (hbm_is_chromebook) {
+          SEND_STRING(SS_TAP(X_F5));
+        } else {
+          SEND_STRING(SS_DOWN(X_LGUI));
+          SEND_STRING(SS_TAP(X_TAB));
+          SEND_STRING(SS_UP(X_LGUI));
+        }
+      }
+      break;
+
+    // Open the emoji window.
+
+    case M_EMOJI:
+      if (record->event.pressed) {
+        if (hbm_is_chromebook) {
+          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LGUI));
+          SEND_STRING(SS_TAP(X_SPC));
+          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LSFT));
+        } else {
+          SEND_STRING(SS_DOWN(X_LGUI)SS_TAP(X_SCLN)SS_UP(X_LGUI));
+        }
+      }
+      break;
+
+    // Swap between Windows and ChromeOS macro keypresses.
+
+    case M_ISCROS:
+      if (record->event.pressed) {
+        hbm_is_chromebook = true;
+      }
+      break;
+
+    case M_ISWIN:
+      if (record->event.pressed) {
+        hbm_is_chromebook = false;
       }
       break;
 

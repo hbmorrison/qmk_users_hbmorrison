@@ -37,7 +37,11 @@ enum hbm_keycodes {
   M_ALT_TAB = SAFE_RANGE,
   M_ESC_COLN,
   M_NDESK,
-  M_PDESK
+  M_PDESK,
+  M_OVERVIEW,
+  M_EMOJI,
+  M_ISCROS,
+  M_ISWIN
 };
 
 // Alternative keys for UK ISO keyboard layouts.
@@ -87,7 +91,7 @@ enum hbm_keycodes {
 
 #define KM_SYM_1L KC_EXLM, KC_UK_DQUO, KC_UK_PND, KC_DLR, KC_PERC
 #define KM_SYM_2L KC_GRV, KC_UK_PIPE, KC_LBRC, KC_LCBR, KC_LPRN
-#define KM_SYM_3L KC_NO, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
+#define KM_SYM_3L M_EMOJI, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
 
 #define KM_SYM_1R KC_CIRC, KC_AMPR, KC_ASTR, KC_UNDS, KC_PLUS
 #define KM_SYM_2R KC_COLN, KC_UK_AT, KC_UK_TILDE, KC_MINS, KC_EQL
@@ -125,7 +129,7 @@ enum hbm_keycodes {
 #define KM_NAV_2L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
 #define KM_NAV_3L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
 
-#define KM_NAV_1R KC_GUI_TAB, M_PDESK, KC_CTL_TAB, M_ALT_TAB, M_NDESK
+#define KM_NAV_1R M_OVERVIEW, M_PDESK, KC_CTL_TAB, M_ALT_TAB, M_NDESK
 #define KM_NAV_2R KC_WH_U, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT
 #define KM_NAV_3R KC_WH_D, KC_HOME, KC_PGDN, KC_PGUP, KC_END
 
@@ -157,8 +161,8 @@ enum hbm_keycodes {
 
 // Controls layer.
 
-#define KM_CTRL_1L KC_NO, KC_MPLY, KC_MUTE, KC_PSCR, KC_NO
-#define KM_CTRL_2L KC_NO, KC_MNXT, KC_VOLU, KC_BRIU, KC_NO
+#define KM_CTRL_1L KC_NO, KC_MPLY, KC_MUTE, KC_PSCR, M_ISWIN
+#define KM_CTRL_2L KC_NO, KC_MNXT, KC_VOLU, KC_BRIU, M_ISWIN
 #define KM_CTRL_3L KC_NO, KC_MPRV, KC_VOLD, KC_BRID, KC_NO
 
 #define KM_CTRL_1R KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO
