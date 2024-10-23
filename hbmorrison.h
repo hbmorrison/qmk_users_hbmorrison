@@ -116,8 +116,8 @@ enum hbm_keycodes {
 
 // Number layer.
 
-#define KM_NUM_1L KC_NO, KC_1, KC_2, KC_3, KC_NO
-#define KM_NUM_2L KC_NO, KC_4, KC_5, KC_6, KC_NO
+#define KM_NUM_1L KC_NO, KC_1, KC_2, KC_3, KC_PPLS
+#define KM_NUM_2L KC_NO, KC_4, KC_5, KC_6, KC_PMNS
 #define KM_NUM_3L KC_NO, KC_7, KC_8, KC_9, KC_PSLS
 
 #define KM_NUM_1R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
