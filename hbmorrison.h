@@ -1,5 +1,5 @@
 /*
-Copyright KM_2023 Hannah Blythe Morrison
+Copyright 2023 Hannah Blythe Morrison
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -44,6 +44,7 @@ enum hbm_layers {
 enum hbm_keycodes {
   M_ALT_TAB = SAFE_RANGE,
   M_ESC_COLN,
+  M_EQL_GT,
   M_NDESK,
   M_PDESK,
   M_OVERVIEW,
@@ -72,21 +73,33 @@ enum hbm_keycodes {
 // Layer keys.
 
 #define KC_OSM_SFT OSM(MOD_LSFT)
-#define KC_OSL_SYM OSL(LAYER_SYM)
 #define KC_SPC_NAV LT(LAYER_NAV, KC_SPC)
 #define KC_ENT_NUM LT(LAYER_NUM, KC_ENT)
 #define KC_F_FUNC LT(LAYER_FUNC, KC_F)
 #define KC_U_CTRL LT(LAYER_CTRL, KC_U)
+#define KC_SLSH_SYM LT(LAYER_SYM, KC_SLSH)
+#define KC_Z_SYM LT(LAYER_SYM, KC_Z)
+
+// Modifier keys in the style of homerow mods.
+
+#define KC_X_GUI LGUI_T(KC_X)
+#define KC_C_ALT LALT_T(KC_C)
+#define KC_D_CTL LCTL_T(KC_D)
+#define KC_V_SFTCTL C_S_T(KC_V)
+#define KC_K_SFTCTL C_S_T(KC_K)
+#define KC_H_CTL LCTL_T(KC_H)
+#define KC_COMMA_ALT LALT_T(KC_COMMA)
+#define KC_DOT_GUI LGUI_T(KC_DOT)
 
 // Base layer.
 
 #define KM_BASE_1L KC_Q, KC_W, KC_F_FUNC, KC_P, KC_B
 #define KM_BASE_2L KC_A, KC_R, KC_S, KC_T, KC_G
-#define KM_BASE_3L KC_Z, KC_X, KC_C, KC_D, KC_V
+#define KM_BASE_3L KC_Z_SYM, KC_X_GUI, KC_C_ALT, KC_D_CTL, KC_V_SFTCTL
 
 #define KM_BASE_1R KC_J, KC_L, KC_U_CTRL, KC_Y, KC_BSPC
 #define KM_BASE_2R KC_M, KC_N, KC_E, KC_I, KC_O
-#define KM_BASE_3R KC_K, KC_H, KC_COMMA, KC_DOT, KC_OSL_SYM
+#define KM_BASE_3R KC_K_SFTCTL, KC_H_CTL, KC_COMMA_ALT, KC_DOT_GUI, KC_SLSH_SYM
 
 #define KM_BASE_1 KM_BASE_1L, KM_BASE_1R
 #define KM_BASE_2 KM_BASE_2L, KM_BASE_2R
@@ -99,12 +112,12 @@ enum hbm_keycodes {
 // Left symbol layer.
 
 #define KM_SYM_1L KC_EXLM, KC_UK_DQUO, KC_UK_PND, KC_DLR, KC_PERC
-#define KM_SYM_2L KC_ESC, KC_UK_PIPE, KC_LBRC, KC_LCBR, KC_LPRN
-#define KM_SYM_3L M_ESC_COLN, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
+#define KM_SYM_2L KC_GRV, KC_UK_PIPE, KC_LBRC, KC_LCBR, KC_LPRN
+#define KM_SYM_3L KC_Z, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
 
 #define KM_SYM_1R KC_CIRC, KC_AMPR, KC_ASTR, KC_UNDS, KC_PLUS
 #define KM_SYM_2R KC_COLN, KC_UK_AT, KC_UK_TILDE, KC_MINS, KC_EQL
-#define KM_SYM_3R KC_SCLN, KC_QUOT, KC_UK_HASH, KC_GRV, KC_SLSH
+#define KM_SYM_3R KC_SCLN, KC_QUOT, KC_UK_HASH, M_EQL_GT, KC_SLSH
 
 #define KM_SYM_1 KM_SYM_1L, KM_SYM_1R
 #define KM_SYM_2 KM_SYM_2L, KM_SYM_2R
@@ -146,7 +159,7 @@ enum hbm_keycodes {
 #define KM_NAV_2 KM_NAV_2L, KM_NAV_2R
 #define KM_NAV_3 KM_NAV_3L, KM_NAV_3R
 
-#define KM_NAV_THUMB KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+#define KM_NAV_THUMB KC_TRNS, KC_TRNS, KC_ESC, M_ESC_COLN
 
 #define LAYOUT_NAV KM_NAV_1, KM_NAV_2, KM_NAV_3, KM_NAV_THUMB
 
