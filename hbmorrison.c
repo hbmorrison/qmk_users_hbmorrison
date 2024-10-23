@@ -20,7 +20,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Defines whether to issue Windows or ChromeOS keypresses from macros - Windows
 // by default.
 
-static bool hbm_is_chromebook = false;
+static uint8_t hbm_operatingsystem = OS_WINDOWS;
+
+// Declare operating specific keycode handling functions.
+
+bool process_record_user_windows(uint16_t keycode, keyrecord_t *record);
+bool process_record_user_chromeos(uint16_t keycode, keyrecord_t *record);
+bool process_record_user_linux(uint16_t keycode, keyrecord_t *record);
 
 // State of the M_ALT_TAB macro - true if we are currently tabbing between
 // windows.
@@ -34,6 +40,11 @@ static bool hbm_del_registered = false;
 // Used to temporarily store the state of the mod keys during shift backspace.
 
 static uint8_t hbm_mod_state = 0;
+
+// State of the shift modifiers - used to turn shift off for symbol layers.
+
+static bool hbm_shift_pressed = false;
+static bool hbm_os_shift_pressed = false;
 
 // Process key presses.
 
@@ -54,14 +65,32 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   if (record->event.pressed) {
     if (current_layer == LAYER_SYM) {
-      del_mods(MOD_MASK_SHIFT);
-      del_oneshot_mods(MOD_MASK_SHIFT);
+      switch (keycode) {
+        case KC_SLSH:
+          break;
+        default:
+          hbm_shift_pressed = get_mods() & MOD_BIT(KC_LSFT);
+          hbm_os_shift_pressed = get_oneshot_mods() & MOD_BIT(KC_LSFT);
+          del_mods(MOD_MASK_SHIFT);
+          del_oneshot_mods(MOD_MASK_SHIFT);
+      }
+    }
+  } else {
+    if (hbm_shift_pressed) {
+      add_mods(MOD_BIT(KC_LSFT));
+      hbm_shift_pressed = false;
+    }
+    if (hbm_os_shift_pressed) {
+      add_oneshot_mods(MOD_BIT(KC_LSFT));
+      hbm_os_shift_pressed = false;
     }
   }
 
   // Store current modifiers for shift-backspace action.
 
   hbm_mod_state = get_mods();
+
+  // Process generic keycodes.
 
   switch (keycode) {
 
@@ -95,55 +124,69 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
-    // ESC + colon.
+    // Swap between Windows, ChromeOS and Linux macro keypresses.
 
-    case M_ESC_COLN:
+    case M_ISWINDOWS:
       if (record->event.pressed) {
-        tap_code(KC_ESC);
-        SEND_STRING(SS_DELAY(100));
-        tap_code16(KC_COLN);
+        hbm_operatingsystem = OS_WINDOWS;
       }
       break;
+
+    case M_ISCHROMEOS:
+      if (record->event.pressed) {
+        hbm_operatingsystem = OS_CHROMEOS;
+      }
+      break;
+
+    case M_ISLINUX:
+      if (record->event.pressed) {
+        hbm_operatingsystem = OS_LINUX;
+      }
+      break;
+
+  }
+
+  // Process operating system specific keycodes.
+
+  switch (hbm_operatingsystem) {
+    case OS_WINDOWS:
+      return process_record_user_windows(keycode, record);
+    case OS_CHROMEOS:
+      return process_record_user_chromeos(keycode, record);
+    case OS_LINUX:
+      return process_record_user_linux(keycode, record);
+  }
+
+  return true;
+}
+
+bool process_record_user_windows(uint16_t keycode, keyrecord_t *record) {
+
+  switch (keycode) {
 
     // Switch between virtual desktops.
 
     case M_NDESK:
       if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LGUI));
-          SEND_STRING(SS_TAP(X_RBRC));
-          SEND_STRING(SS_UP(X_LGUI));
-        } else {
-          SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LGUI));
-          SEND_STRING(SS_TAP(X_RGHT));
-          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LCTL));
-        }
+        SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LGUI));
+        SEND_STRING(SS_TAP(X_RGHT));
+        SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LCTL));
       }
       break;
 
     case M_PDESK:
       if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LGUI));
-          SEND_STRING(SS_TAP(X_LBRC));
-          SEND_STRING(SS_UP(X_LGUI));
-        } else {
-          SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LGUI));
-          SEND_STRING(SS_TAP(X_LEFT));
-          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LCTL));
-        }
+        SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LGUI));
+        SEND_STRING(SS_TAP(X_LEFT));
+        SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LCTL));
       }
       break;
 
     case M_OVERVIEW:
       if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_TAP(X_F5));
-        } else {
-          SEND_STRING(SS_DOWN(X_LGUI));
-          SEND_STRING(SS_TAP(X_TAB));
-          SEND_STRING(SS_UP(X_LGUI));
-        }
+        SEND_STRING(SS_DOWN(X_LGUI));
+        SEND_STRING(SS_TAP(X_TAB));
+        SEND_STRING(SS_UP(X_LGUI));
       }
       break;
 
@@ -151,32 +194,59 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case M_EMOJI:
       if (record->event.pressed) {
-        if (hbm_is_chromebook) {
-          SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LGUI));
-          SEND_STRING(SS_TAP(X_SPC));
-          SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LSFT));
-        } else {
-          SEND_STRING(SS_DOWN(X_LGUI)SS_TAP(X_SCLN)SS_UP(X_LGUI));
-        }
-      }
-      break;
-
-    // Swap between Windows and ChromeOS macro keypresses.
-
-    case M_ISCROS:
-      if (record->event.pressed) {
-        hbm_is_chromebook = true;
-      }
-      break;
-
-    case M_ISWIN:
-      if (record->event.pressed) {
-        hbm_is_chromebook = false;
+        SEND_STRING(SS_DOWN(X_LGUI)SS_TAP(X_SCLN)SS_UP(X_LGUI));
       }
       break;
 
   }
 
+  return true;
+}
+
+bool process_record_user_chromeos(uint16_t keycode, keyrecord_t *record) {
+
+  switch (keycode) {
+
+    // Switch between virtual desktops.
+
+    case M_NDESK:
+      if (record->event.pressed) {
+        SEND_STRING(SS_DOWN(X_LGUI));
+        SEND_STRING(SS_TAP(X_RBRC));
+        SEND_STRING(SS_UP(X_LGUI));
+      }
+      break;
+
+    case M_PDESK:
+      if (record->event.pressed) {
+        SEND_STRING(SS_DOWN(X_LGUI));
+        SEND_STRING(SS_TAP(X_LBRC));
+        SEND_STRING(SS_UP(X_LGUI));
+      }
+      break;
+
+    case M_OVERVIEW:
+      if (record->event.pressed) {
+        SEND_STRING(SS_TAP(X_F5));
+      }
+      break;
+
+    // Open the emoji window.
+
+    case M_EMOJI:
+      if (record->event.pressed) {
+        SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LGUI));
+        SEND_STRING(SS_TAP(X_SPC));
+        SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LSFT));
+      }
+      break;
+
+  }
+
+  return true;
+}
+
+bool process_record_user_linux(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 

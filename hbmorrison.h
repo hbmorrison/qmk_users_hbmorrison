@@ -20,6 +20,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "quantum.h"
 
+// Supported operating systems.
+
+enum hbm_operatingsystems {
+  OS_WINDOWS,
+  OS_CHROMEOS,
+  OS_LINUX
+};
+
 // Layers and layer aliases.
 
 enum hbm_layers {
@@ -40,8 +48,9 @@ enum hbm_keycodes {
   M_PDESK,
   M_OVERVIEW,
   M_EMOJI,
-  M_ISCROS,
-  M_ISWIN
+  M_ISWINDOWS,
+  M_ISCHROMEOS,
+  M_ISLINUX
 };
 
 // Alternative keys for UK ISO keyboard layouts.
@@ -77,39 +86,39 @@ enum hbm_keycodes {
 
 #define KM_BASE_1R KC_J, KC_L, KC_U_CTRL, KC_Y, KC_BSPC
 #define KM_BASE_2R KC_M, KC_N, KC_E, KC_I, KC_O
-#define KM_BASE_3R KC_K, KC_H, KC_COMMA, KC_DOT, KC_SLSH
+#define KM_BASE_3R KC_K, KC_H, KC_COMMA, KC_DOT, KC_OSL_SYM
 
 #define KM_BASE_1 KM_BASE_1L, KM_BASE_1R
 #define KM_BASE_2 KM_BASE_2L, KM_BASE_2R
 #define KM_BASE_3 KM_BASE_3L, KM_BASE_3R
 
-#define KM_BASE_THUMB KC_OSM_SFT, KC_SPC_NAV, KC_ENT_NUM, KC_OSL_SYM
+#define KM_BASE_THUMB KC_OSM_SFT, KC_SPC_NAV, KC_ENT_NUM, KC_TAB
 
 #define LAYOUT_BASE KM_BASE_1, KM_BASE_2, KM_BASE_3, KM_BASE_THUMB
 
 // Left symbol layer.
 
 #define KM_SYM_1L KC_EXLM, KC_UK_DQUO, KC_UK_PND, KC_DLR, KC_PERC
-#define KM_SYM_2L KC_GRV, KC_UK_PIPE, KC_LBRC, KC_LCBR, KC_LPRN
-#define KM_SYM_3L M_EMOJI, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
+#define KM_SYM_2L KC_ESC, KC_UK_PIPE, KC_LBRC, KC_LCBR, KC_LPRN
+#define KM_SYM_3L KC_CAPS, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
 
 #define KM_SYM_1R KC_CIRC, KC_AMPR, KC_ASTR, KC_UNDS, KC_PLUS
 #define KM_SYM_2R KC_COLN, KC_UK_AT, KC_UK_TILDE, KC_MINS, KC_EQL
-#define KM_SYM_3R KC_SCLN, KC_QUOT, KC_UK_HASH, KC_GT, KC_NO
+#define KM_SYM_3R KC_SCLN, KC_QUOT, KC_UK_HASH, KC_GRV, KC_SLSH
 
 #define KM_SYM_1 KM_SYM_1L, KM_SYM_1R
 #define KM_SYM_2 KM_SYM_2L, KM_SYM_2R
 #define KM_SYM_3 KM_SYM_3L, KM_SYM_3R
 
-#define KM_SYM_THUMB KC_SFT_TAB, KC_NO, KC_NO, KC_NO
+#define KM_SYM_THUMB KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
 
 #define LAYOUT_SYM KM_SYM_1, KM_SYM_2, KM_SYM_3, KM_SYM_THUMB
 
 // Number layer.
 
 #define KM_NUM_1L KC_NO, KC_1, KC_2, KC_3, KC_NO
-#define KM_NUM_2L KC_NO, KC_4, KC_5, KC_6, KC_PSLS
-#define KM_NUM_3L KC_NO, KC_7, KC_8, KC_9, KC_DOT
+#define KM_NUM_2L KC_NO, KC_4, KC_5, KC_6, KC_NO
+#define KM_NUM_3L KC_NO, KC_7, KC_8, KC_9, KC_PSLS
 
 #define KM_NUM_1R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
 #define KM_NUM_2R KC_MS_BTN1, KC_NO, KC_NO, KC_NO, KC_NO
@@ -119,7 +128,7 @@ enum hbm_keycodes {
 #define KM_NUM_2 KM_NUM_2L, KM_NUM_2R
 #define KM_NUM_3 KM_NUM_3L, KM_NUM_3R
 
-#define KM_NUM_THUMB KC_0, KC_TAB, KC_TRNS, KC_NO
+#define KM_NUM_THUMB KC_DOT, KC_0, KC_TRNS, KC_TRNS
 
 #define LAYOUT_NUM KM_NUM_1, KM_NUM_2, KM_NUM_3, KM_NUM_THUMB
 
@@ -137,7 +146,7 @@ enum hbm_keycodes {
 #define KM_NAV_2 KM_NAV_2L, KM_NAV_2R
 #define KM_NAV_3 KM_NAV_3L, KM_NAV_3R
 
-#define KM_NAV_THUMB KC_NO, KC_TRNS, KC_ESC, M_ESC_COLN
+#define KM_NAV_THUMB KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
 
 #define LAYOUT_NAV KM_NAV_1, KM_NAV_2, KM_NAV_3, KM_NAV_THUMB
 
@@ -155,15 +164,15 @@ enum hbm_keycodes {
 #define KM_FUNC_2 KM_FUNC_2L, KM_FUNC_2R
 #define KM_FUNC_3 KM_FUNC_3L, KM_FUNC_3R
 
-#define KM_FUNC_THUMB KC_NO, KC_NO, KC_NO, KC_NO
+#define KM_FUNC_THUMB KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
 
 #define LAYOUT_FUNC KM_FUNC_1, KM_FUNC_2, KM_FUNC_3, KM_FUNC_THUMB
 
 // Controls layer.
 
-#define KM_CTRL_1L KC_NO, KC_MPLY, KC_MUTE, KC_PSCR, M_ISWIN
-#define KM_CTRL_2L KC_NO, KC_MNXT, KC_VOLU, KC_BRIU, M_ISCROS
-#define KM_CTRL_3L KC_NO, KC_MPRV, KC_VOLD, KC_BRID, KC_NO
+#define KM_CTRL_1L KC_NO, KC_MPLY, KC_MUTE, KC_PSCR, M_ISWINDOWS
+#define KM_CTRL_2L M_EMOJI, KC_MNXT, KC_VOLU, KC_BRIU, M_ISCHROMEOS
+#define KM_CTRL_3L KC_NO, KC_MPRV, KC_VOLD, KC_BRID, M_ISLINUX
 
 #define KM_CTRL_1R KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO
 #define KM_CTRL_2R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
@@ -173,7 +182,7 @@ enum hbm_keycodes {
 #define KM_CTRL_2 KM_CTRL_2L, KM_CTRL_2R
 #define KM_CTRL_3 KM_CTRL_3L, KM_CTRL_3R
 
-#define KM_CTRL_THUMB KC_NO, KC_NO, KC_NO, KC_NO
+#define KM_CTRL_THUMB KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
 
 #define LAYOUT_CTRL KM_CTRL_1, KM_CTRL_2, KM_CTRL_3, KM_CTRL_THUMB
 
