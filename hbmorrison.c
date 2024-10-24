@@ -64,7 +64,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   uint8_t current_layer = get_highest_layer(layer_state);
 
   if (record->event.pressed) {
-    if (current_layer == LAYER_SYM) {
+    if (current_layer == LAYER_LSYM || current_layer == LAYER_RSYM) {
       switch (keycode) {
         case KC_Z:
         case KC_SLSH:
@@ -125,16 +125,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
-    // ESC + colon.
-
-    case M_ESC_COLN:
-      if (record->event.pressed) {
-        tap_code(KC_ESC);
-        SEND_STRING(SS_DELAY(100));
-        tap_code16(KC_COLN);
-      }
-      break;
-
     // Equals + greater-than.
 
     case M_EQL_GT:
@@ -144,7 +134,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
-    // Swap between Windows, ChromeOS and Linux macro keypresses.
+    // Swap between Windows, ChromeOS and Linux shortcuts.
 
     case M_ISWINDOWS:
       if (record->event.pressed) {
@@ -292,8 +282,8 @@ bool caps_word_press_user(uint16_t keycode) {
 
     // Do not deactivate if symbol, num or nav layer keys are held down.
 
-    case KC_Z_SYM:
-    case KC_SLSH_SYM:
+    case KC_Z_RSYM:
+    case KC_SLSH_LSYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
       return true;
@@ -309,8 +299,8 @@ bool caps_word_press_user(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case KC_Z_SYM:
-    case KC_SLSH_SYM:
+    case KC_Z_RSYM:
+    case KC_SLSH_LSYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
     case KC_F_FUNC:
