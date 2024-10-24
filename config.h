@@ -34,11 +34,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define COMBO_TERM 25
 
-// Enable better behaved scroll wheel emulation.
+// Enable constant scroll wheel.
 
-#define MOUSEKEY_WHEEL_DELAY 100
-#define MOUSEKEY_WHEEL_INTERVAL 70
-#define MOUSEKEY_WHEEL_TIME_TO_MAX 80
+#define MK_3_SPEED
+#define MK_W_OFFSET_1 2
+#define MK_W_INTERVAL_1 80
 
 // Layout macros that allow preprocessor substitutions. Use these instead of the
 // standard LAYOUT_ macros in keymap.c code.
