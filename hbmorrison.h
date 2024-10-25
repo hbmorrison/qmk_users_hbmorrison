@@ -44,6 +44,7 @@ enum hbm_layers {
 
 enum hbm_keycodes {
   M_ALT_TAB = SAFE_RANGE,
+  M_ESC,
   M_EQL_GT,
   M_NDESK,
   M_PDESK,
@@ -105,7 +106,7 @@ enum hbm_keycodes {
 #define KM_BASE_2 KM_BASE_2L, KM_BASE_2R
 #define KM_BASE_3 KM_BASE_3L, KM_BASE_3R
 
-#define KM_BASE_THUMB KC_OSM_SFT, KC_SPC_NAV, KC_ENT_NUM, KC_ESC
+#define KM_BASE_THUMB KC_OSM_SFT, KC_SPC_NAV, KC_ENT_NUM, M_ESC
 
 #define LAYOUT_BASE KM_BASE_1, KM_BASE_2, KM_BASE_3, KM_BASE_THUMB
 

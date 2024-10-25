@@ -113,6 +113,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
+    // Shift + Esc issues Esc :
+
+    case M_ESC:
+      if (record->event.pressed) {
+        tap_code(KC_ESC);
+        // If shift is held down, remove it, send : then enable it again.
+        if (get_mods() & MOD_BIT(KC_LSFT)) {
+          del_mods(MOD_MASK_SHIFT);
+          SEND_STRING(SS_DELAY(100));
+          tap_code16(KC_COLN);
+          add_mods(MOD_BIT(KC_LSFT));
+        }
+      }
+      break;
+
     // Hold down KC_LALT persistantly to allow tabbing through windows.
 
     case M_ALT_TAB:
