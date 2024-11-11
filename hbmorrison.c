@@ -57,24 +57,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     hbm_alt_tab_pressed = false;
   }
 
-  // Ensure that shift is not pressed when symbol layers are active, aside from
-  // a few exceptions. This ensures that symbol keypresses will always produce
-  // the unshifted symbol, unless explicitly shifted in code.
+  // Ensure that shift is not pressed when symbol layers are active. This
+  // ensures that symbol keypresses will always produce the unshifted symbol,
+  // unless explicitly shifted in code.
 
   uint8_t current_layer = get_highest_layer(layer_state);
 
   if (record->event.pressed) {
     if (current_layer == LAYER_LSYM || current_layer == LAYER_RSYM) {
-      switch (keycode) {
-        case KC_Z:
-        case KC_SLSH:
-          break;
-        default:
-          hbm_shift_pressed = get_mods() & MOD_BIT(KC_LSFT);
-          hbm_os_shift_pressed = get_oneshot_mods() & MOD_BIT(KC_LSFT);
-          del_mods(MOD_MASK_SHIFT);
-          del_oneshot_mods(MOD_MASK_SHIFT);
-      }
+      hbm_shift_pressed = get_mods() & MOD_BIT(KC_LSFT);
+      hbm_os_shift_pressed = get_oneshot_mods() & MOD_BIT(KC_LSFT);
+      del_mods(MOD_MASK_SHIFT);
+      del_oneshot_mods(MOD_MASK_SHIFT);
     }
   } else {
     if (hbm_shift_pressed) {
@@ -113,18 +107,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
-    // Shift + Esc issues Esc :
+    // Esc then colon.
 
-    case M_ESC:
+    case M_ESC_COLN:
       if (record->event.pressed) {
         tap_code(KC_ESC);
-        // If shift is held down, remove it, send : then enable it again.
-        if (get_mods() & MOD_BIT(KC_LSFT)) {
-          del_mods(MOD_MASK_SHIFT);
-          SEND_STRING(SS_DELAY(100));
-          tap_code16(KC_COLN);
-          add_mods(MOD_BIT(KC_LSFT));
-        }
+        SEND_STRING(SS_DELAY(100));
+        tap_code16(KC_COLN);
       }
       break;
 
@@ -314,8 +303,8 @@ bool caps_word_press_user(uint16_t keycode) {
 
     // Do not deactivate if symbol, num or nav layer keys are held down.
 
-    case KC_Z_RSYM:
-    case KC_SLSH_LSYM:
+    case KC_V_RSYM:
+    case KC_K_LSYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
       return true;
@@ -331,8 +320,8 @@ bool caps_word_press_user(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case KC_Z_RSYM:
-    case KC_SLSH_LSYM:
+    case KC_V_RSYM:
+    case KC_K_LSYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
     case KC_F_FUNC:
