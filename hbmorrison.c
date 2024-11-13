@@ -303,8 +303,8 @@ bool caps_word_press_user(uint16_t keycode) {
 
     // Do not deactivate if symbol, num or nav layer keys are held down.
 
-    case KC_T_RSYM:
-    case KC_N_LSYM:
+    case KC_G_RSYM:
+    case KC_M_LSYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
       return true;
@@ -320,12 +320,12 @@ bool caps_word_press_user(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case KC_T_RSYM:
-    case KC_N_LSYM:
+    case KC_G_RSYM:
+    case KC_M_LSYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
-    case KC_P_FUNC:
-    case KC_L_CTRL:
+    case KC_B_FUNC:
+    case KC_J_CTRL:
       return TAPPING_TERM_LAYER;
     default:
       return TAPPING_TERM;
