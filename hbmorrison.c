@@ -25,7 +25,6 @@ static uint8_t hbm_operatingsystem = OS_WINDOWS;
 // Declare operating specific keycode handling functions.
 
 bool process_record_user_windows(uint16_t keycode, keyrecord_t *record);
-bool process_record_user_chromeos(uint16_t keycode, keyrecord_t *record);
 bool process_record_user_linux(uint16_t keycode, keyrecord_t *record);
 
 // State of the M_ALT_TAB macro - true if we are currently tabbing between
@@ -64,7 +63,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   uint8_t current_layer = get_highest_layer(layer_state);
 
   if (record->event.pressed) {
-    if (current_layer == LAYER_LSYM || current_layer == LAYER_RSYM) {
+    if (current_layer == LAYER_SYM) {
       hbm_shift_pressed = get_mods() & MOD_BIT(KC_LSFT);
       hbm_os_shift_pressed = get_oneshot_mods() & MOD_BIT(KC_LSFT);
       del_mods(MOD_MASK_SHIFT);
@@ -138,17 +137,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
-    // Swap between Windows, ChromeOS and Linux shortcuts.
+    // Swap between Windows and Linux shortcuts.
 
     case M_ISWINDOWS:
       if (record->event.pressed) {
         hbm_operatingsystem = OS_WINDOWS;
-      }
-      break;
-
-    case M_ISCHROMEOS:
-      if (record->event.pressed) {
-        hbm_operatingsystem = OS_CHROMEOS;
       }
       break;
 
@@ -165,8 +158,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (hbm_operatingsystem) {
     case OS_WINDOWS:
       return process_record_user_windows(keycode, record);
-    case OS_CHROMEOS:
-      return process_record_user_chromeos(keycode, record);
     case OS_LINUX:
       return process_record_user_linux(keycode, record);
   }
@@ -226,57 +217,6 @@ bool process_record_user_windows(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 
-bool process_record_user_chromeos(uint16_t keycode, keyrecord_t *record) {
-
-  switch (keycode) {
-
-    // Switch between virtual desktops.
-
-    case M_NDESK:
-      if (record->event.pressed) {
-        SEND_STRING(SS_DOWN(X_LGUI));
-        SEND_STRING(SS_TAP(X_RBRC));
-        SEND_STRING(SS_UP(X_LGUI));
-      }
-      break;
-
-    case M_PDESK:
-      if (record->event.pressed) {
-        SEND_STRING(SS_DOWN(X_LGUI));
-        SEND_STRING(SS_TAP(X_LBRC));
-        SEND_STRING(SS_UP(X_LGUI));
-      }
-      break;
-
-    case M_OVERVIEW:
-      if (record->event.pressed) {
-        SEND_STRING(SS_TAP(X_F5));
-      }
-      break;
-
-    // Full screen.
-
-    case M_FULLSCREEN:
-      if (record->event.pressed) {
-        SEND_STRING(SS_TAP(X_F4));
-      }
-      break;
-
-    // Open the emoji window.
-
-    case M_EMOJI:
-      if (record->event.pressed) {
-        SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LGUI));
-        SEND_STRING(SS_TAP(X_SPC));
-        SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LSFT));
-      }
-      break;
-
-  }
-
-  return true;
-}
-
 bool process_record_user_linux(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
@@ -303,8 +243,7 @@ bool caps_word_press_user(uint16_t keycode) {
 
     // Do not deactivate if symbol, num or nav layer keys are held down.
 
-    case KC_T_RSYM:
-    case KC_N_LSYM:
+    case KC_OSL_SYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
       return true;
@@ -320,12 +259,11 @@ bool caps_word_press_user(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case KC_T_RSYM:
-    case KC_N_LSYM:
+    case KC_OSL_SYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
-    case KC_G_FUNC:
-    case KC_M_CTRL:
+    case KC_F_FUNC:
+    case KC_U_CTRL:
       return TAPPING_TERM_LAYER;
     default:
       return TAPPING_TERM;

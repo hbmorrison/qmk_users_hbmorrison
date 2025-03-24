@@ -24,7 +24,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 enum hbm_operatingsystems {
   OS_WINDOWS,
-  OS_CHROMEOS,
   OS_LINUX
 };
 
@@ -32,8 +31,7 @@ enum hbm_operatingsystems {
 
 enum hbm_layers {
   LAYER_BASE,
-  LAYER_LSYM,
-  LAYER_RSYM,
+  LAYER_SYM,
   LAYER_NAV,
   LAYER_NUM,
   LAYER_FUNC,
@@ -52,7 +50,6 @@ enum hbm_keycodes {
   M_FULLSCREEN,
   M_EMOJI,
   M_ISWINDOWS,
-  M_ISCHROMEOS,
   M_ISLINUX
 };
 
@@ -74,12 +71,11 @@ enum hbm_keycodes {
 // Layer keys.
 
 #define KC_OSM_SFT OSM(MOD_LSFT)
+#define KC_OSL_SYM OSL(LAYER_SYM)
 #define KC_SPC_NAV LT(LAYER_NAV, KC_SPC)
 #define KC_ENT_NUM LT(LAYER_NUM, KC_ENT)
-#define KC_T_RSYM LT(LAYER_RSYM, KC_T)
-#define KC_N_LSYM LT(LAYER_LSYM, KC_N)
-#define KC_G_FUNC LT(LAYER_FUNC, KC_G)
-#define KC_M_CTRL LT(LAYER_CTRL, KC_M)
+#define KC_F_FUNC LT(LAYER_FUNC, KC_F)
+#define KC_U_CTRL LT(LAYER_CTRL, KC_U)
 
 // Modifier keys in the style of homerow mods.
 
@@ -92,57 +88,39 @@ enum hbm_keycodes {
 
 // Base layer.
 
-#define KM_BASE_1L KC_Q, KC_W, KC_F, KC_P, KC_B
-#define KM_BASE_2L KC_A, KC_R, KC_S, KC_T_RSYM, KC_G_FUNC
+#define KM_BASE_1L KC_Q, KC_W, KC_F_FUNC, KC_P, KC_B
+#define KM_BASE_2L KC_A, KC_R, KC_S, KC_T, KC_G
 #define KM_BASE_3L KC_Z, KC_X_GUI, KC_C_ALT, KC_D_CTL, KC_V
 
-#define KM_BASE_1R KC_J, KC_L, KC_U, KC_Y, KC_BSPC
-#define KM_BASE_2R KC_M_CTRL, KC_N_LSYM, KC_E, KC_I, KC_O
+#define KM_BASE_1R KC_J, KC_L, KC_U_CTRL, KC_Y, KC_BSPC
+#define KM_BASE_2R KC_M, KC_N, KC_E, KC_I, KC_O
 #define KM_BASE_3R KC_K, KC_H_CTL, KC_COMMA_ALT, KC_DOT_GUI, KC_SLSH
 
 #define KM_BASE_1 KM_BASE_1L, KM_BASE_1R
 #define KM_BASE_2 KM_BASE_2L, KM_BASE_2R
 #define KM_BASE_3 KM_BASE_3L, KM_BASE_3R
 
-#define KM_BASE_THUMB KC_OSM_SFT, KC_SPC_NAV, KC_ENT_NUM, KC_OSM_SFT
+#define KM_BASE_THUMB KC_OSM_SFT, KC_SPC_NAV, KC_ENT_NUM, KC_OSL_SYM
 
 #define LAYOUT_BASE KM_BASE_1, KM_BASE_2, KM_BASE_3, KM_BASE_THUMB
 
-// Left symbol layer.
+// Symbol layer.
 
-#define KM_LSYM_1L KC_EXLM, KC_UK_DQUO, KC_UK_PND, KC_DLR, KC_PERC
-#define KM_LSYM_2L KC_GRV, KC_UK_PIPE, KC_LBRC, KC_LCBR, KC_LPRN
-#define KM_LSYM_3L KC_NO, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
+#define KM_SYM_1L KC_EXLM, KC_UK_DQUO, KC_UK_PND, KC_DLR, KC_PERC
+#define KM_SYM_2L KC_GRV, KC_UK_PIPE, KC_LBRC, KC_LCBR, KC_LPRN
+#define KM_SYM_3L KC_NO, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
 
-#define KM_LSYM_1R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_LSYM_2R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_LSYM_3R KC_TRNS, KC_NO, KC_NO, KC_NO, KC_NO
+#define KM_SYM_1R KC_CIRC, KC_AMPR, KC_ASTR, KC_UNDS, KC_PLUS
+#define KM_SYM_2R KC_COLN, KC_UK_AT, KC_UK_TILDE, KC_MINS, KC_EQL
+#define KM_SYM_3R KC_SCLN, KC_QUOT, KC_UK_HASH, M_EQL_GT, KC_QUES
 
-#define KM_LSYM_1 KM_LSYM_1L, KM_LSYM_1R
-#define KM_LSYM_2 KM_LSYM_2L, KM_LSYM_2R
-#define KM_LSYM_3 KM_LSYM_3L, KM_LSYM_3R
+#define KM_SYM_1 KM_SYM_1L, KM_SYM_1R
+#define KM_SYM_2 KM_SYM_2L, KM_SYM_2R
+#define KM_SYM_3 KM_SYM_3L, KM_SYM_3R
 
-#define KM_LSYM_THUMB KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+#define KM_SYM_THUMB KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
 
-#define LAYOUT_LSYM KM_LSYM_1, KM_LSYM_2, KM_LSYM_3, KM_LSYM_THUMB
-
-// Right symbol layer.
-
-#define KM_RSYM_1L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_RSYM_2L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_RSYM_3L KC_NO, KC_NO, KC_NO, KC_NO, KC_TRNS
-
-#define KM_RSYM_1R KC_CIRC, KC_AMPR, KC_ASTR, KC_UNDS, KC_PLUS
-#define KM_RSYM_2R KC_COLN, KC_UK_AT, KC_UK_TILDE, KC_MINS, KC_EQL
-#define KM_RSYM_3R KC_SCLN, KC_QUOT, KC_UK_HASH, M_EQL_GT, KC_QUES
-
-#define KM_RSYM_1 KM_RSYM_1L, KM_RSYM_1R
-#define KM_RSYM_2 KM_RSYM_2L, KM_RSYM_2R
-#define KM_RSYM_3 KM_RSYM_3L, KM_RSYM_3R
-
-#define KM_RSYM_THUMB KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
-
-#define LAYOUT_RSYM KM_RSYM_1, KM_RSYM_2, KM_RSYM_3, KM_RSYM_THUMB
+#define LAYOUT_SYM KM_SYM_1, KM_SYM_2, KM_SYM_3, KM_SYM_THUMB
 
 // Number layer.
 
@@ -201,7 +179,7 @@ enum hbm_keycodes {
 // Controls layer.
 
 #define KM_CTRL_1L KC_NO, KC_MPLY, KC_MUTE, KC_PSCR, M_ISWINDOWS
-#define KM_CTRL_2L KC_NO, KC_MNXT, KC_VOLU, KC_BRIU, M_ISCHROMEOS
+#define KM_CTRL_2L KC_NO, KC_MNXT, KC_VOLU, KC_BRIU, KC_NO
 #define KM_CTRL_3L KC_NO, KC_MPRV, KC_VOLD, KC_BRID, M_ISLINUX
 
 #define KM_CTRL_1R KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO
