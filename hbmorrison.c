@@ -218,6 +218,36 @@ bool process_record_user_windows(uint16_t keycode, keyrecord_t *record) {
 }
 
 bool process_record_user_linux(uint16_t keycode, keyrecord_t *record) {
+
+  switch (keycode) {
+
+    // Switch between virtual desktops.
+
+    case M_NDESK:
+      if (record->event.pressed) {
+        SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
+        SEND_STRING(SS_TAP(X_RGHT));
+        SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL));
+      }
+      break;
+
+    case M_PDESK:
+      if (record->event.pressed) {
+        SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
+        SEND_STRING(SS_TAP(X_LEFT));
+        SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL));
+      }
+      break;
+
+    case M_OVERVIEW:
+      if (record->event.pressed) {
+        SEND_STRING(SS_DOWN(X_LCTL)SS_DOWN(X_LALT));
+        SEND_STRING(SS_TAP(X_DOWN));
+        SEND_STRING(SS_UP(X_LALT)SS_UP(X_LCTL));
+      }
+      break;
+  }
+
   return true;
 }
 
