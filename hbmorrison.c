@@ -203,7 +203,6 @@ bool process_record_user_windows(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
-
     // Open the emoji window.
 
     case M_EMOJI:

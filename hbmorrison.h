@@ -63,6 +63,11 @@ enum hbm_keycodes {
 #define KC_UK_TILDE LSFT(KC_BSLS)
 #define KC_UK_HASH KC_BSLS
 
+// Bare modifier keys.
+
+#define KC_SFT_CTL LSFT(KC_LCTL)
+#define KC_CTL_ALT LCTL(KC_LALT)
+
 // Modified tab keys.
 
 #define KC_SFT_TAB LSFT(KC_TAB)
@@ -79,6 +84,7 @@ enum hbm_keycodes {
 
 // Modifier keys in the style of homerow mods.
 
+#define KC_Z_CA LCA_T(KC_Z)
 #define KC_X_GUI LGUI_T(KC_X)
 #define KC_C_ALT LALT_T(KC_C)
 #define KC_D_CTL LCTL_T(KC_D)
@@ -87,16 +93,17 @@ enum hbm_keycodes {
 #define KC_H_CTL LCTL_T(KC_H)
 #define KC_COMMA_ALT LALT_T(KC_COMMA)
 #define KC_DOT_GUI LGUI_T(KC_DOT)
+#define KC_SLSH_CA LCA_T(KC_SLSH)
 
 // Base layer.
 
 #define KM_BASE_1L KC_Q, KC_W, KC_F_FUNC, KC_P, KC_B
 #define KM_BASE_2L KC_A, KC_R, KC_S, KC_T, KC_G
-#define KM_BASE_3L KC_Z, KC_X_GUI, KC_C_ALT, KC_D_CTL, KC_V_CS
+#define KM_BASE_3L KC_Z_CA, KC_X_GUI, KC_C_ALT, KC_D_CTL, KC_V_CS
 
 #define KM_BASE_1R KC_J, KC_L, KC_U_CTRL, KC_Y, KC_BSPC
 #define KM_BASE_2R KC_M, KC_N, KC_E, KC_I, KC_O
-#define KM_BASE_3R KC_K_CS, KC_H_CTL, KC_COMMA_ALT, KC_DOT_GUI, KC_SLSH
+#define KM_BASE_3R KC_K_CS, KC_H_CTL, KC_COMMA_ALT, KC_DOT_GUI, KC_SLSH_CA
 
 #define KM_BASE_1 KM_BASE_1L, KM_BASE_1R
 #define KM_BASE_2 KM_BASE_2L, KM_BASE_2R
@@ -110,7 +117,7 @@ enum hbm_keycodes {
 
 #define KM_SYM_1L KC_EXLM, KC_UK_DQUO, KC_UK_PND, KC_DLR, KC_PERC
 #define KM_SYM_2L KC_GRV, KC_UK_PIPE, KC_LBRC, KC_LCBR, KC_LPRN
-#define KM_SYM_3L KC_NO, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
+#define KM_SYM_3L M_EMOJI, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
 
 #define KM_SYM_1R KC_CIRC, KC_AMPR, KC_ASTR, KC_UNDS, KC_PLUS
 #define KM_SYM_2R KC_COLN, KC_UK_AT, KC_UK_TILDE, KC_MINS, KC_EQL
@@ -130,9 +137,9 @@ enum hbm_keycodes {
 #define KM_NUM_2L KC_NO, KC_4, KC_5, KC_6, KC_DOT
 #define KM_NUM_3L KC_NO, KC_7, KC_8, KC_9, KC_0
 
-#define KM_NUM_1R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
+#define KM_NUM_1R KC_MS_BTN2, KC_NO, KC_NO, KC_NO, KC_NO
 #define KM_NUM_2R KC_MS_BTN1, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_NUM_3R KC_MS_BTN2, KC_NO, KC_NO, KC_NO, KC_NO
+#define KM_NUM_3R KC_SFT_CTL, KC_LCTL, KC_LALT, KC_LGUI, KC_CTL_ALT
 
 #define KM_NUM_1 KM_NUM_1L, KM_NUM_1R
 #define KM_NUM_2 KM_NUM_2L, KM_NUM_2R
@@ -146,11 +153,11 @@ enum hbm_keycodes {
 
 #define KM_NAV_1L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
 #define KM_NAV_2L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_NAV_3L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
+#define KM_NAV_3L KC_CTL_ALT, KC_LGUI, KC_LALT, KC_LCTL, KC_SFT_CTL
 
 #define KM_NAV_1R M_OVERVIEW, M_PDESK, KC_CTL_TAB, M_ALT_TAB, M_NDESK
 #define KM_NAV_2R M_FULLSCREEN, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT
-#define KM_NAV_3R M_EMOJI, KC_HOME, KC_PGDN, KC_PGUP, KC_END
+#define KM_NAV_3R KC_NO, KC_HOME, KC_PGDN, KC_PGUP, KC_END
 
 #define KM_NAV_1 KM_NAV_1L, KM_NAV_1R
 #define KM_NAV_2 KM_NAV_2L, KM_NAV_2R
