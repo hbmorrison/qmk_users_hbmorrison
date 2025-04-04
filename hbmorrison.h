@@ -89,11 +89,11 @@ enum hbm_keycodes {
 #define KC_C_ALT LALT_T(KC_C)
 #define KC_D_CTL LCTL_T(KC_D)
 #define KC_V_CS C_S_T(KC_V)
-#define KC_K_CS C_S_T(KC_K)
+#define KC_K_CS MT(MOD_RSFT | MOD_RCTL, KC_K)
 #define KC_H_CTL RCTL_T(KC_H)
 #define KC_COMMA_ALT LALT_T(KC_COMMA)
-#define KC_DOT_GUI LGUI_T(KC_DOT)
-#define KC_SLSH_CA LCA_T(KC_SLSH)
+#define KC_DOT_GUI RGUI_T(KC_DOT)
+#define KC_SLSH_CA MT(MOD_RCTL | MOD_LALT, KC_SLSH)
 
 // Left- and right-hand modifier bits.
 
