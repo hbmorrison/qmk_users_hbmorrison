@@ -1,6 +1,6 @@
 # Include the userspace code.
 
-SRC += hbmorrison.c
+INTROSPECTION_KEYMAP_C += hbmorrison.c
 
 # Enabled features.
 
