@@ -22,8 +22,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TAPPING_TERM_PER_KEY
 #define PERMISSIVE_HOLD
 #define PERMISSIVE_HOLD_PER_KEY
-#define TAPPING_TERM 190
-#define TAPPING_TERM_LAYER 190
+#define TAPPING_TERM 170
+#define TAPPING_TERM_LAYER 150
 
 // Double tap shift for caps word.
 

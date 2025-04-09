@@ -63,7 +63,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   uint8_t current_layer = get_highest_layer(layer_state);
 
   if (record->event.pressed) {
-    if (current_layer == LAYER_SYM) {
+    if (current_layer == LAYER_LSYM || current_layer == LAYER_RSYM) {
       hbm_shift_pressed = get_mods() & MOD_BIT(KC_LSFT);
       hbm_os_shift_pressed = get_oneshot_mods() & MOD_BIT(KC_LSFT);
       del_mods(MOD_MASK_SHIFT);
@@ -91,18 +91,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_F_FUNC:
         case KC_P:
         case KC_B:
-        case KC_A:
         case KC_R:
         case KC_S:
         case KC_T:
         case KC_G:
-        case KC_Z_CA:
+        case KC_A_RSYM:
+        case KC_Z:
         case KC_X_GUI:
         case KC_C_ALT:
         case KC_D_CTL:
         case KC_V_CS:
-          del_mods(MOD_BITS_LEFT);
           del_oneshot_mods(MOD_BITS_LEFT);
+          return false;
       }
     }
 
@@ -117,14 +117,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_N:
         case KC_E:
         case KC_I:
-        case KC_O:
+        case KC_O_LSYM:
         case KC_K_CS:
         case KC_H_CTL:
         case KC_COMMA_ALT:
         case KC_DOT_GUI:
-        case KC_SLSH_CA:
-          del_mods(MOD_BITS_RIGHT);
+        case KC_Z:
           del_oneshot_mods(MOD_BITS_RIGHT);
+          return false;
       }
     }
   }
@@ -321,9 +321,10 @@ bool caps_word_press_user(uint16_t keycode) {
 
     // Do not deactivate if symbol, num or nav layer keys are held down.
 
-    case KC_OSL_SYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
+    case KC_A_RSYM:
+    case KC_O_LSYM:
       return true;
 
     // Deactivate caps word by default.
@@ -337,9 +338,10 @@ bool caps_word_press_user(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case KC_OSL_SYM:
     case KC_ENT_NUM:
     case KC_SPC_NAV:
+    case KC_A_RSYM:
+    case KC_O_LSYM:
     case KC_F_FUNC:
     case KC_U_CTRL:
       return TAPPING_TERM_LAYER;
