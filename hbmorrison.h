@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 enum hbm_operatingsystems {
   OS_WINDOWS,
+  OS_CHROMEOS,
   OS_LINUX
 };
 
@@ -51,10 +52,11 @@ enum hbm_keycodes {
   M_FULLSCREEN,
   M_EMOJI,
   M_ISWINDOWS,
+  M_ISCHROMEOS,
   M_ISLINUX
 };
 
-// Tapdance keycodes.
+// Tap dance codes.
 
 enum {
   TD_RSFT
@@ -107,6 +109,10 @@ enum {
 #define MOD_BITS_LEFT (MOD_BIT(KC_LSFT) | MOD_BIT(KC_LCTL) | MOD_BIT(KC_LGUI))
 #define MOD_BITS_RIGHT (MOD_BIT(KC_RSFT) | MOD_BIT(KC_RCTL) | MOD_BIT(KC_RGUI))
 
+// Tap dance keys.
+
+#define KC_TD_RSFT TD(TD_RSFT)
+
 // Base layer.
 
 #define KM_BASE_1L KC_Q, KC_W, KC_F_FUNC, KC_P, KC_B
@@ -121,7 +127,7 @@ enum {
 #define KM_BASE_2 KM_BASE_2L, KM_BASE_2R
 #define KM_BASE_3 KM_BASE_3L, KM_BASE_3R
 
-#define KM_BASE_THUMB KC_OSM_LSFT, KC_SPC_NAV, KC_ENT_NUM, TD_RSFT
+#define KM_BASE_THUMB KC_OSM_LSFT, KC_SPC_NAV, KC_ENT_NUM, KC_TD_RSFT
 
 #define LAYOUT_BASE KM_BASE_1, KM_BASE_2, KM_BASE_3, KM_BASE_THUMB
 
@@ -218,7 +224,7 @@ enum {
 // Controls layer.
 
 #define KM_CTRL_1L KC_NO, KC_MPLY, KC_MUTE, KC_PSCR, M_ISWINDOWS
-#define KM_CTRL_2L KC_NO, KC_MNXT, KC_VOLU, KC_BRIU, KC_NO
+#define KM_CTRL_2L KC_NO, KC_MNXT, KC_VOLU, KC_BRIU, M_ISCHROMEOS
 #define KM_CTRL_3L KC_NO, KC_MPRV, KC_VOLD, KC_BRID, M_ISLINUX
 
 #define KM_CTRL_1R KC_NO, KC_NO, KC_TRNS, KC_NO, KC_NO

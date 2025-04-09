@@ -25,6 +25,7 @@ static uint8_t hbm_operatingsystem = OS_WINDOWS;
 // Declare operating specific keycode handling functions.
 
 bool process_record_user_windows(uint16_t keycode, keyrecord_t *record);
+bool process_record_user_chromeos(uint16_t keycode, keyrecord_t *record);
 bool process_record_user_linux(uint16_t keycode, keyrecord_t *record);
 
 // State of the M_ALT_TAB macro - true if we are currently tabbing between
@@ -118,11 +119,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_F_FUNC:
         case KC_P:
         case KC_B:
+
+        case KC_A_RSYM:
         case KC_R:
         case KC_S:
         case KC_T:
         case KC_G:
-        case KC_A_RSYM:
+
         case KC_Z:
         case KC_X_GUI:
         case KC_C_ALT:
@@ -140,16 +143,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_U_CTRL:
         case KC_Y:
         case KC_BSPC:
+
         case KC_M:
         case KC_N:
         case KC_E:
         case KC_I:
         case KC_O_LSYM:
+
         case KC_K_CS:
         case KC_H_CTL:
         case KC_COMMA_ALT:
         case KC_DOT_GUI:
-        case KC_Z:
+        case KC_SLSH:
           del_oneshot_mods(MOD_BITS_RIGHT);
           return false;
       }
@@ -221,6 +226,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
+    case M_ISCHROMEOS:
+      if (record->event.pressed) {
+        hbm_operatingsystem = OS_CHROMEOS;
+      }
+      break;
+
     case M_ISLINUX:
       if (record->event.pressed) {
         hbm_operatingsystem = OS_LINUX;
@@ -234,6 +245,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (hbm_operatingsystem) {
     case OS_WINDOWS:
       return process_record_user_windows(keycode, record);
+    case OS_CHROMEOS:
+      return process_record_user_chromeos(keycode, record);
     case OS_LINUX:
       return process_record_user_linux(keycode, record);
   }
@@ -284,6 +297,49 @@ bool process_record_user_windows(uint16_t keycode, keyrecord_t *record) {
     case M_EMOJI:
       if (record->event.pressed) {
         SEND_STRING(SS_DOWN(X_LGUI)SS_TAP(X_SCLN)SS_UP(X_LGUI));
+      }
+      break;
+
+  }
+
+  return true;
+}
+
+bool process_record_user_chromeos(uint16_t keycode, keyrecord_t *record) {
+
+  switch (keycode) {
+
+    // Switch between virtual desktops.
+
+    case M_NDESK:
+      if (record->event.pressed) {
+        SEND_STRING(SS_DOWN(X_LGUI));
+        SEND_STRING(SS_TAP(X_RBRC));
+        SEND_STRING(SS_UP(X_LGUI));
+      }
+      break;
+
+    case M_PDESK:
+      if (record->event.pressed) {
+        SEND_STRING(SS_DOWN(X_LGUI));
+        SEND_STRING(SS_TAP(X_LBRC));
+        SEND_STRING(SS_UP(X_LGUI));
+      }
+      break;
+
+    case M_OVERVIEW:
+      if (record->event.pressed) {
+        SEND_STRING(SS_TAP(X_F5));
+      }
+      break;
+
+    // Open the emoji window.
+
+    case M_EMOJI:
+      if (record->event.pressed) {
+        SEND_STRING(SS_DOWN(X_LSFT)SS_DOWN(X_LGUI));
+        SEND_STRING(SS_TAP(X_SPC));
+        SEND_STRING(SS_UP(X_LGUI)SS_UP(X_LSFT));
       }
       break;
 
