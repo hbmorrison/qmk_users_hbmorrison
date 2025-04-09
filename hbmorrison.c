@@ -120,10 +120,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_P:
         case KC_B:
 
+        case KC_A:
         case KC_A_RSYM:
         case KC_R:
         case KC_S:
         case KC_T:
+        case KC_T_RSYM:
         case KC_G:
 
         case KC_Z:
@@ -146,8 +148,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         case KC_M:
         case KC_N:
+        case KC_N_LSYM:
         case KC_E:
         case KC_I:
+        case KC_O:
         case KC_O_LSYM:
 
         case KC_K_CS:
@@ -406,6 +410,8 @@ bool caps_word_press_user(uint16_t keycode) {
 
     case KC_ENT_NUM:
     case KC_SPC_NAV:
+    case KC_T_RSYM:
+    case KC_N_LSYM:
     case KC_A_RSYM:
     case KC_O_LSYM:
       return true;
@@ -423,6 +429,8 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case KC_ENT_NUM:
     case KC_SPC_NAV:
+    case KC_T_RSYM:
+    case KC_N_LSYM:
     case KC_A_RSYM:
     case KC_O_LSYM:
     case KC_F_FUNC:
