@@ -54,6 +54,12 @@ enum hbm_keycodes {
   M_ISLINUX
 };
 
+// Tapdance keycodes.
+
+enum {
+  TD_RSFT
+};
+
 // Alternative keys for UK ISO keyboard layouts.
 
 #define KC_UK_DQUO LSFT(KC_2)
@@ -77,7 +83,6 @@ enum hbm_keycodes {
 // Layer keys.
 
 #define KC_OSM_LSFT OSM(MOD_LSFT)
-#define KC_OSM_RSFT OSM(MOD_RSFT)
 #define KC_SPC_NAV LT(LAYER_NAV, KC_SPC)
 #define KC_ENT_NUM LT(LAYER_NUM, KC_ENT)
 #define KC_A_RSYM LT(LAYER_RSYM, KC_A)
@@ -116,7 +121,7 @@ enum hbm_keycodes {
 #define KM_BASE_2 KM_BASE_2L, KM_BASE_2R
 #define KM_BASE_3 KM_BASE_3L, KM_BASE_3R
 
-#define KM_BASE_THUMB KC_OSM_LSFT, KC_SPC_NAV, KC_ENT_NUM, KC_OSM_RSFT
+#define KM_BASE_THUMB KC_OSM_LSFT, KC_SPC_NAV, KC_ENT_NUM, TD_RSFT
 
 #define LAYOUT_BASE KM_BASE_1, KM_BASE_2, KM_BASE_3, KM_BASE_THUMB
 

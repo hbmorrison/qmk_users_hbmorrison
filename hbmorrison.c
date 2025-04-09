@@ -45,6 +45,33 @@ static uint8_t hbm_mod_state = 0;
 static bool hbm_shift_pressed = false;
 static bool hbm_os_shift_pressed = false;
 
+// Tapdance for right shift key to add capsword.
+
+typedef enum {
+  TD_NONE,
+  TD_UNKNOWN,
+  TD_SINGLE_TAP,
+  TD_DOUBLE_TAP,
+  TD_HOLD
+} td_state_t;
+
+typedef struct {
+  td_state_t state;
+} td_tap_t;
+
+static td_tap_t td_rsft = {
+  .state = TD_NONE
+};
+
+td_state_t td_get_state(tap_dance_state_t *state);
+
+void rsft_finished(tap_dance_state_t *state, void *user_data);
+void rsft_reset(tap_dance_state_t *state, void *user_data);
+
+tap_dance_action_t tap_dance_actions[] = {
+    [TD_RSFT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, rsft_finished, rsft_reset)
+};
+
 // Process key presses.
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -348,4 +375,60 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     default:
       return TAPPING_TERM;
   }
+}
+
+td_state_t td_get_state(tap_dance_state_t *state) {
+
+  if (state->count == 1) {
+    // If the keypress has been interrupted by another keypress or is no longer
+    // held down by the end of the tap time, then we know it was just a single
+    // tap.
+    if (state->interrupted || !state->pressed)
+      return TD_SINGLE_TAP;
+    else
+      // If it is still held at the end of the tap time, then it is a hold.
+      return TD_HOLD;
+  } else if (state->count > 1) {
+    // In the case where there has been more than one tap in the tap time, we
+    // have to make a judgement call. If the key is still held down we will
+    // assume it was a flutter and call it a hold.
+    if (state->pressed)
+      return TD_HOLD;
+    // If the keypress has finished or has been interrupted then we will assume
+    // that there was some actual fast typing going on and issue two taps, which
+    // will be the most common scenario.
+    if (state->interrupted || !state->pressed)
+      return TD_DOUBLE_TAP;
+  }
+
+  return TD_UNKNOWN;
+}
+
+// Enable capsword on right shift.
+
+void rsft_finished(tap_dance_state_t *state, void *user_data) {
+    td_rsft.state = td_get_state(state);
+    switch (td_rsft.state) {
+        case TD_SINGLE_TAP:
+          add_oneshot_mods(MOD_BIT(KC_RSFT));
+          break;
+        case TD_DOUBLE_TAP:
+          caps_word_toggle();
+          break;
+        case TD_HOLD:
+          add_mods(MOD_BIT(KC_RSFT));
+          break;
+        default:
+          break;
+    }
+}
+
+void rsft_reset(tap_dance_state_t *state, void *user_data) {
+    switch (td_rsft.state) {
+        case TD_HOLD:
+          del_mods(MOD_BIT(KC_RSFT));
+        default:
+          break;
+    }
+    td_rsft.state = TD_NONE;
 }
