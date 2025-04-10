@@ -19,11 +19,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Tapping config.
 
-#define TAPPING_TERM_PER_KEY
 #define PERMISSIVE_HOLD
-#define PERMISSIVE_HOLD_PER_KEY
-#define TAPPING_TERM 170
-#define TAPPING_TERM_LAYER 170
+#define RETRO_TAPPING
+#define TAPPING_TERM_PER_KEY
+#define TAPPING_TERM 200
+#define TAPPING_TERM_LAYER 200
 
 // Double tap shift for caps word.
 
