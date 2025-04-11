@@ -97,9 +97,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // Ensure that z and / keys can be shifted in their respective sym
         // layers.
 
-        case KC_Z:
-        case KC_SLSH:
-          break;
+        // case KC_Z:
+        // case KC_SLSH:
+        //   break;
 
         // Remove the shift for everything else in the sym layers.
 
