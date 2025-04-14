@@ -89,15 +89,18 @@ enum {
 
 // Layer keys.
 
-#define KC_OSM_LSFT OSM(MOD_LSFT)
 #define KC_SPC_NAV LT(LAYER_NAV, KC_SPC)
 #define KC_ENT_NUM LT(LAYER_NUM, KC_ENT)
-#define KC_O_LSYM LT(LAYER_LSYM, KC_O)
-#define KC_N_LSYM LT(LAYER_LSYM, KC_N)
-#define KC_T_RSYM LT(LAYER_RSYM, KC_T)
-#define KC_A_RSYM LT(LAYER_RSYM, KC_A)
 #define KC_F_FUNC LT(LAYER_FUNC, KC_F)
 #define KC_U_CTRL LT(LAYER_CTRL, KC_U)
+
+#ifdef HBM_HANDED
+#define KC_O_LSYM LT(LAYER_LSYM, KC_O)
+#define KC_A_RSYM LT(LAYER_RSYM, KC_A)
+#else
+#define KC_O_LSYM KC_O
+#define KC_A_RSYM KC_A
+#endif
 
 // Modifier keys in the style of homerow mods.
 
@@ -118,9 +121,15 @@ enum {
 #define MOD_BITS_LEFT (MOD_BIT(KC_LSFT) | MOD_BIT(KC_LCTL) | MOD_BIT(KC_LGUI))
 #define MOD_BITS_RIGHT (MOD_BIT(KC_RSFT) | MOD_BIT(KC_RCTL) | MOD_BIT(KC_RGUI))
 
-// Tap dance keys.
+// Shift keys
 
-#define KC_TD_RSFT TD(TD_RSFT)
+#define KC_L_THUMB OSM(MOD_LSFT)
+
+#ifdef HBM_HANDED
+#define KC_R_THUMB TD(TD_RSFT)
+#else
+#define KC_R_THUMB OSL(LAYER_LSYM)
+#endif
 
 // Base layer.
 
@@ -136,7 +145,7 @@ enum {
 #define KM_BASE_2 KM_BASE_2L, KM_BASE_2R
 #define KM_BASE_3 KM_BASE_3L, KM_BASE_3R
 
-#define KM_BASE_THUMB KC_OSM_LSFT, KC_SPC_NAV, KC_ENT_NUM, KC_TD_RSFT
+#define KM_BASE_THUMB KC_L_THUMB, KC_SPC_NAV, KC_ENT_NUM, KC_R_THUMB
 
 #define LAYOUT_BASE KM_BASE_1, KM_BASE_2, KM_BASE_3, KM_BASE_THUMB
 
@@ -146,9 +155,15 @@ enum {
 #define KM_LSYM_2L KC_GRV, KC_UK_PIPE, KC_LBRC, KC_LCBR, KC_LPRN
 #define KM_LSYM_3L M_EMOJI, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
 
+#ifdef HBM_HANDED
 #define KM_LSYM_1R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
 #define KM_LSYM_2R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_LSYM_3R KC_NO, KC_NO, KC_NO, KC_NO, KC_SLSH
+#define KM_LSYM_3R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
+#else
+#define KM_LSYM_1R KC_CIRC, KC_AMPR, KC_ASTR, KC_UNDS, KC_PLUS
+#define KM_LSYM_2R KC_COLN, KC_UK_AT, KC_UK_TILDE, KC_MINS, KC_EQL
+#define KM_LSYM_3R KC_SCLN, KC_QUOT, KC_UK_HASH, M_EQL_GT, KC_QUES
+#endif
 
 #define KM_LSYM_1 KM_LSYM_1L, KM_LSYM_1R
 #define KM_LSYM_2 KM_LSYM_2L, KM_LSYM_2R
@@ -162,7 +177,7 @@ enum {
 
 #define KM_RSYM_1L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
 #define KM_RSYM_2L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_RSYM_3L KC_Z, KC_NO, KC_NO, KC_NO, KC_NO
+#define KM_RSYM_3L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
 
 #define KM_RSYM_1R KC_CIRC, KC_AMPR, KC_ASTR, KC_UNDS, KC_PLUS
 #define KM_RSYM_2R KC_COLN, KC_UK_AT, KC_UK_TILDE, KC_MINS, KC_EQL
@@ -197,7 +212,7 @@ enum {
 // Navigation layer.
 
 #define KM_NAV_1L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_NAV_2L KC_NO, KC_CTL_X, KC_CTL_C, KC_CTL_V, KC_NO
+#define KM_NAV_2L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
 #define KM_NAV_3L KC_LCTL_ALT, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT_CTL
 
 #define KM_NAV_1R M_OVERVIEW, M_PDESK, KC_CTL_TAB, M_ALT_TAB, M_NDESK

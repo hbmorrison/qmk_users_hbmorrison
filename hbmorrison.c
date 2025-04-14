@@ -125,6 +125,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // Only allow left-hand modifiers to work with the right side of the keyboard
   // and vice versa.
 
+#ifdef HBM_HANDED
   if (record->event.pressed && current_layer == LAYER_BASE) {
     if (get_mods() & MOD_BITS_LEFT || get_oneshot_mods() & MOD_BITS_LEFT) {
       switch (keycode) {
@@ -134,12 +135,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_P:
         case KC_B:
 
-        case KC_A:
         case KC_A_RSYM:
         case KC_R:
         case KC_S:
         case KC_T:
-        case KC_T_RSYM:
         case KC_G:
 
         case KC_Z_CA:
@@ -162,10 +161,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
         case KC_M:
         case KC_N:
-        case KC_N_LSYM:
         case KC_E:
         case KC_I:
-        case KC_O:
         case KC_O_LSYM:
 
         case KC_K_CS:
@@ -178,6 +175,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
     }
   }
+#endif
 
   // Store current modifiers for shift-backspace action.
 
@@ -424,10 +422,12 @@ bool caps_word_press_user(uint16_t keycode) {
 
     case KC_ENT_NUM:
     case KC_SPC_NAV:
+#ifdef HBM_HANDED
     case KC_O_LSYM:
-    case KC_N_LSYM:
-    case KC_T_RSYM:
     case KC_A_RSYM:
+#else
+    case KC_R_THUMB:
+#endif
       return true;
 
     // Deactivate caps word by default.
@@ -443,12 +443,12 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case KC_ENT_NUM:
     case KC_SPC_NAV:
-    case KC_O_LSYM:
-    case KC_N_LSYM:
-    case KC_T_RSYM:
-    case KC_A_RSYM:
     case KC_F_FUNC:
     case KC_U_CTRL:
+#ifdef HBM_HANDED
+    case KC_O_LSYM:
+    case KC_A_RSYM:
+#endif
       return TAPPING_TERM_LAYER;
     default:
       return TAPPING_TERM;
