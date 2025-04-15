@@ -125,7 +125,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // Only allow left-hand modifiers to work with the right side of the keyboard
   // and vice versa.
 
-#ifdef HBM_HANDED
   if (record->event.pressed && current_layer == LAYER_BASE) {
     if (get_mods() & MOD_BITS_LEFT || get_oneshot_mods() & MOD_BITS_LEFT) {
       switch (keycode) {
@@ -134,13 +133,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_F_FUNC:
         case KC_P:
         case KC_B:
-
         case KC_A_RSYM:
         case KC_R:
         case KC_S:
         case KC_T:
         case KC_G:
-
         case KC_Z_CA:
         case KC_X_GUI:
         case KC_C_ALT:
@@ -158,13 +155,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_U_CTRL:
         case KC_Y:
         case KC_BSPC:
-
         case KC_M:
         case KC_N:
         case KC_E:
         case KC_I:
         case KC_O_LSYM:
-
         case KC_K_CS:
         case KC_H_CTL:
         case KC_COMMA_ALT:
@@ -175,7 +170,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
     }
   }
-#endif
 
   // Store current modifiers for shift-backspace action.
 

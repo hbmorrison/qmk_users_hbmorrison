@@ -83,9 +83,6 @@ enum {
 
 #define KC_SFT_TAB LSFT(KC_TAB)
 #define KC_CTL_TAB LCTL(KC_TAB)
-#define KC_CTL_X RCTL(KC_X)
-#define KC_CTL_C RCTL(KC_C)
-#define KC_CTL_V RCTL(KC_V)
 
 // Layer keys.
 
@@ -118,8 +115,13 @@ enum {
 
 // Left- and right-hand modifier bits.
 
+#ifdef HBM_HANDED
 #define MOD_BITS_LEFT (MOD_BIT(KC_LSFT) | MOD_BIT(KC_LCTL) | MOD_BIT(KC_LGUI))
 #define MOD_BITS_RIGHT (MOD_BIT(KC_RSFT) | MOD_BIT(KC_RCTL) | MOD_BIT(KC_RGUI))
+#else
+#define MOD_BITS_LEFT MOD_BIT(KC_LCTL)
+#define MOD_BITS_RIGHT MOD_BIT(KC_RCTL)
+#endif
 
 // Shift keys
 
@@ -198,7 +200,7 @@ enum {
 #define KM_NUM_3L KC_NO, KC_7, KC_8, KC_9, KC_0
 
 #define KM_NUM_1R KC_MS_BTN2, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_NUM_2R KC_MS_BTN1, KC_CTL_V, KC_CTL_C, KC_CTL_X, KC_NO
+#define KM_NUM_2R KC_MS_BTN1, KC_NO, KC_NO, KC_NO, KC_NO
 #define KM_NUM_3R KC_RSFT_CTL, KC_RCTL, KC_RALT, KC_RGUI, KC_RCTL_ALT
 
 #define KM_NUM_1 KM_NUM_1L, KM_NUM_1R
