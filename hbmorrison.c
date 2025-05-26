@@ -123,10 +123,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   // Only allow left-hand modifiers to work with the right side of the keyboard
-  // and vice versa.
+  // and vice versa. The goal here is to produce consistent, sensible behaviour.
+  // Rather than stall any active mods when a "bad" keypress occurs, the mods are
+  // swapped out for a same-side keypress then swapped back in afterwards, where
+  // they will affect future keypresses as expected.
 
   if (record->event.pressed && current_layer == LAYER_BASE) {
-    if (get_mods() & MOD_BITS_LEFT || get_oneshot_mods() & MOD_BITS_LEFT) {
+
+    uint8_t mods = get_mods() & MOD_BITS_LEFT;
+    uint8_t oneshot_mods = get_oneshot_mods() & MOD_BITS_LEFT;
+
+    if (mods || oneshot_mods) {
       switch (keycode) {
         case KC_Q:
         case KC_W:
@@ -138,20 +145,47 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_S:
         case KC_T:
         case KC_G:
+        case KC_Z_RSYM:
         case KC_X_GUI:
         case KC_C_ALT:
         case KC_D_CTL:
         case KC_V_CA:
-          if (get_mods() & MOD_BITS_LEFT) {
-            del_mods(MOD_BITS_LEFT);
-          } else {
-            del_oneshot_mods(MOD_BITS_LEFT);
+          if (mods) { del_mods(mods); }
+          if (oneshot_mods) { del_oneshot_mods(oneshot_mods); }
+          switch (keycode) {
+            // Do not send keypress for Z because it would act like a one-handed
+            // shortcut.
+            case KC_Z_RSYM:
+              break;
+            // Send the basic characters associated with the homerow mod keys.
+            case KC_X_GUI:
+              tap_code(KC_X);
+              break;
+            case KC_C_ALT:
+              tap_code(KC_C);
+              break;
+            case KC_D_CTL:
+              tap_code(KC_D);
+              break;
+            case KC_V_CA:
+              tap_code(KC_V);
+              break;
+            default:
+              tap_code(keycode);
           }
-          return true;
+          // We add mods back because they continue to be valid. Oneshot mods
+          // are not added back because they have been "used up" by this
+          // keypress.
+          if (mods) { add_mods(mods); }
+          return false;
       }
+
     }
 
-    if (get_mods() & MOD_BITS_RIGHT || get_oneshot_mods() & MOD_BITS_RIGHT) {
+    mods = get_mods() & MOD_BITS_RIGHT;
+    oneshot_mods = get_oneshot_mods() & MOD_BITS_RIGHT;
+
+    if (mods || oneshot_mods) {
       switch (keycode) {
         case KC_J:
         case KC_L:
@@ -167,12 +201,35 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_H_CTL:
         case KC_COMMA_ALT:
         case KC_DOT_GUI:
-          if (get_mods() & MOD_BITS_RIGHT) {
-            del_mods(MOD_BITS_RIGHT);
-          } else {
-            del_oneshot_mods(MOD_BITS_RIGHT);
+        case KC_SLSH_LSYM:
+          if (mods) { del_mods(mods); }
+          if (oneshot_mods) { del_oneshot_mods(oneshot_mods); }
+          switch (keycode) {
+            // Send the basic characters associated with the homerow mod keys.
+            case KC_K_CA:
+              tap_code(KC_K);
+              break;
+            case KC_H_CTL:
+              tap_code(KC_H);
+              break;
+            case KC_COMMA_ALT:
+              tap_code(KC_COMMA);
+              break;
+            case KC_DOT_GUI:
+              tap_code(KC_DOT);
+              break;
+            // Do not send keypress for / because it would act like a one-handed
+            // shortcut.
+            case KC_SLSH_LSYM:
+              break;
+            default:
+              tap_code(keycode);
           }
-          return true;
+          // We add mods back because they continue to be valid. Oneshot mods
+          // are not added back because they have been "used up" by this
+          // keypress.
+          if (mods) { add_mods(mods); }
+          return false;
       }
     }
   }
