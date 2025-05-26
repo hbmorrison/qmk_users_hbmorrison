@@ -432,6 +432,18 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   }
 }
 
+// Set which keys get retro tapping.
+
+bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case KC_ENT_NUM:
+    case KC_SPC_NAV:
+      return true;
+    default:
+      return false;
+  }
+}
+
 td_state_t td_get_state(tap_dance_state_t *state) {
 
   if (state->count == 1) {
