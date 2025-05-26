@@ -142,8 +142,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_C_ALT:
         case KC_D_CTL:
         case KC_V_CA:
-          del_oneshot_mods(MOD_BITS_LEFT);
-          return false;
+          if (get_mods() & MOD_BITS_LEFT) {
+            del_mods(MOD_BITS_LEFT);
+          } else {
+            del_oneshot_mods(MOD_BITS_LEFT);
+          }
+          return true;
       }
     }
 
@@ -163,8 +167,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_H_CTL:
         case KC_COMMA_ALT:
         case KC_DOT_GUI:
-          del_oneshot_mods(MOD_BITS_RIGHT);
-          return false;
+          if (get_mods() & MOD_BITS_RIGHT) {
+            del_mods(MOD_BITS_RIGHT);
+          } else {
+            del_oneshot_mods(MOD_BITS_RIGHT);
+          }
+          return true;
       }
     }
   }

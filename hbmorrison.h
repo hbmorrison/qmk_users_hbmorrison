@@ -74,9 +74,7 @@ enum {
 
 // Bare modifier keys.
 
-#define KC_LSFT_CTL LSFT(KC_LCTL)
 #define KC_LCTL_ALT LCTL(KC_LALT)
-#define KC_RSFT_CTL RSFT(KC_RCTL)
 #define KC_RCTL_ALT RCTL(KC_LALT)
 
 // Modified keys.
@@ -99,7 +97,7 @@ enum {
 #define KC_SLSH_LSYM KC_SLSH
 #endif
 
-// Modifier keys in the style of homerow mods.
+// Homerow modifier keys.
 
 #define KC_X_GUI LGUI_T(KC_X)
 #define KC_C_ALT LALT_T(KC_C)
@@ -156,9 +154,9 @@ enum {
 #define KM_LSYM_3L KC_Z, KC_UK_BSLS, KC_RBRC, KC_RCBR, KC_RPRN
 
 #ifdef HBM_HANDED
-#define KM_LSYM_1R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_LSYM_2R KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_LSYM_3R KC_NO, KC_NO, KC_NO, KC_NO, KC_SLSH
+#define KM_LSYM_1R KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+#define KM_LSYM_2R KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+#define KM_LSYM_3R KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_SLSH
 #else
 #define KM_LSYM_1R KC_CIRC, KC_AMPR, KC_ASTR, KC_UNDS, KC_PLUS
 #define KM_LSYM_2R KC_COLN, KC_UK_AT, KC_UK_TILDE, KC_MINS, KC_EQL
@@ -175,9 +173,9 @@ enum {
 
 // Right symbol layer.
 
-#define KM_RSYM_1L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_RSYM_2L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_RSYM_3L KC_Z, KC_NO, KC_NO, KC_NO, KC_NO
+#define KM_RSYM_1L KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+#define KM_RSYM_2L KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+#define KM_RSYM_3L KC_Z, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
 
 #define KM_RSYM_1R KC_CIRC, KC_AMPR, KC_ASTR, KC_UNDS, KC_PLUS
 #define KM_RSYM_2R KC_COLN, KC_UK_AT, KC_UK_TILDE, KC_MINS, KC_EQL
@@ -199,7 +197,7 @@ enum {
 
 #define KM_NUM_1R KC_MS_BTN2, KC_NO, KC_NO, KC_NO, KC_NO
 #define KM_NUM_2R KC_MS_BTN1, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_NUM_3R KC_RSFT_CTL, KC_RCTL, KC_RALT, KC_RGUI, KC_RCTL_ALT
+#define KM_NUM_3R KC_RCTL_ALT, KC_RCTL, KC_RALT, KC_RGUI, KC_NO
 
 #define KM_NUM_1 KM_NUM_1L, KM_NUM_1R
 #define KM_NUM_2 KM_NUM_2L, KM_NUM_2R
@@ -213,7 +211,7 @@ enum {
 
 #define KM_NAV_1L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
 #define KM_NAV_2L KC_NO, KC_NO, KC_NO, KC_NO, KC_NO
-#define KM_NAV_3L KC_LCTL_ALT, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT_CTL
+#define KM_NAV_3L KC_NO, KC_LGUI, KC_LALT, KC_LCTL, KC_LCTL_ALT
 
 #define KM_NAV_1R M_OVERVIEW, M_PDESK, KC_CTL_TAB, M_ALT_TAB, M_NDESK
 #define KM_NAV_2R M_FULLSCREEN, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT
