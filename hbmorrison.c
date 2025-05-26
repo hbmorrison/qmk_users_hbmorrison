@@ -97,9 +97,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         // Ensure that z and / keys can be shifted in their respective sym
         // layers.
 
-        // case KC_Z:
-        // case KC_SLSH:
-        //   break;
+        case KC_Z:
+        case KC_SLSH:
+          break;
 
         // Remove the shift for everything else in the sym layers.
 
@@ -133,16 +133,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_F_FUNC:
         case KC_P:
         case KC_B:
-        case KC_A_RSYM:
+        case KC_A:
         case KC_R:
         case KC_S:
         case KC_T:
         case KC_G:
-        case KC_Z_CA:
         case KC_X_GUI:
         case KC_C_ALT:
         case KC_D_CTL:
-        case KC_V_CS:
+        case KC_V_CA:
           del_oneshot_mods(MOD_BITS_LEFT);
           return false;
       }
@@ -159,12 +158,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_N:
         case KC_E:
         case KC_I:
-        case KC_O_LSYM:
-        case KC_K_CS:
+        case KC_O:
+        case KC_K_CA:
         case KC_H_CTL:
         case KC_COMMA_ALT:
         case KC_DOT_GUI:
-        case KC_SLSH_CA:
           del_oneshot_mods(MOD_BITS_RIGHT);
           return false;
       }
@@ -197,16 +195,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
-    // Esc then colon.
-
-    case M_ESC_COLN:
-      if (record->event.pressed) {
-        tap_code(KC_ESC);
-        SEND_STRING(SS_DELAY(100));
-        tap_code16(KC_COLN);
-      }
-      break;
-
     // Hold down KC_LALT persistantly to allow tabbing through windows.
 
     case M_ALT_TAB:
@@ -219,16 +207,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
-    // Equals + greater-than.
-
-    case M_EQL_GT:
-      if (record->event.pressed) {
-        tap_code(KC_EQL);
-        tap_code16(KC_GT);
-      }
-      break;
-
-    // Swap between Windows and Linux shortcuts.
+    // Swap between Windows, ChromeOS and Linux shortcuts.
 
     case M_ISWINDOWS:
       if (record->event.pressed) {
@@ -417,10 +396,10 @@ bool caps_word_press_user(uint16_t keycode) {
     case KC_ENT_NUM:
     case KC_SPC_NAV:
 #ifdef HBM_HANDED
-    case KC_O_LSYM:
-    case KC_A_RSYM:
+    case KC_Z_RSYM:
+    case KC_SLSH_LSYM:
 #else
-    case KC_R_THUMB:
+    case KC_R_THUMB: // This will be the LSYM key in non-handed mode.
 #endif
       return true;
 
@@ -439,10 +418,6 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case KC_SPC_NAV:
     case KC_F_FUNC:
     case KC_U_CTRL:
-#ifdef HBM_HANDED
-    case KC_O_LSYM:
-    case KC_A_RSYM:
-#endif
       return TAPPING_TERM_LAYER;
     default:
       return TAPPING_TERM;
