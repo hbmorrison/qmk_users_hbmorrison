@@ -25,5 +25,5 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [LAYER_NAV] = HBM_LAYOUT_ferris_sweep( LAYOUT_NAV ),
   [LAYER_NUM] = HBM_LAYOUT_ferris_sweep( LAYOUT_NUM ),
   [LAYER_FUNC] = HBM_LAYOUT_ferris_sweep( LAYOUT_FUNC ),
-  [LAYER_CTRL] = HBM_LAYOUT_ferris_sweep( LAYOUT_CTRL )
+  [LAYER_CTLS] = HBM_LAYOUT_ferris_sweep( LAYOUT_CTLS )
 };

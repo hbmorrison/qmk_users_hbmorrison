@@ -431,11 +431,11 @@ bool caps_word_press_user(uint16_t keycode) {
 
     // Do not deactivate if symbol, num or nav layer keys are held down.
 
-    case KC_ENT_NUM:
-    case KC_SPC_NAV:
+    case KC_NUM:
+    case KC_NAV:
 #ifdef HBM_HANDED
-    case KC_Z_RSYM:
-    case KC_SLSH_LSYM:
+    case KC_RSYM:
+    case KC_LSYM:
 #else
     case KC_R_THUMB: // This will be the LSYM key in non-handed mode.
 #endif
@@ -452,10 +452,14 @@ bool caps_word_press_user(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case KC_ENT_NUM:
-    case KC_SPC_NAV:
-    case KC_F_FUNC:
-    case KC_U_CTRL:
+    case KC_NUM:
+    case KC_NAV:
+    case KC_FUNC:
+    case KC_CTLS:
+#ifdef HBM_HANDED
+    case KC_RSYM:
+    case KC_LSYM:
+#endif
       return TAPPING_TERM_LAYER;
     default:
       return TAPPING_TERM;
@@ -466,8 +470,8 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 
 bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case KC_ENT_NUM:
-    case KC_SPC_NAV:
+    case KC_NUM:
+    case KC_NAV:
       return true;
     default:
       return false;
