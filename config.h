@@ -44,4 +44,3 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // standard LAYOUT_ macros in keymap.c code.
 
 #define HBM_LAYOUT_ferris_sweep(...) LAYOUT_split_3x5_2(__VA_ARGS__)
-#define HBM_LAYOUT_planck(...) LAYOUT_planck_grid(__VA_ARGS__)
