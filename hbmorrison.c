@@ -67,14 +67,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (current_layer == LAYER_LSYM || current_layer == LAYER_RSYM) {
       switch (keycode) {
 
-        // Ensure that z and / keys can be shifted in their respective sym
-        // layers.
+        // Ensure that sym layer keys can be shifted in the sym layers.
 
-        case KC_Z:
-        case KC_SLSH:
+        case KC_LSYM_ALT:
+        case KC_RSYM_ALT:
           break;
 
-        // Remove the shift for everything else in the sym layers.
+        // Remove the shift for everything else.
 
         default:
           hbm_shift_pressed = get_mods() & MOD_BIT(KC_LSFT);
@@ -98,19 +97,63 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // Only allow left-hand modifiers to work with the right side of the keyboard
   // and vice versa. The goal here is to produce consistent, sensible behaviour.
   // Rather than stall any active mods when a "bad" keypress occurs, the mods are
-  // swapped out for a same-side keypress then swapped back in afterwards, where
-  // they will affect future keypresses as expected.
+  // removed for an unmodded same-side keypress then swapped back in afterwards,
+  // where they will affect future keypresses as expected.
 
   if (record->event.pressed && current_layer == LAYER_BASE) {
 
-    uint8_t mods = get_mods() & MOD_BITS_LEFT;
-    uint8_t oneshot_mods = get_oneshot_mods() & MOD_BITS_LEFT;
+    uint16_t simple_keycode = keycode;
 
-    if (mods || oneshot_mods) {
-      switch (keycode) {
+    // Convert any layer or mod keypresses into their alternative simple
+    // keypresses.
+
+    switch (keycode) {
+      case KC_LSYM:
+        simple_keycode = KC_LSYM_ALT;
+        break;
+      case KC_HR_LGUI:
+        simple_keycode = KC_LGUI_ALT;
+        break;
+      case KC_HR_LALT:
+        simple_keycode = KC_LALT_ALT;
+        break;
+      case KC_HR_LCTL:
+        simple_keycode = KC_LCTL_ALT;
+        break;
+      case KC_HR_LCA:
+        simple_keycode = KC_LCA_ALT;
+        break;
+      case KC_RSYM:
+        simple_keycode = KC_RSYM_ALT;
+        break;
+      case KC_HR_RGUI:
+        simple_keycode = KC_RGUI_ALT;
+        break;
+      case KC_HR_RALT:
+        simple_keycode = KC_RALT_ALT;
+        break;
+      case KC_HR_RCTL:
+        simple_keycode = KC_RCTL_ALT;
+        break;
+      case KC_HR_RCA:
+        simple_keycode = KC_RCA_ALT;
+        break;
+    }
+
+    // Check if any left-hand mods are present.
+
+    uint8_t left_mods = get_mods() & MOD_BITS_LEFT;
+    uint8_t left_oneshot_mods = get_oneshot_mods() & MOD_BITS_LEFT;
+
+    if (left_mods || left_oneshot_mods) {
+
+      // If there are, check whether this keypress is on the left-hand side of
+      // the keyboard.
+
+      switch (simple_keycode) {
         case KC_Q:
         case KC_W:
-        case KC_F_FUNC:
+        case KC_F:
         case KC_P:
         case KC_B:
         case KC_A:
@@ -118,51 +161,43 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_S:
         case KC_T:
         case KC_G:
-        case KC_Z_RSYM:
-        case KC_X_GUI:
-        case KC_C_ALT:
-        case KC_D_CTL:
-        case KC_V_CA:
-          if (mods) { del_mods(mods); }
-          if (oneshot_mods) { del_oneshot_mods(oneshot_mods); }
-          switch (keycode) {
-            // Send the basic characters associated with the layer and homerow
-            // mod keys.
-            case KC_Z_RSYM:
-              tap_code(KC_Z);
-              break;
-            case KC_X_GUI:
-              tap_code(KC_X);
-              break;
-            case KC_C_ALT:
-              tap_code(KC_C);
-              break;
-            case KC_D_CTL:
-              tap_code(KC_D);
-              break;
-            case KC_V_CA:
-              tap_code(KC_V);
-              break;
-            default:
-              tap_code(keycode);
-          }
-          // We add mods back because they continue to be valid. Oneshot mods
-          // are not added back because they have been "used up" by this
-          // keypress.
-          if (mods) { add_mods(mods); }
+        case KC_Z:
+        case KC_X:
+        case KC_C:
+        case KC_D:
+        case KC_V:
+
+          // Remove all of the left-hand mods and tap the keypress.
+
+          if (left_mods) { del_mods(left_mods); }
+          if (left_oneshot_mods) { del_oneshot_mods(left_oneshot_mods); }
+
+          tap_code(simple_keycode);
+
+          // Add the non-oneshot mods back because they continue to be valid
+          // while the mod key is being held down.
+
+          if (left_mods) { add_mods(left_mods); }
+
           return false;
       }
 
     }
 
-    mods = get_mods() & MOD_BITS_RIGHT;
-    oneshot_mods = get_oneshot_mods() & MOD_BITS_RIGHT;
+    // Check if any right-hand mods are present.
 
-    if (mods || oneshot_mods) {
-      switch (keycode) {
+    uint8_t right_mods = get_mods() & MOD_BITS_RIGHT;
+    uint8_t right_oneshot_mods = get_oneshot_mods() & MOD_BITS_RIGHT;
+
+    if (right_mods || right_oneshot_mods) {
+
+      // If there are, check whether this keypress is on the right-hand side of
+      // the keyboard.
+
+      switch (simple_keycode) {
         case KC_J:
         case KC_L:
-        case KC_U_CTRL:
+        case KC_U:
         case KC_Y:
         case KC_BSPC:
         case KC_M:
@@ -170,40 +205,27 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_E:
         case KC_I:
         case KC_O:
-        case KC_K_CA:
-        case KC_H_CTL:
-        case KC_COMMA_ALT:
-        case KC_DOT_GUI:
-        case KC_SLSH_LSYM:
-          if (mods) { del_mods(mods); }
-          if (oneshot_mods) { del_oneshot_mods(oneshot_mods); }
-          switch (keycode) {
-            // Send the basic characters associated with the layer and homerow
-            // mod keys.
-            case KC_K_CA:
-              tap_code(KC_K);
-              break;
-            case KC_H_CTL:
-              tap_code(KC_H);
-              break;
-            case KC_COMMA_ALT:
-              tap_code(KC_COMMA);
-              break;
-            case KC_DOT_GUI:
-              tap_code(KC_DOT);
-              break;
-            case KC_SLSH_LSYM:
-              tap_code(KC_SLSH);
-              break;
-            default:
-              tap_code(keycode);
-          }
-          // We add mods back because they continue to be valid. Oneshot mods
-          // are not added back because they have been "used up" by this
-          // keypress.
-          if (mods) { add_mods(mods); }
+        case KC_K:
+        case KC_H:
+        case KC_COMMA:
+        case KC_DOT:
+        case KC_SLSH:
+
+          // Remove all of the right-hand mods and tap the keypress.
+
+          if (right_mods) { del_mods(right_mods); }
+          if (right_oneshot_mods) { del_oneshot_mods(right_oneshot_mods); }
+
+          tap_code(simple_keycode);
+
+          // Add the non-oneshot mods back because they continue to be valid
+          // while the mod key is being held down.
+
+          if (right_mods) { add_mods(right_mods); }
+
           return false;
       }
+
     }
   }
 
