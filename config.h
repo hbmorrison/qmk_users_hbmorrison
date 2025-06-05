@@ -24,7 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TAPPING_TERM_PER_KEY
 #define TAPPING_TERM 200
 #define TAPPING_TERM_LAYER 200
-#define TAPPING_TERM_TAP_DANCE 1000
+#define TAPPING_TERM_SHIFT_TAP_DANCE 1000
 
 // Double tap shift for caps word.
 

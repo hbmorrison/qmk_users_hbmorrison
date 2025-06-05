@@ -76,14 +76,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     hbm_alt_tab_pressed = false;
   }
 
-  // Complete the oneshot action for the left- and right-shift keys.
-
-  if (td_lsft_single_tapped && record->event.pressed && keycode != TD(TD_LSFT))
-    clear_oneshot_layer_state(ONESHOT_PRESSED);
-
-  if (td_rsft_single_tapped && record->event.pressed && keycode != TD(TD_RSFT))
-    clear_oneshot_layer_state(ONESHOT_PRESSED);
-
   // Only allow left-hand modifiers to work with the right side of the keyboard
   // and vice versa. The goal here is to produce consistent, sensible behaviour.
   // Rather than stall any active mods when a "bad" keypress occurs, the mods are
@@ -467,7 +459,7 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
       return TAPPING_TERM_LAYER;
     case TD(TD_LSFT):
     case TD(TD_RSFT):
-      return TAPPING_TERM_TAP_DANCE;
+      return TAPPING_TERM_SHIFT_TAP_DANCE;
     default:
       return TAPPING_TERM;
   }
@@ -502,9 +494,9 @@ void lsft_tap(tap_dance_state_t *state, void *user_data) {
 
 void lsft_finished(tap_dance_state_t *state, void *user_data) {
 
-  // If another key has been pressed during TAPPING_TERM_TAP_DANCE and the left
-  // shift key is no longer pressed, remove the shift modifier and check for
-  // taps.
+  // If another key has been pressed during TAPPING_TERM_SHIFT_TAP_DANCE and the
+  // left shift key is no longer pressed, remove the shift modifier and check
+  // for taps.
 
   if (state->interrupted && !state->pressed) {
 
@@ -528,11 +520,17 @@ void lsft_finished(tap_dance_state_t *state, void *user_data) {
 void lsft_reset(tap_dance_state_t *state, void *user_data) {
 
   // At the end of the tap dance, remove the left-shift modifier if the
-  // left-shift key has been held down.
+  // left-shift key has been held down and remove the oneshot layer if it has
+  // been single-tapped.
 
   if (td_lsft_held) {
     td_lsft_held = false;
     del_mods(MOD_BIT(KC_LSFT));
+  }
+
+  if (td_lsft_single_tapped) {
+    td_lsft_single_tapped = false;
+    clear_oneshot_layer_state(ONESHOT_PRESSED);
   }
 
 }
@@ -554,9 +552,9 @@ void rsft_tap(tap_dance_state_t *state, void *user_data) {
 
 void rsft_finished(tap_dance_state_t *state, void *user_data) {
 
-  // If another key has been pressed during TAPPING_TERM_TAP_DANCE and the right
-  // shift key is no longer pressed, remove the shift modifier and check for
-  // taps.
+  // If another key has been pressed during TAPPING_TERM_SHIFT_TAP_DANCE and the
+  // right shift key is no longer pressed, remove the shift modifier and check
+  // for taps.
 
   if (state->interrupted && !state->pressed) {
 
@@ -580,11 +578,17 @@ void rsft_finished(tap_dance_state_t *state, void *user_data) {
 void rsft_reset(tap_dance_state_t *state, void *user_data) {
 
   // At the end of the tap dance, remove the right-shift modifier if the
-  // right-shift key has been held down.
+  // right-shift key has been held down and remove the oneshot layer if it has
+  // been single-tapped.
 
   if (td_rsft_held) {
     td_rsft_held = false;
     del_mods(MOD_BIT(KC_RSFT));
+  }
+
+  if (td_rsft_single_tapped) {
+    td_rsft_single_tapped = false;
+    clear_oneshot_layer_state(ONESHOT_PRESSED);
   }
 
 }
