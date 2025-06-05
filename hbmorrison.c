@@ -213,6 +213,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   switch (keycode) {
 
+    // Shift + backspace sends delete.
+
     case KC_BSPC:
       if (record->event.pressed) {
         if (hbm_mod_state & MOD_MASK_SHIFT) {
@@ -228,6 +230,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           hbm_del_registered = false;
           return false;
         }
+      }
+      break;
+
+    // Escape key followed by colon.
+
+    case M_ESC_COLN:
+      if (record->event.pressed) {
+        tap_code(KC_ESC);
+        SEND_STRING(SS_DELAY(100));
+        tap_code16(KC_COLN);
       }
       break;
 
@@ -432,12 +444,8 @@ bool caps_word_press_user(uint16_t keycode) {
 
     case KC_NUM:
     case KC_NAV:
-#ifdef HBM_HANDED
-    case TD(TD_LSFT):
-    case TD(TD_RSFT):
-#else
-    case KC_R_THUMB: // This will be the LSYM key in non-handed mode.
-#endif
+    case KC_TD_LSFT:
+    case KC_TD_RSFT:
       return true;
 
     // Deactivate caps word by default.
@@ -456,8 +464,8 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case KC_FUNC:
     case KC_CTLS:
       return TAPPING_TERM_LAYER;
-    case TD(TD_LSFT):
-    case TD(TD_RSFT):
+    case KC_TD_LSFT:
+    case KC_TD_RSFT:
       return TAPPING_TERM_SHIFT_TAP_DANCE;
     default:
       return TAPPING_TERM;
