@@ -82,9 +82,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // removed for an unmodded same-side keypress then swapped back in afterwards,
   // where they will affect future keypresses as expected.
 
-  uint8_t current_layer = get_highest_layer(layer_state);
-
-  if (record->event.pressed && current_layer == LAYER_BASE) {
+  if (record->event.pressed && get_highest_layer(layer_state) == LAYER_BASE) {
 
     uint16_t simple_keycode = keycode;
 
@@ -279,6 +277,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   return true;
+
 }
 
 bool process_record_user_windows(uint16_t keycode, keyrecord_t *record) {
