@@ -24,11 +24,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TAPPING_TERM_PER_KEY
 #define TAPPING_TERM 200
 #define TAPPING_TERM_LAYER 200
-#define TAPPING_TERM_SHIFT_TAP_DANCE 5000
+#define TAPPING_TERM_TAP_DANCE_SHIFT 2000
 
 // Caps word.
 
-#define CAPS_WORD_IDLE_TIMEOUT 5000
+#define CAPS_WORD_IDLE_TIMEOUT 2000
 
 // Layout macros that allow preprocessor substitutions. Use these instead of the
 // standard LAYOUT_ macros in keymap.c code.
