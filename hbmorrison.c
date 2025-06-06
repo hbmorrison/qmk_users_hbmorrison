@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "hbmorrison.h"
 
+uint16_t get_simple_keycode(uint16_t keycode);
+
 // Defines whether to issue Windows or ChromeOS keypresses from macros - Windows
 // by default.
 
@@ -40,11 +42,6 @@ static bool hbm_del_registered = false;
 // Used to temporarily store the state of the mod keys during shift backspace.
 
 static uint8_t hbm_mod_state = 0;
-
-// True if left- or right-shift tap dance keys have recently been single tapped.
-
-bool td_lsft_single_tapped = false;
-bool td_rsft_single_tapped = false;
 
 // True if left- or right-shift tap dance keys are currently being held.
 
@@ -77,55 +74,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   // Only allow left-hand modifiers to work with the right side of the keyboard
-  // and vice versa. The goal here is to produce consistent, sensible behaviour.
-  // Rather than stall any active mods when a "bad" keypress occurs, the mods are
-  // removed for an unmodded same-side keypress then swapped back in afterwards,
-  // where they will affect future keypresses as expected.
+  // and vice versa.
 
   if (record->event.pressed && get_highest_layer(layer_state) == LAYER_BASE) {
 
-    uint16_t simple_keycode = keycode;
+    uint16_t simple_keycode = get_simple_keycode(keycode);
 
-    // Convert any layer or mod keypresses into their alternative simple
-    // keypresses.
-
-    switch (keycode) {
-      case KC_HR_LGUI:
-        simple_keycode = KC_LGUI_ALT;
-        break;
-      case KC_HR_LALT:
-        simple_keycode = KC_LALT_ALT;
-        break;
-      case KC_HR_LCTL:
-        simple_keycode = KC_LCTL_ALT;
-        break;
-      case KC_HR_LCA:
-        simple_keycode = KC_LCA_ALT;
-        break;
-      case KC_HR_RGUI:
-        simple_keycode = KC_RGUI_ALT;
-        break;
-      case KC_HR_RALT:
-        simple_keycode = KC_RALT_ALT;
-        break;
-      case KC_HR_RCTL:
-        simple_keycode = KC_RCTL_ALT;
-        break;
-      case KC_HR_RCA:
-        simple_keycode = KC_RCA_ALT;
-        break;
-    }
-
-    // Check if any left-hand mods are present.
+    // Check if any left-hand mods are present. If there are, ignore any
+    // keypress on the left-hand side of the keyboard.
 
     uint8_t left_mods = get_mods() & MOD_BITS_LEFT;
     uint8_t left_oneshot_mods = get_oneshot_mods() & MOD_BITS_LEFT;
 
     if (left_mods || left_oneshot_mods) {
-
-      // If there are, check whether this keypress is on the left-hand side of
-      // the keyboard.
-
       switch (simple_keycode) {
         case KC_Q:
         case KC_W:
@@ -142,34 +103,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_C:
         case KC_D:
         case KC_V:
-
-          // Remove all of the left-hand mods and tap the keypress.
-
-          if (left_mods) { del_mods(left_mods); }
-          if (left_oneshot_mods) { del_oneshot_mods(left_oneshot_mods); }
-
-          tap_code(simple_keycode);
-
-          // Add the non-oneshot mods back because they continue to be valid
-          // while the mod key is being held down.
-
-          if (left_mods) { add_mods(left_mods); }
-
+          del_oneshot_mods(left_oneshot_mods);
           return false;
       }
-
     }
 
-    // Check if any right-hand mods are present.
+    // Check if any right-hand mods are present. If there are, ignore any
+    // keypress on the right-hand side of the keyboard.
 
     uint8_t right_mods = get_mods() & MOD_BITS_RIGHT;
     uint8_t right_oneshot_mods = get_oneshot_mods() & MOD_BITS_RIGHT;
 
     if (right_mods || right_oneshot_mods) {
-
-      // If there are, check whether this keypress is on the right-hand side of
-      // the keyboard.
-
       switch (simple_keycode) {
         case KC_J:
         case KC_L:
@@ -186,26 +131,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_COMMA:
         case KC_DOT:
         case KC_SLSH:
-
-          // Remove all of the right-hand mods and tap the keypress.
-
-          if (right_mods) { del_mods(right_mods); }
-          if (right_oneshot_mods) { del_oneshot_mods(right_oneshot_mods); }
-
-          tap_code(simple_keycode);
-
-          // Add the non-oneshot mods back because they continue to be valid
-          // while the mod key is being held down.
-
-          if (right_mods) { add_mods(right_mods); }
-
+          del_oneshot_mods(right_oneshot_mods);
           return false;
       }
-
     }
+
   }
 
-  // Store current modifiers for shift-backspace action.
+  // Store current modifiers for the shift + backspace funtionality.
 
   hbm_mod_state = get_mods();
 
@@ -290,6 +223,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   return true;
 
+}
+
+// Convert any layer or mod keypresses into their alternative simple keypresses.
+
+uint16_t get_simple_keycode(uint16_t keycode) {
+  switch (keycode) {
+    case KC_HR_LGUI:
+      return KC_LGUI_KEY;
+    case KC_HR_LALT:
+      return KC_LALT_KEY;
+    case KC_HR_LCTL:
+      return KC_LCTL_KEY;
+    case KC_HR_LCA:
+      return KC_LCA_KEY;
+    case KC_HR_RGUI:
+      return KC_RGUI_KEY;
+    case KC_HR_RALT:
+      return KC_RALT_KEY;
+    case KC_HR_RCTL:
+      return KC_RCTL_KEY;
+    case KC_HR_RCA:
+      return KC_RCA_KEY;
+    default:
+      return keycode;
+  }
 }
 
 bool process_record_user_windows(uint16_t keycode, keyrecord_t *record) {
@@ -424,15 +382,44 @@ bool process_record_user_linux(uint16_t keycode, keyrecord_t *record) {
 // typing '-' stops the caps word.
 
 bool caps_word_press_user(uint16_t keycode) {
-  switch (keycode) {
 
-    // Keycodes that continue caps word with shift applied.
+  switch (get_simple_keycode(keycode)) {
 
-    case KC_A ... KC_Z:
+    // Keycodes that continue caps word with left- or right-shift applied.
+
+    case KC_Q:
+    case KC_W:
+    case KC_F:
+    case KC_P:
+    case KC_B:
+    case KC_A:
+    case KC_R:
+    case KC_S:
+    case KC_T:
+    case KC_G:
+    case KC_Z:
+    case KC_X:
+    case KC_C:
+    case KC_D:
+    case KC_V:
+      add_weak_mods(MOD_BIT(KC_RSFT));
+      return true;
+
+    case KC_J:
+    case KC_L:
+    case KC_U:
+    case KC_Y:
+    case KC_M:
+    case KC_N:
+    case KC_E:
+    case KC_I:
+    case KC_O:
+    case KC_K:
+    case KC_H:
       add_weak_mods(MOD_BIT(KC_LSFT));
       return true;
 
-    // Keycodes that continue caps word without shifting.
+    // Keys that continue caps word but are not shifted themselves.
 
     case KC_1 ... KC_0:
     case KC_BSPC:
@@ -440,7 +427,7 @@ bool caps_word_press_user(uint16_t keycode) {
     case KC_UNDS:
       return true;
 
-    // Do not deactivate if symbol, num or nav layer keys are held down.
+    // Do not deactivate if sym, num or nav layer keys are pressed.
 
     case KC_NUM:
     case KC_NAV:
@@ -452,6 +439,7 @@ bool caps_word_press_user(uint16_t keycode) {
 
     default:
       return false;
+
   }
 }
 
@@ -488,13 +476,14 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
 
 void lsft_tap(tap_dance_state_t *state, void *user_data) {
 
-  // If the count is currently one then we could be heading towards a tap or a
-  // hold. Default to hold and set the left-shift modifier. If it turns out to
-  // be a tap after all, the modifier can be removed below.
+  // If the tap dance count has just been incremented for the first time then we
+  // could be heading towards a tap or a hold. We will default to hold and
+  // activate the sym layer. If it turns out to be a tap after all, the layer
+  // can be removed below.
 
   if (state->count == 1) {
     td_lsft_held = true;
-    add_mods(MOD_BIT(KC_LSFT));
+    layer_on(LAYER_RSYM);
   }
 
 }
@@ -502,42 +491,35 @@ void lsft_tap(tap_dance_state_t *state, void *user_data) {
 void lsft_finished(tap_dance_state_t *state, void *user_data) {
 
   // If another key has been pressed during TAPPING_TERM_SHIFT_TAP_DANCE and the
-  // left shift key is no longer pressed, remove the shift modifier and check
-  // for taps.
+  // tap dance key is no longer pressed then there has been a tap, so clear the
+  // sym layer and figure out what to do with the taps.
 
   if (state->interrupted && !state->pressed) {
 
     td_lsft_held = false;
-    del_mods(MOD_BIT(KC_LSFT));
+    layer_off(LAYER_RSYM);
 
     if (state->count == 1) {
-      td_lsft_single_tapped = true;
-      set_oneshot_layer(LAYER_RSYM, ONESHOT_START);
-      return;
-    }
-
-    if (state->count == 2) {
-      td_lsft_single_tapped = false;
+      if (is_caps_word_on())
+        caps_word_off();
+      add_oneshot_mods(MOD_BIT(KC_LSFT));
+    } else {
       caps_word_toggle();
     }
+
   }
 
 }
 
 void lsft_reset(tap_dance_state_t *state, void *user_data) {
 
-  // At the end of the tap dance, remove the left-shift modifier if the
-  // left-shift key has been held down and remove the oneshot layer if it has
-  // been single-tapped.
+  // If the tap dance key was held until this point then we have been in the sym
+  // layer, so we can remove the sym layer now that the tap dance key has been
+  // lifted.
 
   if (td_lsft_held) {
     td_lsft_held = false;
-    del_mods(MOD_BIT(KC_LSFT));
-  }
-
-  if (td_lsft_single_tapped) {
-    td_lsft_single_tapped = false;
-    clear_oneshot_layer_state(ONESHOT_PRESSED);
+    layer_off(LAYER_RSYM);
   }
 
 }
@@ -546,13 +528,14 @@ void lsft_reset(tap_dance_state_t *state, void *user_data) {
 
 void rsft_tap(tap_dance_state_t *state, void *user_data) {
 
-  // If the count is currently one then we could be heading towards a tap or a
-  // hold. Default to hold and set the right-shift modifier. If it turns out to
-  // be a tap after all, the modifier can be removed below.
+  // If the tap dance count has just been incremented for the first time then we
+  // could be heading towards a tap or a hold. We will default to hold and
+  // activate the sym layer. If it turns out to be a tap after all, the layer
+  // can be removed below.
 
   if (state->count == 1) {
     td_rsft_held = true;
-    add_mods(MOD_BIT(KC_RSFT));
+    layer_on(LAYER_LSYM);
   }
 
 }
@@ -560,42 +543,35 @@ void rsft_tap(tap_dance_state_t *state, void *user_data) {
 void rsft_finished(tap_dance_state_t *state, void *user_data) {
 
   // If another key has been pressed during TAPPING_TERM_SHIFT_TAP_DANCE and the
-  // right shift key is no longer pressed, remove the shift modifier and check
-  // for taps.
+  // tap dance key is no longer pressed then there has been a tap, so clear the
+  // sym layer and figure out what to do with the taps.
 
   if (state->interrupted && !state->pressed) {
 
     td_rsft_held = false;
-    del_mods(MOD_BIT(KC_RSFT));
+    layer_off(LAYER_LSYM);
 
     if (state->count == 1) {
-      td_rsft_single_tapped = true;
-      set_oneshot_layer(LAYER_LSYM, ONESHOT_START);
-      return;
-    }
-
-    if (state->count == 2) {
-      td_rsft_single_tapped = false;
+      if (is_caps_word_on())
+        caps_word_off();
+      add_oneshot_mods(MOD_BIT(KC_RSFT));
+    } else {
       caps_word_toggle();
     }
+
   }
 
 }
 
 void rsft_reset(tap_dance_state_t *state, void *user_data) {
 
-  // At the end of the tap dance, remove the right-shift modifier if the
-  // right-shift key has been held down and remove the oneshot layer if it has
-  // been single-tapped.
+  // If the tap dance key was held until this point then we have been in the sym
+  // layer, so we can remove the sym layer now that the tap dance key has been
+  // lifted.
 
   if (td_rsft_held) {
     td_rsft_held = false;
-    del_mods(MOD_BIT(KC_RSFT));
-  }
-
-  if (td_rsft_single_tapped) {
-    td_rsft_single_tapped = false;
-    clear_oneshot_layer_state(ONESHOT_PRESSED);
+    layer_off(LAYER_LSYM);
   }
 
 }
