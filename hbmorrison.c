@@ -50,16 +50,13 @@ bool lsym_key_pressed = false;
 // tap dance data to accumulate for the _finished and _reset functions to make
 // decisions.
 //
-// The reason for this is that the homerow modifier keys - in other words, MT
-// macros - do not call process_record_user() to register keycodes. Instead the
-// MT macros register and unregister their keycodes themselves early. This means
-// that the homerow modifier keys do not work with the usual tap dance
-// mechanics. An MT keypress during a tap dance will finish the tap dance and
-// set the tap dance state to interrupted, but after the MT keypresses have come
-// and gone, too late for any _finished code to catch them.
-//
-// Using the _press and _release functions here allow us to apply shift
-// modifiers or activate caps word before any MT macros register keypresses.
+// This is because the homerow modifier keys - and all MT macros - will not work
+// alongside the usual tap dance mechanics. An MT keypress during a tap dance
+// will finish the tap dance and set the tap dance state to interrupted, but
+// only after the MT keypresses have been registered, too late for any _finished
+// code to apply shift modifiers to them. Using the _press and _release tap
+// dance functions allow us to apply shift modifiers or activate caps word
+// before any MT macros register keypresses.
 
 void lsft_press(tap_dance_state_t *state, void *user_data);
 void lsft_release(tap_dance_state_t *state, void *user_data);
@@ -86,9 +83,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // keypress on the left-hand side of the keyboard.
 
     uint8_t any_mods = get_mods() | get_oneshot_mods();
-    bool any_right_hand_mods = hr_rctl_held || hr_ralt_held || hr_rgui_held || hr_rca_held || hr_rsft_tapped;
+    bool right_hand_mods = hr_rctl_held || hr_ralt_held || hr_rgui_held || hr_rca_held || hr_rsft_tapped;
 
-    if (any_mods && any_right_hand_mods) {
+    if (any_mods && right_hand_mods) {
       switch (keycode) {
         case KC_J:
         case KC_L:
@@ -119,7 +116,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
     }
 
-    if (any_mods && ! any_right_hand_mods) {
+    if (any_mods && ! right_hand_mods) {
       switch (keycode) {
         case KC_Q:
         case KC_W:
@@ -418,7 +415,7 @@ bool caps_word_press_user(uint16_t keycode) {
 
   switch (keycode) {
 
-    // Keycodes that continue caps word with left- or right-shift applied.
+    // Keycodes that continue caps word with shift applied.
 
     case KC_Q:
     case KC_W:
@@ -435,9 +432,6 @@ bool caps_word_press_user(uint16_t keycode) {
     case KC_C:
     case KC_D:
     case KC_V:
-      add_weak_mods(MOD_BIT(KC_RSFT));
-      return true;
-
     case KC_J:
     case KC_L:
     case KC_U:
@@ -462,10 +456,10 @@ bool caps_word_press_user(uint16_t keycode) {
 
     // Continue caps word if sym, num or nav layer keys are pressed.
 
-    case KC_NUM:
-    case KC_NAV:
     case KC_TD_LSFT:
     case KC_TD_RSFT:
+    case KC_NUM:
+    case KC_NAV:
       return true;
 
     // Deactivate caps word by default.
@@ -580,7 +574,7 @@ void rsft_press(tap_dance_state_t *state, void *user_data) {
   // toggle will be applied on the second key release below.
 
   if (state->count > 1) {
-    del_oneshot_mods(MOD_BIT(KC_RSFT));
+    del_oneshot_mods(MOD_BIT(KC_LSFT));
     hr_rsft_tapped = false;
   }
 
