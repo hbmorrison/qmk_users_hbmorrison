@@ -118,11 +118,6 @@ enum {
 #define KC_HR_RGUI RGUI_T(KC_RGUI_KEY)
 #define KC_HR_RCA RALT_T(KC_RCA_KEY)
 
-// Left- and right-handed modifier bits.
-
-#define MOD_BITS_LEFT (MOD_BIT(KC_LSFT) | MOD_BIT(KC_LCTL) | MOD_BIT(KC_LGUI))
-#define MOD_BITS_RIGHT (MOD_BIT(KC_RSFT) | MOD_BIT(KC_RCTL) | MOD_BIT(KC_RGUI))
-
 // Base layer.
 
 #define KM_BASE_1L KC_Q, KC_W, KC_FUNC, KC_P, KC_B
