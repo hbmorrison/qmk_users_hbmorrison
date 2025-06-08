@@ -32,10 +32,6 @@ bool process_record_user_linux(uint16_t keycode, keyrecord_t *record);
 
 static bool alt_tab_state = false;
 
-// True if shift-backspace has been pressed.
-
-static bool shift_backspace_state = false;
-
 // True if there has been a keypress in the left or right sym layers.
 
 bool rsym_key_pressed = false;
@@ -164,35 +160,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   switch (keycode) {
 
-    // Shift + backspace sends delete.
-
-    case KC_BSPC:
-      if (record->event.pressed) {
-        if (get_oneshot_mods() & MOD_MASK_SHIFT) {
-          del_oneshot_mods(MOD_MASK_SHIFT);
-          register_code(KC_DEL);
-          shift_backspace_state = true;
-          return false;
-        }
-      } else {
-        if (shift_backspace_state) {
-          unregister_code(KC_DEL);
-          shift_backspace_state = false;
-          return false;
-        }
-      }
-      break;
-
-    // Escape key followed by colon.
-
-    case M_ESC_COLN:
-      if (record->event.pressed) {
-        tap_code(KC_ESC);
-        SEND_STRING(SS_DELAY(100));
-        tap_code16(KC_COLN);
-      }
-      break;
-
     // Hold down KC_LALT persistantly to allow tabbing through windows.
 
     case M_ALT_TAB:
@@ -236,7 +203,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   return true;
-
 }
 
 bool process_record_user_windows(uint16_t keycode, keyrecord_t *record) {
