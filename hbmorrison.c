@@ -72,7 +72,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // Only allow left-hand modifiers to work with the right-hand side of the
   // keyboard and vice versa.
 
-  if (current_highest_layer == LAYER_BASE) {
+  if (current_highest_layer == LAYER_BASE && record->event.pressed) {
 
     // Check if any left-hand mods are present. If there are, ignore any
     // keypress on the left-hand side of the keyboard.
@@ -97,9 +97,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_C:
         case KC_D:
         case KC_V:
+        case KC_HR_LCTL:
+        case KC_HR_LALT:
+        case KC_HR_LGUI:
+        case KC_HR_LCA:
           del_oneshot_mods(left_oneshot_mods);
           del_mods(left_mods);
-          tap_code(keycode);
+          tap_code16(keycode);
           add_mods(left_mods);
           return false;
       }
@@ -128,9 +132,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_COMMA:
         case KC_DOT:
         case KC_SLSH:
+        case KC_HR_RCTL:
+        case KC_HR_RALT:
+        case KC_HR_RGUI:
+        case KC_HR_RCA:
           del_oneshot_mods(right_oneshot_mods);
           del_mods(right_mods);
-          tap_code(keycode);
+          tap_code16(keycode);
           add_mods(right_mods);
           return false;
       }

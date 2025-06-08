@@ -61,6 +61,11 @@ enum {
   TD_RSFT
 };
 
+// Left- and right-handed shift keys.
+
+#define KC_TD_LSFT TD(TD_LSFT)
+#define KC_TD_RSFT TD(TD_RSFT)
+
 // Alternative keys for UK ISO keyboard layouts.
 
 #define KC_UK_DQUO LSFT(KC_2)
@@ -117,11 +122,6 @@ enum {
 
 #define MOD_BITS_LEFT (MOD_BIT(KC_LSFT) | MOD_BIT(KC_LCTL) | MOD_BIT(KC_LGUI))
 #define MOD_BITS_RIGHT (MOD_BIT(KC_RSFT) | MOD_BIT(KC_RCTL) | MOD_BIT(KC_RGUI))
-
-// Left- and right-handed shift keys.
-
-#define KC_TD_LSFT TD(TD_LSFT)
-#define KC_TD_RSFT TD(TD_RSFT)
 
 // Base layer.
 
