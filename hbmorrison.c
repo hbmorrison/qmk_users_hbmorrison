@@ -17,84 +17,150 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "hbmorrison.h"
 
-// Only allow left-hand modifiers to work with the right-hand side of the
-// keyboard and vice versa.
-
-bool apply_handedness_rules(uint16_t keycode, keyrecord_t *record);
-
-// Defines whether to issue Windows, ChromeOS or Linux keypresses from macros
+// Indicates whether to issue Windows, ChromeOS or Linux keypresses from macros
 // with Windows selected by default.
 
-static uint8_t hbm_operatingsystem = OS_WINDOWS;
+static uint8_t selected_operating_system = OS_WINDOWS;
 
-// Declare operating specific keycode handling functions.
+// Operating system specific keycode processing functions.
 
 bool process_record_user_windows(uint16_t keycode, keyrecord_t *record);
 bool process_record_user_chromeos(uint16_t keycode, keyrecord_t *record);
 bool process_record_user_linux(uint16_t keycode, keyrecord_t *record);
 
-// State of the M_ALT_TAB macro - true if we are currently tabbing between
-// windows.
+// True if we are currently tabbing between windows.
 
-static bool hbm_alt_tab_pressed = false;
+static bool alt_tab_state = false;
 
-// State for managing shift backspace behaviour.
+// True if shift-backspace has been pressed.
 
-static bool hbm_del_registered = false;
+static bool shift_backspace_state = false;
 
-// Used to temporarily store the state of the mod keys during shift backspace.
+// True if there has been a keypress in the left or right sym layers.
 
-static uint8_t hbm_mod_state = 0;
+bool rsym_key_pressed = false;
+bool lsym_key_pressed = false;
 
-// True if left- or right-shift tap dance keys are currently being held.
+// Tap dances for the multi-function shift keys. The tap dance actions are being
+// decided early using the _press and _release functions rather than waiting for
+// tap dance data to accumulate for the _finished and _reset functions to make
+// decisions.
+//
+// The reason for this is that the homerow modifier keys - in other words, MT
+// macros - do not call process_record_user() to register keycodes. Instead the
+// MT macros register and unregister their keycodes themselves early. This means
+// that the homerow modifier keys do not work with the usual tap dance
+// mechanics. An MT keypress during a tap dance will finish the tap dance and
+// set the tap dance state to interrupted, but after the MT keypresses have come
+// and gone, too late for any _finished code to catch them.
+//
+// Using the _press and _release functions here allow us to apply shift
+// modifiers or activate caps word before any MT macros register keypresses.
 
-bool td_lsft_held = false;
-bool td_rsft_held = false;
-
-// Tapdance for multi-function shift keys.
-
-void lsft_tap(tap_dance_state_t *state, void *user_data);
+void lsft_press(tap_dance_state_t *state, void *user_data);
 void lsft_release(tap_dance_state_t *state, void *user_data);
-void rsft_tap(tap_dance_state_t *state, void *user_data);
+void rsft_press(tap_dance_state_t *state, void *user_data);
 void rsft_release(tap_dance_state_t *state, void *user_data);
 
 tap_dance_action_t tap_dance_actions[] = {
-  [TD_LSFT] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(lsft_tap, lsft_release, NULL, NULL),
-  [TD_RSFT] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(rsft_tap, rsft_release, NULL, NULL),
+  [TD_LSFT] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(lsft_press, lsft_release, NULL, NULL),
+  [TD_RSFT] = ACTION_TAP_DANCE_FN_ADVANCED_WITH_RELEASE(rsft_press, rsft_release, NULL, NULL),
 };
 
 // Process key presses.
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
-  // Apply handedness rules. If the function returns false then the keypress has
-  // been handled and we can return false from here to indicate the same.
+  uint8_t current_highest_layer = get_highest_layer(layer_state);
 
-  if (! apply_handedness_rules(keycode, record))
-    return false;
+  // Only allow left-hand modifiers to work with the right-hand side of the
+  // keyboard and vice versa.
+
+  if (current_highest_layer == LAYER_BASE) {
+
+    // Check if any left-hand mods are present. If there are, ignore any
+    // keypress on the left-hand side of the keyboard.
+
+    uint8_t left_mods = get_mods() & MOD_BITS_LEFT;
+    uint8_t left_oneshot_mods = get_oneshot_mods() & MOD_BITS_LEFT;
+
+    if (left_mods || left_oneshot_mods) {
+      switch (keycode) {
+        case KC_Q:
+        case KC_W:
+        case KC_F:
+        case KC_P:
+        case KC_B:
+        case KC_A:
+        case KC_R:
+        case KC_S:
+        case KC_T:
+        case KC_G:
+        case KC_Z:
+        case KC_X:
+        case KC_C:
+        case KC_D:
+        case KC_V:
+          del_oneshot_mods(left_oneshot_mods);
+          del_mods(left_mods);
+          tap_code(keycode);
+          add_mods(left_mods);
+          return false;
+      }
+    }
+
+    // Check if any right-hand mods are present. If there are, ignore any
+    // keypress on the right-hand side of the keyboard.
+
+    uint8_t right_mods = get_mods() & MOD_BITS_RIGHT;
+    uint8_t right_oneshot_mods = get_oneshot_mods() & MOD_BITS_RIGHT;
+
+    if (right_mods || right_oneshot_mods) {
+      switch (keycode) {
+        case KC_J:
+        case KC_L:
+        case KC_U:
+        case KC_Y:
+        case KC_BSPC:
+        case KC_M:
+        case KC_N:
+        case KC_E:
+        case KC_I:
+        case KC_O:
+        case KC_K:
+        case KC_H:
+        case KC_COMMA:
+        case KC_DOT:
+        case KC_SLSH:
+          del_oneshot_mods(right_oneshot_mods);
+          del_mods(right_mods);
+          tap_code(keycode);
+          add_mods(right_mods);
+          return false;
+      }
+    }
+
+  }
+
+  // Record that a sym layer key has been pressed. This information is used by
+  // the shift tap dances to decide whether or not to set a oneshot shift
+  // modifier.
+
+  if (record->event.pressed) {
+    if (! lsym_key_pressed && current_highest_layer == LAYER_LSYM)
+      lsym_key_pressed = true;
+    if (! rsym_key_pressed && current_highest_layer == LAYER_RSYM)
+      rsym_key_pressed = true;
+  }
 
   // Stop pressing the KC_LALT key once M_ALT_TAB is no longer being pressed.
 
-  if (keycode != M_ALT_TAB && hbm_alt_tab_pressed) {
+  if (keycode != M_ALT_TAB && alt_tab_state) {
     unregister_code(KC_LALT);
-    hbm_alt_tab_pressed = false;
+    alt_tab_state = false;
   }
 
-  // Ensure that any oneshot shift is removed before keys in the symbol layers
-  // are pressed. This ensures that symbol layer keypresses will always produce
-  // the unshifted symbol, unless explicitly shifted in code.
-
-  uint8_t current_layer = get_highest_layer(layer_state);
-
-  if (current_layer == LAYER_LSYM || current_layer == LAYER_RSYM)
-    if (record->event.pressed)
-      del_oneshot_mods(MOD_MASK_SHIFT);
-
-  // Store current modifiers for the shift + backspace funtionality.
-
-  hbm_mod_state = get_mods();
-
-  // Process generic keycodes.
+  // Process macros and special handling for keycodes.
 
   switch (keycode) {
 
@@ -102,17 +168,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case KC_BSPC:
       if (record->event.pressed) {
-        if (hbm_mod_state & MOD_MASK_SHIFT) {
-          del_mods(MOD_MASK_SHIFT);
+        if (get_oneshot_mods() & MOD_MASK_SHIFT) {
+          del_oneshot_mods(MOD_MASK_SHIFT);
           register_code(KC_DEL);
-          hbm_del_registered = true;
-          set_mods(hbm_mod_state);
+          shift_backspace_state = true;
           return false;
         }
       } else {
-        if (hbm_del_registered) {
+        if (shift_backspace_state) {
           unregister_code(KC_DEL);
-          hbm_del_registered = false;
+          shift_backspace_state = false;
           return false;
         }
       }
@@ -132,9 +197,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case M_ALT_TAB:
       if (record->event.pressed) {
-        if (! hbm_alt_tab_pressed) {
+        if (! alt_tab_state) {
           register_code(KC_LALT);
-          hbm_alt_tab_pressed = true;
+          alt_tab_state = true;
         }
         tap_code(KC_TAB);
       }
@@ -144,24 +209,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     case M_ISWINDOWS:
       if (record->event.pressed)
-        hbm_operatingsystem = OS_WINDOWS;
+        selected_operating_system = OS_WINDOWS;
       break;
 
     case M_ISCHROMEOS:
       if (record->event.pressed)
-        hbm_operatingsystem = OS_CHROMEOS;
+        selected_operating_system = OS_CHROMEOS;
       break;
 
     case M_ISLINUX:
       if (record->event.pressed)
-        hbm_operatingsystem = OS_LINUX;
+        selected_operating_system = OS_LINUX;
       break;
 
   }
 
   // Process operating system specific keycodes.
 
-  switch (hbm_operatingsystem) {
+  switch (selected_operating_system) {
     case OS_WINDOWS:
       return process_record_user_windows(keycode, record);
     case OS_CHROMEOS:
@@ -172,87 +237,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   return true;
 
-}
-
-// Only allow left-hand modifiers to work with the right-hand side of the
-// keyboard and vice versa.
-
-bool apply_handedness_rules(uint16_t keycode, keyrecord_t *record) {
-
-  // Do not apply handedness rules if caps word is currently active.
-
-  if (is_caps_word_on())
-    return true;
-
-  // Do not apply handedness rules if any layers other than the base layer are
-  // currently active.
-
-  if (get_highest_layer(layer_state) > LAYER_BASE)
-    return true;
-
-  // Check if any left-hand mods are present. If there are, ignore any
-  // keypress on the left-hand side of the keyboard.
-
-  uint8_t left_mods = get_mods() & MOD_BITS_LEFT;
-  uint8_t left_oneshot_mods = get_oneshot_mods() & MOD_BITS_LEFT;
-
-  if (left_mods || left_oneshot_mods) {
-    switch (keycode) {
-      case KC_Q:
-      case KC_W:
-      case KC_F:
-      case KC_P:
-      case KC_B:
-      case KC_A:
-      case KC_R:
-      case KC_S:
-      case KC_T:
-      case KC_G:
-      case KC_Z:
-      case KC_X:
-      case KC_C:
-      case KC_D:
-      case KC_V:
-        del_oneshot_mods(left_oneshot_mods);
-        del_mods(left_mods);
-        tap_code(keycode);
-        add_mods(left_mods);
-        return false;
-    }
-  }
-
-  // Check if any right-hand mods are present. If there are, ignore any
-  // keypress on the right-hand side of the keyboard.
-
-  uint8_t right_mods = get_mods() & MOD_BITS_RIGHT;
-  uint8_t right_oneshot_mods = get_oneshot_mods() & MOD_BITS_RIGHT;
-
-  if (right_mods || right_oneshot_mods) {
-    switch (keycode) {
-      case KC_J:
-      case KC_L:
-      case KC_U:
-      case KC_Y:
-      case KC_BSPC:
-      case KC_M:
-      case KC_N:
-      case KC_E:
-      case KC_I:
-      case KC_O:
-      case KC_K:
-      case KC_H:
-      case KC_COMMA:
-      case KC_DOT:
-      case KC_SLSH:
-        del_oneshot_mods(right_oneshot_mods);
-        del_mods(right_mods);
-        tap_code(keycode);
-        add_mods(right_mods);
-        return false;
-    }
-  }
-
-  return true;
 }
 
 bool process_record_user_windows(uint16_t keycode, keyrecord_t *record) {
@@ -432,7 +416,7 @@ bool caps_word_press_user(uint16_t keycode) {
     case KC_UNDS:
       return true;
 
-    // Do not deactivate if sym, num or nav layer keys are pressed.
+    // Continue caps word if sym, num or nav layer keys are pressed.
 
     case KC_NUM:
     case KC_NAV:
@@ -457,6 +441,15 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case KC_FUNC:
     case KC_CTLS:
       return TAPPING_TERM_LAYER;
+    case KC_HR_LGUI:
+    case KC_HR_LALT:
+    case KC_HR_LCTL:
+    case KC_HR_LCA:
+    case KC_HR_RGUI:
+    case KC_HR_RALT:
+    case KC_HR_RCTL:
+    case KC_HR_RCA:
+      return TAPPING_TERM_HOMEROW;
     case KC_TD_LSFT:
     case KC_TD_RSFT:
       return TAPPING_TERM_TAP_DANCE_SHIFT;
@@ -477,20 +470,23 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
   }
 }
 
-// Tap dance on right-shift.
+// Tap dance on left-shift.
 
-void lsft_tap(tap_dance_state_t *state, void *user_data) {
+void lsft_press(tap_dance_state_t *state, void *user_data) {
 
-  // If the tap dance count has just been incremented for the first time then we
-  // could be heading towards a tap or a hold. We will default to hold and
-  // activate the sym layer. We also need to activate the oneshot shift here
-  // because the home row modifier keys do not call process_record_user. If the
-  // tap dance turns out to be a tap after all, the layer can be removed below.
+  // If the tap dance key has just been pressed for the first time then we could
+  // be heading towards a tap or a hold. We will default to hold and activate
+  // the sym layer. If the tap dance turns out to be a tap, the sym layer will
+  // be removed on release below and we can take another action.
 
   if (state->count == 1) {
-    td_lsft_held = true;
+    rsym_key_pressed = false;
     layer_on(LAYER_RSYM);
   }
+
+  // If there is a second press then clear any oneshot shift modifier that may
+  // have been added by the first tap dance key release. The intended caps word
+  // toggle will be applied on the second key release below.
 
   if (state->count > 1)
     del_oneshot_mods(MOD_BIT(KC_LSFT));
@@ -499,11 +495,22 @@ void lsft_tap(tap_dance_state_t *state, void *user_data) {
 
 void lsft_release(tap_dance_state_t *state, void *user_data) {
 
+  // When the tap dance key has been released after the first press then we are
+  // finished with the sym layer. If a symbol key was not pressed while the sym
+  // layer was on then we are in a tap, and we can set a oneshot shift modifier.
+  // This will either be consumed by a different keypress in the base layer -
+  // making a capital letter - or it will be removed above when the tap dance
+  // key is pressed again.
+
   if (state->count == 1) {
-    td_lsft_held = false;
     layer_off(LAYER_RSYM);
-    add_oneshot_mods(MOD_BIT(KC_LSFT));
+    if (! rsym_key_pressed)
+      add_oneshot_mods(MOD_BIT(KC_LSFT));
   }
+
+  // When the tap dance key is released for a second time the oneshot shift
+  // modifier will have already been removed on the second press above. Now we
+  // can toggle caps word.
 
   if (state->count > 1)
     caps_word_toggle();
@@ -512,18 +519,21 @@ void lsft_release(tap_dance_state_t *state, void *user_data) {
 
 // Tap dance on right-shift.
 
-void rsft_tap(tap_dance_state_t *state, void *user_data) {
+void rsft_press(tap_dance_state_t *state, void *user_data) {
 
-  // If the tap dance count has just been incremented for the first time then we
-  // could be heading towards a tap or a hold. We will default to hold and
-  // activate the sym layer. We also need to activate the oneshot shift here
-  // because the home row modifier keys do not call process_record_user. If the
-  // tap dance turns out to be a tap after all, the layer can be removed below.
+  // If the tap dance key has just been pressed for the first time then we could
+  // be heading towards a tap or a hold. We will default to hold and activate
+  // the sym layer. If the tap dance turns out to be a tap, the sym layer will
+  // be removed on release below and we can take another action.
 
   if (state->count == 1) {
-    td_rsft_held = true;
+    lsym_key_pressed = false;
     layer_on(LAYER_LSYM);
   }
+
+  // If there is a second press then clear any oneshot shift modifier that may
+  // have been added by the first tap dance key release. The intended caps word
+  // toggle will be applied on the second key release below.
 
   if (state->count > 1)
     del_oneshot_mods(MOD_BIT(KC_RSFT));
@@ -532,11 +542,22 @@ void rsft_tap(tap_dance_state_t *state, void *user_data) {
 
 void rsft_release(tap_dance_state_t *state, void *user_data) {
 
+  // When the tap dance key has been released after the first press then we are
+  // finished with the sym layer. If a symbol key was not pressed while the sym
+  // layer was on then we are in a tap, and we can set a oneshot shift modifier.
+  // This will either be consumed by a different keypress in the base layer -
+  // making a capital letter - or it will be removed above when the tap dance
+  // key is pressed again.
+
   if (state->count == 1) {
-    td_rsft_held = false;
     layer_off(LAYER_LSYM);
-    add_oneshot_mods(MOD_BIT(KC_RSFT));
+    if (! lsym_key_pressed)
+      add_oneshot_mods(MOD_BIT(KC_RSFT));
   }
+
+  // When the tap dance key is released for a second time the oneshot shift
+  // modifier will have already been removed on the second press above. Now we
+  // can toggle caps word.
 
   if (state->count > 1)
     caps_word_toggle();
