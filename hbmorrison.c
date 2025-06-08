@@ -28,6 +28,13 @@ bool process_record_user_windows(uint16_t keycode, keyrecord_t *record);
 bool process_record_user_chromeos(uint16_t keycode, keyrecord_t *record);
 bool process_record_user_linux(uint16_t keycode, keyrecord_t *record);
 
+// True if the right-hand versions of the mod tap keys are being held down.
+
+bool hr_rctl_held = false;
+bool hr_ralt_held = false;
+bool hr_rgui_held = false;
+bool hr_rca_held = false;
+
 // True if we are currently tabbing between windows.
 
 static bool alt_tab_state = false;
@@ -77,45 +84,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // Check if any left-hand mods are present. If there are, ignore any
     // keypress on the left-hand side of the keyboard.
 
-    uint8_t left_mods = get_mods() & MOD_BITS_LEFT;
-    uint8_t left_oneshot_mods = get_oneshot_mods() & MOD_BITS_LEFT;
+    uint8_t any_mods = get_mods() | get_oneshot_mods();
+    bool any_right_hand_mods = hr_rctl_held || hr_ralt_held || hr_rgui_held || hr_rca_held;
 
-    if (left_mods || left_oneshot_mods) {
-      switch (keycode) {
-        case KC_Q:
-        case KC_W:
-        case KC_F:
-        case KC_P:
-        case KC_B:
-        case KC_A:
-        case KC_R:
-        case KC_S:
-        case KC_T:
-        case KC_G:
-        case KC_Z:
-        case KC_X:
-        case KC_C:
-        case KC_D:
-        case KC_V:
-        case KC_HR_LCTL:
-        case KC_HR_LALT:
-        case KC_HR_LGUI:
-        case KC_HR_LCA:
-          del_oneshot_mods(left_oneshot_mods);
-          del_mods(left_mods);
-          tap_code16(keycode);
-          add_mods(left_mods);
-          return false;
-      }
-    }
-
-    // Check if any right-hand mods are present. If there are, ignore any
-    // keypress on the right-hand side of the keyboard.
-
-    uint8_t right_mods = get_mods() & MOD_BITS_RIGHT;
-    uint8_t right_oneshot_mods = get_oneshot_mods() & MOD_BITS_RIGHT;
-
-    if (right_mods || right_oneshot_mods) {
+    if (any_mods && any_right_hand_mods) {
       switch (keycode) {
         case KC_J:
         case KC_L:
@@ -144,6 +116,35 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
     }
 
+    if (any_mods && ! any_right_hand_mods) {
+      switch (keycode) {
+        case KC_Q:
+        case KC_W:
+        case KC_F:
+        case KC_P:
+        case KC_B:
+        case KC_A:
+        case KC_R:
+        case KC_S:
+        case KC_T:
+        case KC_G:
+        case KC_Z:
+        case KC_X:
+        case KC_C:
+        case KC_D:
+        case KC_V:
+        case KC_HR_LCTL:
+        case KC_HR_LALT:
+        case KC_HR_LGUI:
+        case KC_HR_LCA:
+          del_oneshot_mods(left_oneshot_mods);
+          del_mods(left_mods);
+          tap_code16(keycode);
+          add_mods(left_mods);
+          return false;
+      }
+    }
+
   }
 
   // Record that a sym layer key has been pressed. This information is used by
@@ -167,6 +168,71 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // Process macros and special handling for keycodes.
 
   switch (keycode) {
+
+    // Override the homerow mod keys to issue left-hand mods but make a note if
+    // its the right-hand key being pressed.
+
+    case KC_HR_RCTL:
+      if (record->event.pressed)
+        if (record->tap.count) {
+          tap_code16(KC_RCTL_KEY);
+        } else {
+          register_code(KC_LCTL);
+          hr_rctl_held = true;
+        }
+      else
+        if (! record->tap.count) {
+          hr_rctl_held = false;
+          unregister_code(KC_LCTL);
+        }
+      return false;
+
+    case KC_HR_RALT:
+      if (record->event.pressed)
+        if (record->tap.count) {
+          tap_code16(KC_RALT_KEY);
+        } else {
+          register_code(KC_LALT);
+          hr_ralt_held = true;
+        }
+      else
+        if (! record->tap.count) {
+          hr_ralt_held = false;
+          unregister_code(KC_LALT);
+        }
+      return false;
+
+    case KC_HR_RGUI:
+      if (record->event.pressed)
+        if (record->tap.count) {
+          tap_code16(KC_RGUI_KEY);
+        } else {
+          register_code(KC_LGUI);
+          hr_rgui_held = true;
+        }
+      else
+        if (! record->tap.count) {
+          hr_rgui_held = false;
+          unregister_code(KC_LGUI);
+        }
+      return false;
+
+    case KC_HR_RCA:
+      if (record->event.pressed)
+        if (record->tap.count) {
+          tap_code16(KC_RCA_KEY);
+        } else {
+          register_code(KC_LCTL);
+          register_code(KC_LALT);
+          hr_rca_held = true;
+        }
+      else
+        if (! record->tap.count) {
+          hr_rca_held = false;
+          unregister_code(KC_LALT);
+          unregister_code(KC_LCTL);
+        }
+      return false;
 
     // Hold down KC_LALT persistantly to allow tabbing through windows.
 

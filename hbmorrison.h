@@ -109,14 +109,14 @@ enum {
 #define KC_RCTL_KEY KC_H
 #define KC_RCA_KEY KC_K
 
-#define KC_HR_LGUI LGUI_T(KC_LGUI_KEY)
-#define KC_HR_LALT LALT_T(KC_LALT_KEY)
 #define KC_HR_LCTL LCTL_T(KC_LCTL_KEY)
+#define KC_HR_LALT LALT_T(KC_LALT_KEY)
+#define KC_HR_LGUI LGUI_T(KC_LGUI_KEY)
 #define KC_HR_LCA LCA_T(KC_LCA_KEY)
-#define KC_HR_RGUI RGUI_T(KC_RGUI_KEY)
-#define KC_HR_RALT LALT_T(KC_RALT_KEY)
 #define KC_HR_RCTL RCTL_T(KC_RCTL_KEY)
-#define KC_HR_RCA MT(MOD_RCTL | MOD_LALT, KC_RCA_KEY)
+#define KC_HR_RALT RALT_T(KC_RALT_KEY)
+#define KC_HR_RGUI RGUI_T(KC_RGUI_KEY)
+#define KC_HR_RCA RALT_T(KC_RCA_KEY)
 
 // Left- and right-handed modifier bits.
 
