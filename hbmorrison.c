@@ -30,11 +30,14 @@ bool process_record_user_linux(uint16_t keycode, keyrecord_t *record);
 
 // True if the right-hand versions of the mod tap keys are being held down.
 
-bool hr_rsft_tapped = false;
 bool hr_rctl_held = false;
 bool hr_ralt_held = false;
 bool hr_rgui_held = false;
 bool hr_rca_held = false;
+
+// True if the right-hand shift key has just been tapped.
+
+bool hr_rsft_tapped = false;
 
 // True if we are currently tabbing between windows.
 
@@ -55,8 +58,8 @@ bool lsym_key_pressed = false;
 // will finish the tap dance and set the tap dance state to interrupted, but
 // only after the MT keypresses have been registered, too late for any _finished
 // code to apply shift modifiers to them. Using the _press and _release tap
-// dance functions allow us to apply shift modifiers or activate caps word
-// before any MT macros register keypresses.
+// dance functions allow shift modifiers or caps word to be applied before any
+// MT macros register keypresses.
 
 void lsft_press(tap_dance_state_t *state, void *user_data);
 void lsft_release(tap_dance_state_t *state, void *user_data);
@@ -79,11 +82,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   if (current_highest_layer == LAYER_BASE && record->event.pressed) {
 
-    // Check if any left-hand mods are present. If there are, ignore any
-    // keypress on the left-hand side of the keyboard.
+    // Check if any mods are active and if any or the right-hand mod keys have
+    // been held or tapped.
 
     uint8_t any_mods = get_mods() | get_oneshot_mods();
     bool right_hand_mods = hr_rctl_held || hr_ralt_held || hr_rgui_held || hr_rca_held || hr_rsft_tapped;
+
+    // If a right-hand key has been tapped while a right-hand modifier is
+    // active, clear the mods in question, tap the key unmodded, then reinstate
+    // the cleared mods.
 
     if (any_mods && right_hand_mods) {
       switch (keycode) {
@@ -115,6 +122,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           return false;
       }
     }
+
+    // If a left-hand key has been tapped while a left-hand modifier is active,
+    // clear the mods in question, tap the key unmodded, then reinstate the
+    // cleared mods.
 
     if (any_mods && ! right_hand_mods) {
       switch (keycode) {
@@ -170,8 +181,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   switch (keycode) {
 
-    // Override the homerow mod keys to issue left-hand mods but make a note if
-    // its the right-hand key being pressed.
+    // Override the right-hand homerow mod keys to set left-hand mods but make
+    // a note that it was the right-hand mod key being held.
 
     case KC_HR_RCTL:
       if (record->event.pressed)
@@ -592,7 +603,7 @@ void rsft_release(tap_dance_state_t *state, void *user_data) {
   if (state->count == 1) {
     layer_off(LAYER_LSYM);
     if (! lsym_key_pressed) {
-      add_oneshot_mods(MOD_BIT(KC_RSFT));
+      add_oneshot_mods(MOD_BIT(KC_LSFT));
       hr_rsft_tapped = true;
     }
   }
