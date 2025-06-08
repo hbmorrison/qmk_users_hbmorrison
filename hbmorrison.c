@@ -30,6 +30,7 @@ bool process_record_user_linux(uint16_t keycode, keyrecord_t *record);
 
 // True if the right-hand versions of the mod tap keys are being held down.
 
+bool hr_rsft_tapped = false;
 bool hr_rctl_held = false;
 bool hr_ralt_held = false;
 bool hr_rgui_held = false;
@@ -85,7 +86,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // keypress on the left-hand side of the keyboard.
 
     uint8_t any_mods = get_mods() | get_oneshot_mods();
-    bool any_right_hand_mods = hr_rctl_held || hr_ralt_held || hr_rgui_held || hr_rca_held;
+    bool any_right_hand_mods = hr_rctl_held || hr_ralt_held || hr_rgui_held || hr_rca_held || hr_rsft_tapped;
 
     if (any_mods && any_right_hand_mods) {
       switch (keycode) {
@@ -108,10 +109,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_HR_RALT:
         case KC_HR_RGUI:
         case KC_HR_RCA:
-          del_oneshot_mods(right_oneshot_mods);
-          del_mods(right_mods);
+          uint8_t mod_state = get_mods();
+          clear_mods();
+          clear_oneshot_mods();
+          hr_rsft_tapped = false;
           tap_code16(keycode);
-          add_mods(right_mods);
+          set_mods(mod_state);
           return false;
       }
     }
@@ -137,10 +140,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_HR_LALT:
         case KC_HR_LGUI:
         case KC_HR_LCA:
-          del_oneshot_mods(left_oneshot_mods);
-          del_mods(left_mods);
+          uint8_t mod_state = get_mods();
+          clear_mods();
+          clear_oneshot_mods();
           tap_code16(keycode);
-          add_mods(left_mods);
+          set_mods(mod_state);
           return false;
       }
     }
@@ -575,8 +579,10 @@ void rsft_press(tap_dance_state_t *state, void *user_data) {
   // have been added by the first tap dance key release. The intended caps word
   // toggle will be applied on the second key release below.
 
-  if (state->count > 1)
+  if (state->count > 1) {
     del_oneshot_mods(MOD_BIT(KC_RSFT));
+    hr_rsft_tapped = false;
+  }
 
 }
 
@@ -591,8 +597,10 @@ void rsft_release(tap_dance_state_t *state, void *user_data) {
 
   if (state->count == 1) {
     layer_off(LAYER_LSYM);
-    if (! lsym_key_pressed)
+    if (! lsym_key_pressed) {
       add_oneshot_mods(MOD_BIT(KC_RSFT));
+      hr_rsft_tapped = true;
+    }
   }
 
   // When the tap dance key is released for a second time the oneshot shift
