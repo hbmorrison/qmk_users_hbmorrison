@@ -93,5 +93,4 @@ Holding the `U` key makes media controls available on the left side.
 ![Controls Layer](assets/controls.png)
 
 The keys on the inner edge of the left hand side switch the OS-specific
-functions between Windows, ChromeOS and Linux.
-
+functions of the layout between Windows, ChromeOS and Linux.
