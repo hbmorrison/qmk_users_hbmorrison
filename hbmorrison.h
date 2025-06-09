@@ -100,13 +100,13 @@ enum {
 
 // Homerow modifier keys.
 
-#define KC_LGUI_KEY KC_X
-#define KC_LALT_KEY KC_C
 #define KC_LCTL_KEY KC_D
+#define KC_LALT_KEY KC_C
+#define KC_LGUI_KEY KC_X
 #define KC_LCA_KEY KC_V
-#define KC_RGUI_KEY KC_DOT
-#define KC_RALT_KEY KC_COMMA
 #define KC_RCTL_KEY KC_H
+#define KC_RALT_KEY KC_COMMA
+#define KC_RGUI_KEY KC_DOT
 #define KC_RCA_KEY KC_K
 
 #define KC_HR_LCTL LCTL_T(KC_LCTL_KEY)

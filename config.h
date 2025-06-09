@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Caps word.
 
-#define CAPS_WORD_IDLE_TIMEOUT 1000
+#define CAPS_WORD_IDLE_TIMEOUT 2000
 
 // Layout macros that allow preprocessor substitutions. Use these instead of the
 // standard LAYOUT_ macros in keymap.c code.
