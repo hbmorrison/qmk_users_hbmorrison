@@ -1,66 +1,78 @@
-# Flexkey Layout
+# Hannah's Ferris Sweep Layout
 
 ## Introduction
 
-This is a QMK layout designed for the Ferris Sweep and OLKB Planck keyboards,
-based on Colemak-DH.
+This is a QMK layout designed for the Ferris Sweep based on Colemak-DH with UK
+ISO symbols. The layout is designed so that layer keys and modifiers will only
+affect the opposite side of the keyboard.
 
 ## Usage
 
-This git repository should be copied or cloned into the `users/hbmorrison/`
-folder in the QMK firmware, or it can be added as a submodule. The
-`install_keymaps.sh` script will install exemplar keymaps into several supported
-keyboards, which can then be compiled.
+Clone this repository into the `users/hbmorrison/` folder inside the QMK
+firmware folder then run the `install_keymaps.sh` script to install the keymap
+in the correct place under the QMK `keyboards/` folder.
 
-The keymaps comprise a `rules.mk` file and a small `keymap.c` file that is
-responsible for adding layer mappings. These can be copied into other keyboard
-`keymap/` subfolders and the exact configuration of the keymap can be adjusted
-to suit by editing variables in the `rules.mk` file.
+Compile the firmware by running:
+
+```
+qmk compile -kb ferris/sweep -e CONVERT_TO=rp2040_ce
+```
 
 ## Core Functionality
 
 ![Base Layer](https://i.imgur.com/o7hzWQV.png)
 
-The base layer implements the Colemak-DH layout. The QMK Caps Word feature can
-be toggled by tapping the two shift modifier keys at the same time.
+The base layer implements the Colemak-DH layout. When tapped, the thumb keys
+produce, from left to right: a oneshot `Left Shift`, `Space`, `Enter`, and a
+oneshot `Right Shift`. Double tapping either of the shift keys enable the QMK
+Caps Word feature for a short while. Double tapping either shift key again will
+toggle Caps Word off.
 
-## Symbol Layer
+The thumb keys give access to most of the layers when held down, from left to
+right: the left symbol layer, the navigation layer, the number layer, and the
+right symbol layer.
 
-The symbol layer puts the symbols associated with the shifted number keys on the
-top row in their correct finger positions,  as much as possible.
+Function keys can be accessed on the right side of the keyboard by holding down
+the `F` key.
+
+Controls for brightness, sound and media can be accessed on the left side of the
+keyboard by holding down the `U` key.
+
+## Symbol Layers
+
+The symbols associated with the shifted number keys on the top row of both
+symbol layers, close to their UK ISO finger positions.
 
  ![Symbol Layer](https://i.imgur.com/PKImXjQ.png)
 
-The pairs of symbols that would normally appear on the right side of a standard
-UK ISO keyboard are on the right-hand side. The left-hand side gathers the
-brackets, braces and parentheses. The backslash and pipe symbols appear on the
-left, echoing where that key appears on a UK ISO keyboard.
+The pairs of unshifted and shifted symbols that would normally appear on the
+right side of a UK ISO keyboard are on the right symbol layer. The `Del` key is
+available at the top right, mirroring where the `Backspace` key appears in the
+base layer.
+
+The left symbol layer gathers the brackets, braces and parentheses. The
+backslash and pipe symbols appear on the left, echoing where that key appears on
+a UK ISO keyboard.
 
 ## Navigation Layer
 
 ![Navigation Layer](https://i.imgur.com/wrTQpvZ.png)
 
-The navigation layer gathers navigation related keys together. The right-hand
-side of the layer has the arrow keys and related keys, along with some useful
-navigation macros. The left-hand side has useful media controls.
+The navigation layer arranges navigation related keys together on the right
+side, including the arrow keys, the `Home`, `Page Down`, `Page Up` and `End`
+keys as well as a number of shortcut keys for desktop actions.
 
 ## Number Layer
 
 ![Number Layer](https://i.imgur.com/BtJbMHw.png)
 
-The number layer arranges the number keys in keypad format on the left-hand
-side. Function keys appear on the right-hand side.
+The number layer arranges the number keys on the left side in keypad format,
+with `1` at the top left.
 
-## Shortcut Layer
+## Function Key Layer
 
-Finally the shortcut layer provides a number of macros that work with
-applications on Windows and ChromeOS.
+TBC
 
-![Shortcut Layer](https://i.imgur.com/advFl4r.png)
+## Controls Layer
 
-The Windows app keys rely on an AutoHotkey script (included in this repo)
-whereas, on ChromeOS applications are launched based on their postion on the
-shelf - you can think of the six app keys as "launch shelf app 1" and so on.
-
-By default the keyboard will start in Windows mode, but the mode can be changed
-at any time with the `Win` and `CROS` keys.
+TBC
