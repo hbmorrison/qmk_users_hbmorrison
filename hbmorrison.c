@@ -39,7 +39,7 @@ bool hr_rca_active = false;
 // Process a homerow mod key manually and return true if the key is being
 // held.
 
-bool process_homerow_mod(uint16_t tap_keycode, uint16_t hold_keycode, keyrecord_t *record);
+bool process_homerow_mod(uint16_t tap, uint16_t hold, uint16_t second_hold, keyrecord_t *record);
 
 // True if we are currently tabbing between windows.
 
@@ -192,19 +192,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       // can be enforced.
 
       case KC_HR_RCTL:
-        hr_rctl_active = process_homerow_mod(KC_RCTL_KEY, KC_LCTL, record);
+        hr_rctl_active = process_homerow_mod(KC_RCTL_KEY, KC_LCTL, 0, record);
         return false;
 
       case KC_HR_RALT:
-        hr_ralt_active = process_homerow_mod(KC_RALT_KEY, KC_LALT, record);
+        hr_ralt_active = process_homerow_mod(KC_RALT_KEY, KC_LALT, 0, record);
         return false;
 
       case KC_HR_RGUI:
-        hr_rgui_active = process_homerow_mod(KC_RGUI_KEY, KC_LGUI, record);
+        hr_rgui_active = process_homerow_mod(KC_RGUI_KEY, KC_LGUI, 0, record);
         return false;
 
       case KC_HR_RCA:
-        hr_rca_active = process_homerow_mod(KC_RCA_KEY, KC_LCA, record);
+        hr_rca_active = process_homerow_mod(KC_RCA_KEY, KC_LCTL, KC_LALT, record);
         return false;
 
       // Hold down the ALT key persistently when tabbing through windows.
@@ -257,20 +257,25 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // Process a homerow mod key manually and return true if the key is being
 // held.
 
-bool process_homerow_mod(uint16_t tap_keycode, uint16_t hold_keycode, keyrecord_t *record) {
+bool process_homerow_mod(uint16_t tap, uint16_t hold, uint16_t second_hold, keyrecord_t *record) {
 
   if (record->event.pressed) {
     if (record->tap.count) {
-      if (is_caps_word_on() && ! caps_word_press_user(tap_keycode))
+      if (is_caps_word_on() && ! caps_word_press_user(tap))
         caps_word_off();
-      tap_code16(tap_keycode);
+      tap_code16(tap);
     } else {
-      register_code(hold_keycode);
+      register_code(hold);
+      if (second_hold)
+        register_code(second_hold);
       return true;
     }
   } else {
-    if (! record->tap.count)
-      unregister_code(hold_keycode);
+    if (! record->tap.count) {
+      if (second_hold)
+        unregister_code(second_hold);
+      unregister_code(hold);
+    }
   }
 
   return false;
