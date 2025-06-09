@@ -76,7 +76,9 @@ with `1` at the top left. The `.` and `/` keys are available too.
 
 ![Number Layer](assets/num.png)
 
-The `Tab` and `Shift-Tab` keys are available on the left thumb keys.
+The `Tab` and `Shift-Tab` keys are available on the left thumb keys. Left and
+right mouse buttons are available on the right hand side, for use with a
+centralised trackball or trackpad.
 
 ## Function Key Layer
 
@@ -89,3 +91,7 @@ Holding the `F` key makes function keys available on the right side.
 Holding the `U` key makes media controls available on the left side.
 
 ![Controls Layer](assets/controls.png)
+
+The keys on the inner edge of the left hand side switch the OS-specific
+functions between Windows, ChromeOS and Linux.
+
