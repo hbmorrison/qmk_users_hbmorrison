@@ -20,7 +20,7 @@ qmk compile -kb ferris/sweep -e CONVERT_TO=rp2040_ce
 
 ## Core Functionality
 
-![Base Layer](https://i.imgur.com/o7hzWQV.png)
+![Base Layer](assets/base.png)
 
 The base layer implements the Colemak-DH layout. When tapped, the thumb keys
 produce, from left to right: a oneshot `Left Shift`, `Space`, `Enter`, and a
@@ -43,7 +43,9 @@ keyboard by holding down the `U` key.
 The symbols associated with the shifted number keys on the top row of both
 symbol layers, close to their UK ISO finger positions.
 
- ![Symbol Layer](https://i.imgur.com/PKImXjQ.png)
+![Left Symbol Layer](assets/lsym.png)
+
+![Right Symbol Layer](assets/rsym.png)
 
 The pairs of unshifted and shifted symbols that would normally appear on the
 right side of a UK ISO keyboard are on the right symbol layer. The `Del` key is
@@ -56,7 +58,7 @@ a UK ISO keyboard.
 
 ## Navigation Layer
 
-![Navigation Layer](https://i.imgur.com/wrTQpvZ.png)
+![Navigation Layer](assets/nav.png)
 
 The navigation layer arranges navigation related keys together on the right
 side, including the arrow keys, the `Home`, `Page Down`, `Page Up` and `End`
@@ -64,15 +66,15 @@ keys as well as a number of shortcut keys for desktop actions.
 
 ## Number Layer
 
-![Number Layer](https://i.imgur.com/BtJbMHw.png)
+![Number Layer](assets/num.png)
 
 The number layer arranges the number keys on the left side in keypad format,
 with `1` at the top left.
 
 ## Function Key Layer
 
-TBC
+![Function Key Layer](assets/function.png)
 
 ## Controls Layer
 
-TBC
+![Controls Layer](assets/controls.png)
