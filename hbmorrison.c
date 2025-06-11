@@ -115,6 +115,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_HR_RALT:
         case KC_HR_RGUI:
         case KC_HR_RCA:
+        case KC_CTLS:
           uint8_t mod_state = get_mods();
           clear_mods();
           clear_oneshot_mods();
@@ -151,6 +152,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_HR_LALT:
         case KC_HR_LGUI:
         case KC_HR_LCA:
+        case KC_FUNC:
           uint8_t mod_state = get_mods();
           clear_mods();
           clear_oneshot_mods();
