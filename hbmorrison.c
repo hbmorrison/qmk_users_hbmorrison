@@ -321,6 +321,16 @@ bool process_record_user_windows(uint16_t keycode, keyrecord_t *record) {
       }
       break;
 
+    // Minimise.
+
+    case M_MINIMISE:
+      if (record->event.pressed) {
+        SEND_STRING(SS_DOWN(X_LGUI));
+        SEND_STRING(SS_TAP(X_DOWN));
+        SEND_STRING(SS_UP(X_LGUI));
+      }
+      break;
+
     // Open the emoji window.
 
     case M_EMOJI:
@@ -359,6 +369,26 @@ bool process_record_user_chromeos(uint16_t keycode, keyrecord_t *record) {
     case M_OVERVIEW:
       if (record->event.pressed) {
         SEND_STRING(SS_TAP(X_F5));
+      }
+      break;
+
+    // Full screen.
+
+    case M_FULLSCREEN:
+      if (record->event.pressed) {
+        SEND_STRING(SS_DOWN(X_LALT));
+        SEND_STRING(SS_TAP(X_EQL));
+        SEND_STRING(SS_UP(X_LALT));
+      }
+      break;
+
+    // Minimise.
+
+    case M_MINIMISE:
+      if (record->event.pressed) {
+        SEND_STRING(SS_DOWN(X_LALT));
+        SEND_STRING(SS_TAP(X_MINS));
+        SEND_STRING(SS_UP(X_LALT));
       }
       break;
 
