@@ -32,8 +32,8 @@ The thumb keys give access to most of the layers when held down, from left to
 right: the right symbol layer, the navigation layer, the number layer, and the
 left symbol layer.
 
-Function keys can be accessed on the right side of the keyboard by holding down
-the `F` key.
+In addition, function keys can be accessed on the right side of the keyboard by
+holding down the `F` key.
 
 Controls for brightness, sound and media can be accessed on the left side of the
 keyboard by holding down the `U` key.
@@ -45,19 +45,14 @@ symbol layers, close to their UK ISO finger positions.
 
 ![Right Symbol Layer](assets/rsym.png)
 
-The pairs of unshifted and shifted symbols that would normally appear on the
-right side of a UK ISO keyboard are on the right symbol layer. The `Del` key is
-available at the top right, mirroring where the `Backspace` key appears in the
-base layer.
+The pairs of unshifted and shifted symbols that would normally appear clustered
+on the right side of a UK ISO keyboard are on the right symbol layer.
 
 ![Left Symbol Layer](assets/lsym.png)
 
 The left symbol layer gathers the brackets, braces and parentheses. The
 backslash and pipe symbols appear on the left, echoing where that key appears on
 a UK ISO keyboard.
-
-On the bottom left of the left symbol layer, the emoji key pops up the emoji
-shortcut window.
 
 ## Navigation Layer
 
@@ -67,17 +62,17 @@ keys as well as a number of shortcut keys for desktop actions.
 
 ![Navigation Layer](assets/nav.png)
 
-The `Esc` key is available on the inside right thumb key.
+The `Esc` and `Del` keys are on the right thumb keys.
 
 ## Number Layer
 
 The number layer arranges the number keys on the left side in keypad format,
-with `1` at the top left. The `.` and `/` keys are available too.
+with `1` at the top left, along with `.` and `/` keys for convenience.
 
 ![Number Layer](assets/num.png)
 
-The `Tab` and `Shift-Tab` keys are available on the left thumb keys. Left and
-right mouse buttons are available on the right hand side, for use with a
+The `Tab` and `Shift-Tab` keys are on the left thumb keys. Left and
+right mouse buttons are also available on the right side, for use with a
 centralised trackball or trackpad.
 
 ## Function Key Layer
@@ -92,5 +87,5 @@ Holding the `U` key makes media controls available on the left side.
 
 ![Controls Layer](assets/controls.png)
 
-The keys on the inner edge of the left hand side switch the OS-specific
-functions of the layout between Windows, ChromeOS and Linux.
+The keys on the inner edge of the left side switch the OS-specific functions
+(such as switching virtual desktop) between Windows, ChromeOS and Linux.
