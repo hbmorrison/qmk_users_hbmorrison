@@ -19,17 +19,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Tapping config.
 
-#define PERMISSIVE_HOLD
+#define RETRO_TAPPING
 #define RETRO_TAPPING_PER_KEY
-#define TAPPING_TERM_PER_KEY
+#define PERMISSIVE_HOLD
+#define PERMISSIVE_HOLD_PER_KEY
 #define TAPPING_TERM 200
-#define TAPPING_TERM_HOMEROW 170
+#define TAPPING_TERM_PER_KEY
 #define TAPPING_TERM_LAYER 200
-#define TAPPING_TERM_TAP_DANCE_SHIFT 300
+#define TAPPING_TERM_HOMEROW 200
+#define TAPPING_TERM_HOMEROW_GUI 400
 
 // Caps word.
 
-#define CAPS_WORD_IDLE_TIMEOUT 2000
+#define DOUBLE_TAP_SHIFT_TURNS_ON_CAPS_WORD
+#define CAPS_WORD_IDLE_TIMEOUT 3000
 
 // Layout macros that allow preprocessor substitutions. Use these instead of the
 // standard LAYOUT_ macros in keymap.c code.
