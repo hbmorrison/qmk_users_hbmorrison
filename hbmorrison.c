@@ -456,6 +456,11 @@ bool caps_word_press_user(uint16_t keycode) {
     case KC_DEL:
       return true;
 
+    // Allow tab for shell completion of variable names.
+
+    case KC_TAB:
+      return true;
+
     // Layer keys also continue caps word so that symbols, numbers and
     // navigation keys can be accessed.
 
@@ -482,15 +487,16 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case KC_FUNC:
     case KC_CTLS:
       return TAPPING_TERM_LAYER;
-    case KC_HR_LGUI:
-    case KC_HR_LALT:
     case KC_HR_LCTL:
+    case KC_HR_LALT:
     case KC_HR_LCA:
-    case KC_HR_RGUI:
-    case KC_HR_RALT:
     case KC_HR_RCTL:
+    case KC_HR_RALT:
     case KC_HR_RCA:
       return TAPPING_TERM_HOMEROW;
+    case KC_HR_LGUI:
+    case KC_HR_RGUI:
+      return TAPPING_TERM_HOMEROW_GUI;
     case KC_TD_LSFT:
     case KC_TD_RSFT:
       return TAPPING_TERM_TAP_DANCE_SHIFT;
@@ -499,12 +505,28 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   }
 }
 
-// Only the space and enter keys get retro tapping.
+bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case KC_HR_LALT:
+    case KC_HR_LGUI:
+    case KC_HR_RALT:
+    case KC_HR_RGUI:
+      return false;
+    default:
+      return true;
+  }
+}
+
+// Only the space, enter, alt and gui keys get retro tapping.
 
 bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case KC_NUM:
     case KC_NAV:
+    case KC_HR_LALT:
+    case KC_HR_LGUI:
+    case KC_HR_RALT:
+    case KC_HR_RGUI:
       return true;
     default:
       return false;
