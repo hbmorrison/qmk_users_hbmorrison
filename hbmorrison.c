@@ -111,6 +111,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_COMMA:
         case KC_DOT:
         case KC_SLSH:
+        case KC_HR_RCS:
         case KC_HR_RCTL:
         case KC_HR_RALT:
         case KC_HR_RGUI:
@@ -148,10 +149,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case KC_C:
         case KC_D:
         case KC_V:
-        case KC_HR_LCTL:
-        case KC_HR_LALT:
-        case KC_HR_LGUI:
         case KC_HR_LCA:
+        case KC_HR_LGUI:
+        case KC_HR_LALT:
+        case KC_HR_LCTL:
+        case KC_HR_LCS:
         case KC_FUNC:
           uint8_t mod_state = get_mods();
           clear_mods();
@@ -203,6 +205,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
       case KC_HR_RGUI:
         hr_rgui_active = process_homerow_mod(KC_RGUI_KEY, KC_LGUI, 0, record);
+        return false;
+
+      case KC_HR_RCS:
+        hr_rca_active = process_homerow_mod(KC_RCS_KEY, KC_LCTL, KC_LSFT, record);
         return false;
 
       case KC_HR_RCA:
@@ -519,9 +525,11 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case KC_FUNC:
     case KC_CTLS:
       return TAPPING_TERM_LAYER;
-    case KC_HR_LCTL:
-    case KC_HR_LALT:
     case KC_HR_LCA:
+    case KC_HR_LALT:
+    case KC_HR_LCTL:
+    case KC_HR_LCS:
+    case KC_HR_RCS:
     case KC_HR_RCTL:
     case KC_HR_RALT:
     case KC_HR_RCA:
@@ -539,8 +547,8 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 
 bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case KC_HR_LALT:
     case KC_HR_LGUI:
+    case KC_HR_LALT:
     case KC_HR_RALT:
     case KC_HR_RGUI:
       return false;
@@ -555,8 +563,8 @@ bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case KC_NUM:
     case KC_NAV:
-    case KC_HR_LALT:
     case KC_HR_LGUI:
+    case KC_HR_LALT:
     case KC_HR_RALT:
     case KC_HR_RGUI:
       return true;
