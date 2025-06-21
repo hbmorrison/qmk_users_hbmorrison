@@ -227,6 +227,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         }
         break;
 
+      // Send Escape then Colon.
+
+      case M_ESC_COLN:
+        SEND_STRING(SS_TAP(X_ESC) SS_DELAY(100) ":");
+        break;
+
       // Swap between Windows, ChromeOS and Linux shortcuts.
 
       case M_ISWINDOWS:
