@@ -17,8 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "hbmorrison.h"
 
-bool process_homerow_mod(uint16_t tap, uint16_t hold, uint16_t second_hold, keyrecord_t *record);
-bool process_rsft_mod(keyrecord_t *record);
+bool process_homerow_modifier(keyrecord_t *record, uint16_t key, uint16_t modifier);
+bool process_rsft_modifier(keyrecord_t *record);
 bool process_record_user_windows(uint16_t keycode, keyrecord_t *record);
 bool process_record_user_chromeos(uint16_t keycode, keyrecord_t *record);
 bool process_record_user_linux(uint16_t keycode, keyrecord_t *record);
@@ -52,15 +52,14 @@ static bool alt_tab_state = false;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
-  // Get the current state that we need.
+  // Get the current state of the modifier keys.
 
   uint8_t mod_state = get_mods();
-  uint8_t highest_layer = get_highest_layer(layer_state);
 
   // Only allow left hand modifiers to work with the right hand side of the
   // keyboard and vice versa.
 
-  if (highest_layer == LAYER_BASE && record->event.pressed) {
+  if (record->event.pressed) {
 
     bool right_hand_mods = rsft_held || rctl_held || ralt_held || rgui_held || rca_held;
 
@@ -83,11 +82,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case KC_C:
       case KC_D:
       case KC_V:
-      case HR_LCA:
-      case HR_LGUI:
-      case HR_LALT:
-      case HR_LCTL:
-      case LT_FUNC:
+      case KC_HR_LCA:
+      case KC_HR_LGUI:
+      case KC_HR_LALT:
+      case KC_HR_LCTL:
+      case KC_FUNC:
 
         // If a left shift oneshot modifier is active, clear it.
 
@@ -125,11 +124,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case KC_COMMA:
       case KC_DOT:
       case KC_SLSH:
-      case HR_RCTL:
-      case HR_RALT:
-      case HR_RGUI:
-      case HR_RCA:
-      case LT_CTLS:
+      case KC_HR_RCTL:
+      case KC_HR_RALT:
+      case KC_HR_RGUI:
+      case KC_HR_RCA:
+      case KC_CTLS:
 
         // If a right shift oneshot modifier is active, clear it.
 
@@ -151,23 +150,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   }
 
   // Ensure that shift modifiers are not set when symbol layers are active. This
-  // ensures that symbol keypresses will always produce the unshifted symbol,
-  // unless explicitly shifted in code.
+  // ensures that symbol keypresses will always produce the intended symbol,
+  // rather than, say, the ' key producing an @ because a oneshot shift was
+  // still active.
+
+  uint8_t highest_layer = get_highest_layer(layer_state);
 
   if (highest_layer == LAYER_LSYM || highest_layer == LAYER_RSYM) {
     if (record->event.pressed) {
-
-      sym_layer_shift_mods = get_mods() & MOD_MASK_SHIFT;
-      del_mods(MOD_MASK_SHIFT);
-      del_oneshot_mods(MOD_MASK_SHIFT);
-
+      switch (keycode) {
+        // z and / are oneshot layer keys in the base layer so they are present
+        // in the sym layers and need to respond to shifts in order to output Z
+        // and ?
+        case KC_Z:
+        case KC_SLSH:
+          break;
+        default:
+          sym_layer_shift_mods = get_mods() & MOD_MASK_SHIFT;
+          del_mods(MOD_MASK_SHIFT);
+          del_oneshot_mods(MOD_MASK_SHIFT);
+      }
     } else {
-
       if (sym_layer_shift_mods) {
         add_mods(sym_layer_shift_mods);
         sym_layer_shift_mods = 0;
       }
-
     }
   }
 
@@ -180,27 +187,23 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   // Override each right hand homerow modifier key so that we can record when it
   // is being held. We avoid processing the homerow modifier keys if the tap
-  // count is greater than one to allow QMK to handle key repeats.
+  // count is greater than one to allow QMK a chance to handle key repeats, so
+  // that a tap-hold of a homerow modifier key will start a repeat.
 
   if (record->tap.count < 2) {
     switch (keycode) {
-
-      case HR_RCTL:
-        rctl_held = process_homerow_mod(HR_RCTL_KEY, KC_LCTL, 0, record);
+      case KC_HR_RCA:
+        rca_held = process_homerow_modifier(record, KC_K, KC_LCA);
         return false;
-
-      case HR_RALT:
-        ralt_held = process_homerow_mod(HR_RALT_KEY, KC_LALT, 0, record);
+      case KC_HR_RCTL:
+        rctl_held = process_homerow_modifier(record, KC_H, KC_LCTL);
         return false;
-
-      case HR_RGUI:
-        rgui_held = process_homerow_mod(HR_RGUI_KEY, KC_LGUI, 0, record);
+      case KC_HR_RALT:
+        ralt_held = process_homerow_modifier(record, KC_COMM, KC_LALT);
         return false;
-
-      case HR_RCA:
-        rca_held = process_homerow_mod(HR_RCA_KEY, KC_LCTL, KC_LALT, record);
+      case KC_HR_RGUI:
+        rgui_held = process_homerow_modifier(record, KC_DOT, KC_LGUI);
         return false;
-
     }
   }
 
@@ -211,8 +214,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     // The right shift modifier is handled separately from the homerow modifiers
     // above so that we can detect double taps for toggling caps word.
 
-    case OSM_RSFT:
-      rsft_held = process_rsft_mod(record);
+    case KC_OSM_RSFT:
+      rsft_held = process_rsft_modifier(record);
       return false;
 
     // Shift-backspace produces delete.
@@ -290,27 +293,33 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 // Process a homerow modifier key and return true if the key is currently being
 // held.
 
-bool process_homerow_mod(uint16_t tap, uint16_t hold, uint16_t second_hold, keyrecord_t *record) {
+bool process_homerow_modifier(keyrecord_t *record, uint16_t key, uint16_t modifier) {
 
   if (record->event.pressed) {
 
     if (record->tap.count) {
-      if (is_caps_word_on() && ! caps_word_press_user(tap))
+      if (is_caps_word_on() && ! caps_word_press_user(key))
         caps_word_off();
-      tap_code16(tap);
+      tap_code16(key);
     } else {
-      register_code(hold);
-      if (second_hold)
-        register_code(second_hold);
+      if (modifier == KC_LCA) {
+        register_code(KC_LCTL);
+        register_code(KC_LALT);
+      } else {
+        register_code(modifier);
+      }
       return true;
     }
 
   } else {
 
     if (! record->tap.count) {
-      if (second_hold)
-        unregister_code(second_hold);
-      unregister_code(hold);
+      if (modifier == KC_LCA) {
+        unregister_code(KC_LALT);
+        unregister_code(KC_LCTL);
+      } else {
+        unregister_code(modifier);
+      }
     }
 
   }
@@ -321,7 +330,7 @@ bool process_homerow_mod(uint16_t tap, uint16_t hold, uint16_t second_hold, keyr
 // Process the right shift modifier key and return true if the key is currently
 // being held.
 
-bool process_rsft_mod(keyrecord_t *record) {
+bool process_rsft_modifier(keyrecord_t *record) {
 
   if (record->event.pressed) {
 
@@ -332,9 +341,13 @@ bool process_rsft_mod(keyrecord_t *record) {
 
     unregister_code(KC_LSFT);
 
+    // If there was no hold and the tap count is one, treat as a single tap and
+    // issue a oneshot shift modifier just like the left shift key.
     if (record->tap.count == 1)
       add_oneshot_mods(MOD_BIT(KC_RSFT));
 
+    // If there was no hold and the tap count is g, treat as a double tap and
+    // issue a capsword toggle just like the left shift key.
     if (record->tap.count > 1)
       caps_word_toggle();
 
@@ -562,10 +575,10 @@ bool caps_word_press_user(uint16_t keycode) {
     // Layer keys also continue caps word so that symbols, numbers and
     // navigation keys can be accessed.
 
-    case LT_LSYM:
-    case LT_RSYM:
-    case LT_NUM:
-    case LT_NAV:
+    case KC_LSYM:
+    case KC_RSYM:
+    case KC_NUM:
+    case KC_NAV:
       return true;
 
     // Finish caps word for any other keypress.
@@ -580,20 +593,20 @@ bool caps_word_press_user(uint16_t keycode) {
 
 uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case LT_NUM:
-    case LT_NAV:
-    case LT_FUNC:
-    case LT_CTLS:
+    case KC_NUM:
+    case KC_NAV:
+    case KC_FUNC:
+    case KC_CTLS:
       return TAPPING_TERM_LAYER;
-    case HR_LCA:
-    case HR_LALT:
-    case HR_LCTL:
-    case HR_RCTL:
-    case HR_RALT:
-    case HR_RCA:
+    case KC_HR_LCA:
+    case KC_HR_LALT:
+    case KC_HR_LCTL:
+    case KC_HR_RCTL:
+    case KC_HR_RALT:
+    case KC_HR_RCA:
       return TAPPING_TERM_HOMEROW;
-    case HR_LGUI:
-    case HR_RGUI:
+    case KC_HR_LGUI:
+    case KC_HR_RGUI:
       return TAPPING_TERM_HOMEROW_GUI;
     default:
       return TAPPING_TERM;
@@ -602,10 +615,10 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
 
 bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case HR_LGUI:
-    case HR_LALT:
-    case HR_RALT:
-    case HR_RGUI:
+    case KC_HR_LGUI:
+    case KC_HR_LALT:
+    case KC_HR_RALT:
+    case KC_HR_RGUI:
       return false;
     default:
       return true;
@@ -616,12 +629,12 @@ bool get_permissive_hold(uint16_t keycode, keyrecord_t *record) {
 
 bool get_retro_tapping(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case LT_NUM:
-    case LT_NAV:
-    case HR_LGUI:
-    case HR_LALT:
-    case HR_RALT:
-    case HR_RGUI:
+    case KC_NUM:
+    case KC_NAV:
+    case KC_HR_LGUI:
+    case KC_HR_LALT:
+    case KC_HR_RALT:
+    case KC_HR_RGUI:
       return true;
     default:
       return false;
