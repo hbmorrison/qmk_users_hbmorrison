@@ -3,8 +3,8 @@
 ## Introduction
 
 This is a QMK layout designed for the Ferris Sweep based on Colemak-DH with UK
-ISO symbols. The layout is designed so that layer keys and modifiers will only
-affect the opposite side of the keyboard.
+ISO symbols. The layout is designed so that shift, other modifiers and layer
+keys will only affect the opposite side of the keyboard.
 
 ## Usage
 
@@ -22,21 +22,25 @@ qmk compile -kb ferris/sweep -e CONVERT_TO=rp2040_ce
 
 ![Base Layer](assets/base.png)
 
-The base layer implements the Colemak-DH layout. When tapped, the thumb keys
-produce, from left to right: a oneshot `Left Shift`, `Space`, `Enter`, and a
-oneshot `Right Shift`. Double tapping either of the shift keys enable the QMK
-Caps Word feature for a short while. Double tapping either shift key again will
-toggle Caps Word off.
+The base layer is arranged in a Colemak-DH layout, with a small number of
+changes.
 
-The thumb keys give access to most of the layers when held down, from left to
-right: the right symbol layer, the navigation layer, the number layer, and the
-left symbol layer.
+- The top right pinky key produces `Backspace`.
+- The bottom left and right pinky keys give oneshot access to the right and
+  left symbol layers.
+- The `Z` and `/` keys have been displaced into symbol layers.
 
-In addition, function keys can be accessed on the right side of the keyboard by
-holding down the `F` key.
+In addition:
 
-Controls for brightness, sound and media can be accessed on the left side of the
-keyboard by holding down the `U` key.
+- The thumb keys produce, from left to right: `Left Shift`, `Space`, `Enter`,
+  and `Right Shift`.
+- When held, the `Space` and `Enter` thumb keys give access to the navigation
+  and number layers.
+- Double-tapping either of the shift keys toggles the QMK Caps Word feature.
+- Holding `Left Shift` and tapping `Backspace` produces `Delete`.
+- Holding the `F` key gives access to function keys in the `Function` layer.
+- Holding the `U` key gives access to controls for brightness, sound and media
+  in the `Controls` layer.
 
 ## Symbol Layers
 
@@ -48,11 +52,17 @@ symbol layers, close to their UK ISO finger positions.
 The pairs of unshifted and shifted symbols that would normally appear clustered
 on the right side of a UK ISO keyboard are on the right symbol layer.
 
+Note that the `/` key is available on the bottom right pinky key in the right
+symbol layer.
+
 ![Left Symbol Layer](assets/lsym.png)
 
 The left symbol layer gathers the brackets, braces and parentheses. The
 backslash and pipe symbols appear on the left, echoing where that key appears on
 a UK ISO keyboard.
+
+Note that the `Z` key is available on the bottom left pinky key in the left
+symbol layer.
 
 ## Navigation Layer
 
@@ -62,7 +72,10 @@ keys as well as a number of shortcut keys for desktop actions.
 
 ![Navigation Layer](assets/nav.png)
 
-The `Esc` and `Del` keys are on the right thumb keys.
+The `Esc` and `Esc + Colon` keys are on the right thumb keys. Left and
+right mouse buttons are available on the left side, for use with a
+centralised trackball or trackpad.
+
 
 ## Number Layer
 
