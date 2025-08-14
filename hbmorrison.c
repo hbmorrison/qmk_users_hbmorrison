@@ -34,7 +34,7 @@ bool rsft_held = false;
 bool rctl_held = false;
 bool ralt_held = false;
 bool rgui_held = false;
-bool rca_held = false;
+bool rmeh_held = false;
 
 // Stores the state of the shift keys when in layers higher than the base layer.
 
@@ -61,7 +61,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   if (record->event.pressed) {
 
-    bool right_hand_mods = rsft_held || rctl_held || ralt_held || rgui_held || rca_held;
+    bool right_hand_mods = rsft_held || rctl_held || ralt_held || rgui_held || rmeh_held;
 
     // Check if the current keypress is on the left hand side.
 
@@ -82,7 +82,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case KC_C:
       case KC_D:
       case KC_V:
-      case KC_HR_LCA:
+      case KC_HR_LMEH:
       case KC_HR_LGUI:
       case KC_HR_LALT:
       case KC_HR_LCTL:
@@ -127,7 +127,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       case KC_HR_RCTL:
       case KC_HR_RALT:
       case KC_HR_RGUI:
-      case KC_HR_RCA:
+      case KC_HR_RMEH:
       case KC_CTLS:
 
         // If a right shift oneshot modifier is active, clear it.
@@ -151,17 +151,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   // Ensure that shift modifiers are not set when symbol layers are active. This
   // ensures that symbol keypresses will always produce the intended symbol,
-  // rather than, say, the ' key producing an @ because a oneshot shift was
-  // still active.
+  // rather than, say, the = key producing a + because a oneshot shift was
+  // still active from the base layer.
 
   uint8_t highest_layer = get_highest_layer(layer_state);
 
   if (highest_layer == LAYER_LSYM || highest_layer == LAYER_RSYM) {
     if (record->event.pressed) {
       switch (keycode) {
-        // z and / are oneshot layer keys in the base layer so they are present
-        // in the sym layers and need to respond to shifts in order to output Z
-        // and ?
+        // The / and Z keys are replaced with oneshot layer keys in the base
+        // layer so instead they are present in the sym layers and need to
+        // respond to shifts in order to output ? and capital Z.
         case KC_Z:
         case KC_SLSH:
           break;
@@ -192,8 +192,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
   if (record->tap.count < 2) {
     switch (keycode) {
-      case KC_HR_RCA:
-        rca_held = process_homerow_modifier(record, KC_K, KC_LCA);
+      case KC_HR_RMEH:
+        rmeh_held = process_homerow_modifier(record, KC_K, KC_LMEH);
         return false;
       case KC_HR_RCTL:
         rctl_held = process_homerow_modifier(record, KC_H, KC_LCTL);
@@ -302,9 +302,11 @@ bool process_homerow_modifier(keyrecord_t *record, uint16_t key, uint16_t modifi
         caps_word_off();
       tap_code16(key);
     } else {
-      if (modifier == KC_LCA) {
+      // Handle MEH by registering the constituent modifiers.
+      if (modifier == KC_LMEH) {
         register_code(KC_LCTL);
         register_code(KC_LALT);
+        register_code(KC_LSFT);
       } else {
         register_code(modifier);
       }
@@ -314,7 +316,8 @@ bool process_homerow_modifier(keyrecord_t *record, uint16_t key, uint16_t modifi
   } else {
 
     if (! record->tap.count) {
-      if (modifier == KC_LCA) {
+      if (modifier == KC_LMEH) {
+        unregister_code(KC_LSFT);
         unregister_code(KC_LALT);
         unregister_code(KC_LCTL);
       } else {
@@ -577,6 +580,8 @@ bool caps_word_press_user(uint16_t keycode) {
 
     case KC_LSYM:
     case KC_RSYM:
+    case KC_OSL_LSYM:
+    case KC_OSL_RSYM:
     case KC_NUM:
     case KC_NAV:
       return true;
@@ -598,12 +603,17 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
     case KC_FUNC:
     case KC_CTLS:
       return TAPPING_TERM_LAYER;
-    case KC_HR_LCA:
+    case KC_LSYM:
+    case KC_RSYM:
+    case KC_OSL_LSYM:
+    case KC_OSL_RSYM:
+      return TAPPING_TERM_SYM_LAYER;
+    case KC_HR_LMEH:
     case KC_HR_LALT:
     case KC_HR_LCTL:
     case KC_HR_RCTL:
     case KC_HR_RALT:
-    case KC_HR_RCA:
+    case KC_HR_RMEH:
       return TAPPING_TERM_HOMEROW;
     case KC_HR_LGUI:
     case KC_HR_RGUI:

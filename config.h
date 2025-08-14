@@ -26,6 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define TAPPING_TERM 200
 #define TAPPING_TERM_PER_KEY
 #define TAPPING_TERM_LAYER 200
+#define TAPPING_TERM_SYM_LAYER 150
 #define TAPPING_TERM_HOMEROW 200
 #define TAPPING_TERM_HOMEROW_GUI 400
 

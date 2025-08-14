@@ -1,3 +1,3 @@
 USER_NAME := hbmorrison
 
-ENABLE_ONESHOT = yes
+ENABLE_ONESHOT = no
